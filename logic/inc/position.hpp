@@ -1,5 +1,6 @@
 #pragma once
 #include <stdexcept>
+#include "definitions.hpp"
 
 namespace Chess::Logic {
 
@@ -16,10 +17,10 @@ public:
     }
 
     static void validation(const Position &pos) {
-        if (int row = pos.row(); row < 0 || row > 7) {
+        if (int row = pos.row(); row < 0 || row >= board_rows) {
             throw std::out_of_range("Row position isn't valid");
         }
-        if (int col = pos.col(); col < 0 || col > 7) {
+        if (int col = pos.col(); col < 0 || col >= board_cols) {
             throw std::out_of_range("Col position isn't valid");
         }
     }

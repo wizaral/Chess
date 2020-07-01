@@ -28,7 +28,7 @@ public:
     }
 
     void move_figure(const Move &move) {
-        board[move.from().row()][ move.from().col()] =
+        board[move.from().row()][move.from().col()] =
             std::move(board[move.to().row()][move.to().col()]);
     }
 };
