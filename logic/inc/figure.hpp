@@ -24,6 +24,14 @@ public:
         : type_(f.type_), color_(f.color_), st_(std::move(f.st_)) {}
 
     ~Figure() = default;
+
+    FigureType type() const {
+        return type_;
+    }
+
+    FigureColor color() const {
+        return color_;
+    }
 };
 
 }; // namespace Chess::Logic
