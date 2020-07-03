@@ -34,4 +34,4 @@ public:
     }
 };
 
-}; // namespace Chess::Logic
+} // namespace Chess::Logic

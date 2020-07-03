@@ -7,11 +7,13 @@ namespace Chess::Logic {
 class Position {
     int row_, col_;
 public:
-    Position(int row, int col) : row_(row), col_(col) {}
+    Position(int row, int col)
+        : row_(row), col_(col) {}
 
     int row() const {
         return row_;
     }
+
     int col() const {
         return col_;
     }

@@ -11,7 +11,7 @@ class Board {
     using Field = std::array<std::array<T, 8>, 8>;
 
     Field<std::unique_ptr<Figure>> figures_;
-    Field<std::pair<bool, bool>> check_state_;
+    Field<std::pair<bool, bool>> occupate_state_;   // first - light, second - dark
 
 public:
     Board() = default;
@@ -22,8 +22,8 @@ public:
 
     bool get_state(Position pos, FigureColor color) const {
         if (color == FigureColor::Light)
-            return check_state_[pos.row()][pos.col()].first;
-        return check_state_[pos.row()][pos.col()].second;
+            return occupate_state_[pos.row()][pos.col()].first;
+        return occupate_state_[pos.row()][pos.col()].second;
     }
 
     void add_figure(Figure figure, Position pos) {
