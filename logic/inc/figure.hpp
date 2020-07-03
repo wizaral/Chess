@@ -32,6 +32,10 @@ public:
     FigureColor color() const {
         return color_;
     }
+
+    Strategy *strategy() {
+        return st_.get();
+    }
 };
 
 } // namespace Chess::Logic
