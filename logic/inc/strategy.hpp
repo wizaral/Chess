@@ -4,6 +4,7 @@
 #include "board.hpp"
 #include "figure.hpp"
 #include "move.hpp"
+#include "observer.hpp"
 #include "position.hpp"
 
 namespace Chess::Logic {
@@ -15,7 +16,12 @@ public:
     virtual bool update_occupation(std::unique_ptr<Figure> figure, const Board &board, const Position &pos) const = 0;
 };
 
-class PawnStrategy final : public Strategy {
+class PawnStrategy final : public Strategy, public Observer {
+    enum class MoveState {
+        NoMove, DoubleMove, NormalMove,
+    } state = MoveState::NoMove;
+
+
 public:
     bool validate_move(std::unique_ptr<Figure> figure, const Board &board, const Move &move) override;
     bool update_occupation(std::unique_ptr<Figure> figure, const Board &board, const Position &pos) const override;
