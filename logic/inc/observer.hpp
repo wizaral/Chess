@@ -1,17 +1,26 @@
 #pragma once
 #include <list>
 
-class Observer {
+class Publisher;
+
+class Subscriber {
+protected:
+    Publisher *publisher_;
 public:
-    virtual ~Observer() = default;
+    Subscriber(Publisher *publisher)
+        : publisher_(publisher) {
+        publisher_->subscribe(this);
+    }
+
+    virtual ~Subscriber() = default;
     virtual void update() = 0;
 };
 
-class Subject {
-    std::list<Observer *> list;
+class Publisher {
+    // std::list<Subscriber *> list;
 public:
-    virtual ~Subject() = default;
-    virtual void subscribe(Observer *ob) = 0;
-    virtual void unsubscribe(Observer *ob) = 0;
+    virtual ~Publisher() = default;
+    virtual void subscribe(Subscriber *sub) = 0;
+    virtual void unsubscribe(Subscriber *sub) = 0;
     virtual void notify() = 0;
 };
