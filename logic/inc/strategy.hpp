@@ -12,8 +12,8 @@ namespace Chess::Logic {
 class Strategy {
 public:
     virtual ~Strategy() = default;
-    virtual bool validate_move(std::unique_ptr<Figure> figure, const Board &board, const Move &move) = 0;
-    virtual bool update_occupation(std::unique_ptr<Figure> figure, Board &board, const Position &pos) const = 0;
+    virtual bool validate_move(const Figure &figure, const Board &board, const Move &move) = 0;
+    virtual bool update_occupation(const Figure &figure, const Board &board, const Position &pos) const = 0;
 };
 
 class PawnStrategy final : public Strategy, public Subscriber {
@@ -26,8 +26,8 @@ public:
     MoveState state() const;
     void update() override;
 
-    bool validate_move(std::unique_ptr<Figure> figure, const Board &board, const Move &move) override;
-    bool update_occupation(std::unique_ptr<Figure> figure, Board &board, const Position &pos) const override;
+    bool validate_move(const Figure &figure, const Board &board, const Move &move) override;
+    bool update_occupation(const Figure &figure, const Board &board, const Position &pos) const override;
 private:
     MoveState state_ = MoveState::NoMove;
 
@@ -36,45 +36,45 @@ private:
 };
 
 class RookStrategy final : public Strategy {
-    enum class MoveState;
-    MoveState state_ = MoveState::NoMove;
 public:
     enum class MoveState {
         NoMove, NormalMove,
     };
 
-    bool validate_move(std::unique_ptr<Figure> figure, const Board &board, const Move &move) override;
-    bool update_occupation(std::unique_ptr<Figure> figure, Board &board, const Position &pos) const override;
+    bool validate_move(const Figure &figure, const Board &board, const Move &move) override;
+    bool update_occupation(const Figure &figure, const Board &board, const Position &pos) const override;
+private:
+    MoveState state_ = MoveState::NoMove;
 };
 
 class KnightStrategy final : public Strategy {
 public:
-    bool validate_move(std::unique_ptr<Figure> figure, const Board &board, const Move &move) override;
-    bool update_occupation(std::unique_ptr<Figure> figure, Board &board, const Position &pos) const override;
+    bool validate_move(const Figure &figure, const Board &board, const Move &move) override;
+    bool update_occupation(const Figure &figure, const Board &board, const Position &pos) const override;
 };
 
 class BishopStrategy final : public Strategy {
 public:
-    bool validate_move(std::unique_ptr<Figure> figure, const Board &board, const Move &move) override;
-    bool update_occupation(std::unique_ptr<Figure> figure, Board &board, const Position &pos) const override;
+    bool validate_move(const Figure &figure, const Board &board, const Move &move) override;
+    bool update_occupation(const Figure &figure, const Board &board, const Position &pos) const override;
 };
 
 class QueenStrategy final : public Strategy {
 public:
-    bool validate_move(std::unique_ptr<Figure> figure, const Board &board, const Move &move) override;
-    bool update_occupation(std::unique_ptr<Figure> figure, Board &board, const Position &pos) const override;
+    bool validate_move(const Figure &figure, const Board &board, const Move &move) override;
+    bool update_occupation(const Figure &figure, const Board &board, const Position &pos) const override;
 };
 
 class KingStrategy final : public Strategy {
-    enum class MoveState;
-    MoveState state_ = MoveState::NoMove;
 public:
     enum class MoveState {
         NoMove, NormalMove,
     };
 
-    bool validate_move(std::unique_ptr<Figure> figure, const Board &board, const Move &move) override;
-    bool update_occupation(std::unique_ptr<Figure> figure, Board &board, const Position &pos) const override;
+    bool validate_move(const Figure &figure, const Board &board, const Move &move) override;
+    bool update_occupation(const Figure &figure, const Board &board, const Position &pos) const override;
+private:
+    MoveState state_ = MoveState::NoMove;
 };
 
 } // namespace Chess::Logic

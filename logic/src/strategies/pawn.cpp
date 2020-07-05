@@ -20,8 +20,8 @@ void PawnStrategy::update() {
     }
 }
 
-bool PawnStrategy::validate_move(std::unique_ptr<Figure> figure, const Board &board, const Move &move) {
-    FigureColor this_color = figure->color();
+bool PawnStrategy::validate_move(const Figure &figure, const Board &board, const Move &move) {
+    FigureColor this_color = figure.color();
     FigureColor other_color = this_color == FigureColor::Light ? FigureColor::Dark : FigureColor::Light;
     Position from = move.from(), to = move.to();
     Figure *other = board.get_figure(to);
@@ -75,7 +75,7 @@ bool PawnStrategy::validate_move(std::unique_ptr<Figure> figure, const Board &bo
     return false;
 }
 
-bool PawnStrategy::update_occupation(std::unique_ptr<Figure> figure, Board &board, const Position &pos) const {
+bool PawnStrategy::update_occupation(const Figure &figure, const Board &board, const Position &pos) const {
     return true;
 }
 
