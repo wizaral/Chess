@@ -63,6 +63,8 @@ class QueenStrategy final : public Strategy {
 public:
     bool validate_move(const Figure &figure, const Board &board, const Move &move) override;
     bool update_occupation(const Figure &figure, const Board &board, const Position &pos) const override;
+private:
+    bool validate(const Figure &figure, const Board &board, const Move &move, int row_inc, int col_inc);
 };
 
 class KingStrategy final : public Strategy {
