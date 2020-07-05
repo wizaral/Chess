@@ -8,24 +8,13 @@ namespace Chess::Logic {
 class Move {
     Position from_, to_;
 public:
-    Move(const Position &from, const Position &to)
-        : from_(from), to_(to) {}
+    Move(const Position &from, const Position &to);
 
-    Position from() const {
-        return from_;
-    }
+    Position from() const;
+    Position to() const;
 
-    Position to() const {
-        return to_;
-    }
-
-    int rows() const {
-        return abs(from_.row() - to_.row());
-    }
-
-    int cols() const {
-        return abs(from_.col() - to_.col());
-    }
+    int rows() const;
+    int cols() const;
 };
 
 } // namespace Chess::Logic
