@@ -1,5 +1,5 @@
 #pragma once
-#include <utility>
+#include <cmath>
 
 #include "position.hpp"
 
@@ -17,6 +17,14 @@ public:
 
     Position to() const {
         return to_;
+    }
+
+    int rows() const {
+        return abs(from_.row() - to_.row());
+    }
+
+    int cols() const {
+        return abs(from_.col() - to_.col());
     }
 };
 
