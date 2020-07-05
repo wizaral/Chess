@@ -16,19 +16,33 @@ public:
     virtual bool update_occupation(std::unique_ptr<Figure> figure, Board &board, const Position &pos) const = 0;
 };
 
-class PawnStrategy final : public Strategy, public Observer {
+class PawnStrategy final : public Strategy, public Subscriber {
+public:
     enum class MoveState {
         NoMove, DoubleMove, NormalMove,
-    } state = MoveState::NoMove;
+    };
 
+    PawnStrategy(Publisher *subscriber);
+    MoveState state() const;
+    void update() override;
 
-public:
     bool validate_move(std::unique_ptr<Figure> figure, const Board &board, const Move &move) override;
     bool update_occupation(std::unique_ptr<Figure> figure, Board &board, const Position &pos) const override;
+private:
+    MoveState state_ = MoveState::NoMove;
+
+    bool check_pawn(Figure *figure, FigureColor color);
+    bool check_diagonal(const Move &move);
 };
 
 class RookStrategy final : public Strategy {
+    enum class MoveState;
+    MoveState state_ = MoveState::NoMove;
 public:
+    enum class MoveState {
+        NoMove, NormalMove,
+    };
+
     bool validate_move(std::unique_ptr<Figure> figure, const Board &board, const Move &move) override;
     bool update_occupation(std::unique_ptr<Figure> figure, Board &board, const Position &pos) const override;
 };
@@ -52,7 +66,13 @@ public:
 };
 
 class KingStrategy final : public Strategy {
+    enum class MoveState;
+    MoveState state_ = MoveState::NoMove;
 public:
+    enum class MoveState {
+        NoMove, NormalMove,
+    };
+
     bool validate_move(std::unique_ptr<Figure> figure, const Board &board, const Move &move) override;
     bool update_occupation(std::unique_ptr<Figure> figure, Board &board, const Position &pos) const override;
 };
