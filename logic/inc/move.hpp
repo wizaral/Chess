@@ -1,6 +1,7 @@
 #pragma once
-#include "position.hpp"
 #include <utility>
+
+#include "position.hpp"
 
 namespace Chess::Logic {
 
