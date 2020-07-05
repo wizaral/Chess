@@ -8,8 +8,8 @@
 namespace Chess::Logic {
 
 bool RookStrategy::validate_move(const Figure &figure, const Board &board, const Move &move) {
-    int rows = abs(move.from().row() - move.to().row());
-    int cols = abs(move.from().col() - move.to().col());
+    int rows = move.rows();
+    int cols = move.cols();
 
     if (rows > 0 && cols > 0)
         return false;
@@ -25,7 +25,7 @@ bool RookStrategy::validate_move(const Figure &figure, const Board &board, const
         pos_col += col_inc;
 
         if (move.to().row() == pos_row && move.to().col() == pos_col) {
-            auto other = board.get_figure(move.to());
+            Figure *other = board.get_figure(move.to());
 
             if (other != nullptr && other->color() == figure.color())
                 return false;
