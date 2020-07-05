@@ -13,7 +13,7 @@ enum class FigureColor {
     Light, Dark,
 };
 
-class Figure {
+class Figure final {
     FigureType type_;
     FigureColor color_;
     std::unique_ptr<Strategy> st_;
