@@ -17,7 +17,7 @@ public:
 };
 
 class Publisher {
-    // std::list<Subscriber *> list;
+    std::list<Subscriber *> subs_;
 public:
     virtual ~Publisher() = default;
     virtual void subscribe(Subscriber *sub) = 0;

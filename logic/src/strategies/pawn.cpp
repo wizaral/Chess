@@ -5,8 +5,8 @@
 
 namespace Chess::Logic {
 
-PawnStrategy::PawnStrategy(Publisher *subscriber)
-    : Subscriber(subscriber) {}
+PawnStrategy::PawnStrategy(Publisher *publisher)
+    : Subscriber(publisher) {}
 
 PawnStrategy::MoveState PawnStrategy::state() const {
     return state_;
