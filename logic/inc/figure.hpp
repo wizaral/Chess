@@ -20,7 +20,7 @@ class Figure final {
 public:
     Figure(FigureType type, FigureColor color, std::unique_ptr<Strategy> st);
     Figure(Figure &&f);
-    ~Figure();
+    ~Figure() = default;
 
     FigureType type() const;
     FigureColor color() const;
