@@ -12,8 +12,8 @@ class Board {
     using Field = std::array<std::array<T, 8>, 8>;
 
     Field<std::unique_ptr<Figure>> figures_;
-    Field<bool> occupate_state_light_;
-    Field<bool> occupate_state_dark_;
+    Field<bool> check_state_light_;
+    Field<bool> check_state_dark_;
 
 public:
     Board();

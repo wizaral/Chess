@@ -14,14 +14,14 @@ const Board::Field<std::unique_ptr<Figure>> &Board::figures() const {
 
 bool Board::state(Position pos, FigureColor color) const {
     if (color == FigureColor::Light)
-        return occupate_state_light_[pos.row()][pos.col()];
-    return occupate_state_dark_[pos.row()][pos.col()];
+        return check_state_light_[pos.row()][pos.col()];
+    return check_state_dark_[pos.row()][pos.col()];
 }
 
 const Board::Field<bool> &Board::state(FigureColor color) const {
     if (color == FigureColor::Light)
-        return occupate_state_light_;
-    return occupate_state_dark_;
+        return check_state_light_;
+    return check_state_dark_;
 }
 
 void Board::add_figure(Figure figure, Position pos) {
@@ -40,9 +40,9 @@ void Board::move_figure(const Move &move) {
 }
 
 void Board::reset_state() {
-    for (auto &i : occupate_state_light_)
+    for (auto &i : check_state_light_)
         i.fill(false);
-    for (auto &i : occupate_state_dark_)
+    for (auto &i : check_state_dark_)
         i.fill(false);
 }
 
@@ -50,12 +50,12 @@ void Board::update_state(const std::vector<Position> &positions, FigureColor col
     if (color == FigureColor::Light) {
         for (const auto &i : positions) {
             Position::validation(i);
-            occupate_state_light_[i.row()][i.col()] = true;
+            check_state_light_[i.row()][i.col()] = true;
         }
     } else {
         for (const auto &i : positions) {
             Position::validation(i);
-            occupate_state_dark_[i.row()][i.col()] = true;
+            check_state_dark_[i.row()][i.col()] = true;
         }
     }
 }
