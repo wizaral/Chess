@@ -3,20 +3,21 @@
 #include <memory>
 #include <vector>
 
+#include "definitions.hpp"
 #include "figure.hpp"
 
 namespace Chess::Logic {
 
 class Board {
     template <class T>
-    using Field = std::array<std::array<T, 8>, 8>;
+    using Field = std::array<std::array<T, board_rows>, board_cols>;
 
     Field<std::unique_ptr<Figure>> figures_;
     Field<bool> check_state_light_;
     Field<bool> check_state_dark_;
 
 public:
-    Board();
+    Board() = default;
 
     Figure *get_figure(Position pos) const;
     const Field<std::unique_ptr<Figure>> &figures() const;

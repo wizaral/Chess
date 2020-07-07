@@ -2,8 +2,6 @@
 
 namespace Chess::Logic {
 
-Board::Board() = default;
-
 Figure *Board::get_figure(Position pos) const {
     return figures_[pos.row()][pos.col()].get();
 }
