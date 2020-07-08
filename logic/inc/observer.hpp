@@ -17,6 +17,7 @@ public:
 };
 
 class Publisher {
+protected:
     std::list<Subscriber *> subs_;
 public:
     virtual ~Publisher() = default;
