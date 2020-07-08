@@ -46,11 +46,11 @@ bool QueenStrategy::validate(const Figure &figure, const Board &board, const Mov
 }
 
 void QueenStrategy::update_occupation(const Board &board, const Position &pos, std::vector<Position> &coords) const {
-    bishop_occupation(figure, board, pos, coords);
-    rook_occupation(figure, board, pos, coords);
+    bishop_occupation(board, pos, coords);
+    rook_occupation(board, pos, coords);
 }
 
-void QueenStrategy::bishop_occupation(const Figure &figure, const Board &board, const Position &pos, std::vector<Position> &coords) const {
+void QueenStrategy::bishop_occupation(const Board &board, const Position &pos, std::vector<Position> &coords) const {
     int row = pos.row(), col = pos.col();
 
     for (int r = row + 1, c = col + 1; r < board_rows && c < board_cols; ++r, ++c) {
@@ -86,7 +86,7 @@ void QueenStrategy::bishop_occupation(const Figure &figure, const Board &board, 
     }
 }
 
-void QueenStrategy::rook_occupation(const Figure &figure, const Board &board, const Position &pos, std::vector<Position> &coords) const {
+void QueenStrategy::rook_occupation(const Board &board, const Position &pos, std::vector<Position> &coords) const {
     int row = pos.row(), col = pos.col();
 
     for (int r = row + 1, c = col; r < board_rows; ++r) {
