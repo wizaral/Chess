@@ -1,6 +1,3 @@
-#include "board.hpp"
-#include "figure.hpp"
-#include "move.hpp"
 #include "strategy.hpp"
 
 namespace Chess::Logic {
@@ -9,7 +6,7 @@ bool RookStrategy::validate_move(const Figure &figure, const Board &board, const
     int rows = move.rows();
     int cols = move.cols();
 
-    if (rows > 0 && cols > 0)
+    if ((rows > 0 && cols > 0) || (rows == 0 && cols == 0))
         return false;
 
     int pos_row = move.from().row();

@@ -1,6 +1,3 @@
-#include "board.hpp"
-#include "figure.hpp"
-#include "move.hpp"
 #include "strategy.hpp"
 
 namespace Chess::Logic {
@@ -8,6 +5,9 @@ namespace Chess::Logic {
 bool QueenStrategy::validate_move(const Figure &figure, const Board &board, const Move &move) {
     int rows = move.rows();
     int cols = move.cols();
+
+    if (rows == 0 && cols == 0)
+        return false;
 
     if (rows == cols) {
         int row_inc = move.from().row() < move.to().row() ? 1 : -1;

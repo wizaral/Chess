@@ -1,6 +1,3 @@
-#include "board.hpp"
-#include "figure.hpp"
-#include "move.hpp"
 #include "strategy.hpp"
 
 namespace Chess::Logic {
@@ -9,7 +6,7 @@ bool BishopStrategy::validate_move(const Figure &figure, const Board &board, con
     int rows = move.rows();
     int cols = move.cols();
 
-    if (rows != cols)
+    if (rows != cols || (rows == 0 && cols == 0))
         return false;
 
     int pos_row = move.from().row();
