@@ -11,7 +11,9 @@ PawnStrategy::MoveState PawnStrategy::state() const {
 }
 
 void PawnStrategy::update() {
-    if (state_ != MoveState::NoMove) {
+    if (state_ == MoveState::DoubleMove) {
+        state_ = MoveState::EnPassant;
+    } else if (state_ != MoveState::NoMove) {
         state_ = MoveState::NormalMove;
         publisher_->unsubscribe(this);
         publisher_ = nullptr;
@@ -67,7 +69,7 @@ void PawnStrategy::update_occupation(const Board &board, const Position &pos, st
 bool check_pawn(Figure *figure, FigureColor color) {
     if (figure != nullptr && figure->color() == color && figure->type() == FigureType::Pawn) {
         PawnStrategy *pawn_strategy = static_cast<PawnStrategy *>(figure->strategy());
-        return pawn_strategy->state() == PawnStrategy::MoveState::DoubleMove;
+        return pawn_strategy->state() == PawnStrategy::MoveState::EnPassant;
     }
     return false;
 }

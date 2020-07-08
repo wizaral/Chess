@@ -21,7 +21,7 @@ public:
 class PawnStrategy final : public Strategy, public Subscriber {
 public:
     enum class MoveState {
-        NoMove, DoubleMove, NormalMove,
+        NoMove, DoubleMove, EnPassant, NormalMove,
     };
 
     PawnStrategy(Publisher *subscriber, int direction);
