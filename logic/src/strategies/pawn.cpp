@@ -20,13 +20,13 @@ void PawnStrategy::update() {
     }
 }
 
-bool PawnStrategy::validate_move(const Figure &figure, const Board &board, const Move &move) {
+MoveType PawnStrategy::validate_move(const Figure &figure, const Board &board, const Move &move) {
     Position from = move.from(), to = move.to();
 
     if (direction_ > 0 && to.row() <= from.row())
-        return false;
+        return MoveType::False;
     if (direction_ < 0 && to.row() >= from.row())
-        return false;
+        return MoveType::False;
 
     Figure *other = board.get_figure(to);
     FigureColor other_color = figure.color() == FigureColor::Light ? FigureColor::Dark : FigureColor::Light;
@@ -34,23 +34,23 @@ bool PawnStrategy::validate_move(const Figure &figure, const Board &board, const
     if (from.row() + direction_ == to.row() && check_diagonal(move)) {
         if (other != nullptr && other->color() == other_color) {
             state_ = MoveState::NormalMove;
-            return true;
+            return MoveType::True;
         }
         // En passant
         if (other == nullptr && check_pawn(board.get_figure({to.row() - direction_, to.col()}), other_color)) {
             state_ = MoveState::NormalMove;
-            return true;
+            return MoveType::True;
         }
     }
     if (state_ == MoveState::NoMove && from.col() == to.col() && from.row() + 2 * direction_ == to.row() && other == nullptr) {
         state_ = MoveState::DoubleMove;
-        return true;
+        return MoveType::True;
     }
     if (from.row() + direction_ == to.row() && from.col() == to.col() && other == nullptr) {
         state_ = MoveState::NormalMove;
-        return true;
+        return MoveType::True;
     }
-    return false;
+    return MoveType::False;
 }
 
 void PawnStrategy::update_occupation(const Board &board, const Position &pos, std::vector<Position> &coords) const {

@@ -2,7 +2,7 @@
 
 namespace Chess::Logic {
 
-bool RookStrategy::validate_move(const Figure &figure, const Board &board, const Move &move) {
+MoveType RookStrategy::validate_move(const Figure &figure, const Board &board, const Move &move) {
     int rows = move.rows();
     int cols = move.cols();
 

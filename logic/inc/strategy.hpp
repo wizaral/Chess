@@ -11,10 +11,14 @@
 
 namespace Chess::Logic {
 
+enum class MoveType {
+    False, True, KingCastling, QueenCastling,
+};
+
 class Strategy {
 public:
     virtual ~Strategy() = default;
-    virtual bool validate_move(const Figure &figure, const Board &board, const Move &move) = 0;
+    virtual MoveType validate_move(const Figure &figure, const Board &board, const Move &move) = 0;
     virtual void update_occupation(const Board &board, const Position &pos, std::vector<Position> &coords) const = 0;
 };
 
@@ -28,7 +32,7 @@ public:
     MoveState state() const;
     void update() override;
 
-    bool validate_move(const Figure &figure, const Board &board, const Move &move) override;
+    MoveType validate_move(const Figure &figure, const Board &board, const Move &move) override;
     void update_occupation(const Board &board, const Position &pos, std::vector<Position> &coords) const override;
 private:
     MoveState state_ = MoveState::NoMove;
@@ -43,8 +47,9 @@ public:
     enum class MoveState {
         NoMove, NormalMove,
     };
+    MoveState state() const;
 
-    bool validate_move(const Figure &figure, const Board &board, const Move &move) override;
+    MoveType validate_move(const Figure &figure, const Board &board, const Move &move) override;
     void update_occupation(const Board &board, const Position &pos, std::vector<Position> &coords) const override;
 private:
     MoveState state_ = MoveState::NoMove;
@@ -52,22 +57,22 @@ private:
 
 class KnightStrategy final : public Strategy {
 public:
-    bool validate_move(const Figure &figure, const Board &board, const Move &move) override;
+    MoveType validate_move(const Figure &figure, const Board &board, const Move &move) override;
     void update_occupation(const Board &board, const Position &pos, std::vector<Position> &coords) const override;
 };
 
 class BishopStrategy final : public Strategy {
 public:
-    bool validate_move(const Figure &figure, const Board &board, const Move &move) override;
+    MoveType validate_move(const Figure &figure, const Board &board, const Move &move) override;
     void update_occupation(const Board &board, const Position &pos, std::vector<Position> &coords) const override;
 };
 
 class QueenStrategy final : public Strategy {
 public:
-    bool validate_move(const Figure &figure, const Board &board, const Move &move) override;
+    MoveType validate_move(const Figure &figure, const Board &board, const Move &move) override;
     void update_occupation(const Board &board, const Position &pos, std::vector<Position> &coords) const override;
 private:
-    bool validate(const Figure &figure, const Board &board, const Move &move, int row_inc, int col_inc);
+    MoveType validate(const Figure &figure, const Board &board, const Move &move, int row_inc, int col_inc);
     void bishop_occupation(const Board &board, const Position &pos, std::vector<Position> &coords) const;
     void rook_occupation(const Board &board, const Position &pos, std::vector<Position> &coords) const;
 };
@@ -78,10 +83,11 @@ public:
         NoMove, NormalMove,
     };
 
-    bool validate_move(const Figure &figure, const Board &board, const Move &move) override;
+    MoveType validate_move(const Figure &figure, const Board &board, const Move &move) override;
     void update_occupation(const Board &board, const Position &pos, std::vector<Position> &coords) const override;
 private:
     MoveState state_ = MoveState::NoMove;
+    MoveType check_castling(const Figure &figure, const Board &board, const Move &move, Figure *other);
 };
 
 } // namespace Chess::Logic

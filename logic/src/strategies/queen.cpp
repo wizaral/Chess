@@ -2,12 +2,12 @@
 
 namespace Chess::Logic {
 
-bool QueenStrategy::validate_move(const Figure &figure, const Board &board, const Move &move) {
+MoveType QueenStrategy::validate_move(const Figure &figure, const Board &board, const Move &move) {
     int rows = move.rows();
     int cols = move.cols();
 
     if (rows == 0 && cols == 0)
-        return false;
+        return MoveType::False;
 
     if (rows == cols) {
         int row_inc = move.from().row() < move.to().row() ? 1 : -1;
@@ -20,10 +20,10 @@ bool QueenStrategy::validate_move(const Figure &figure, const Board &board, cons
         return validate(figure, board, move, row_inc, col_inc);
     }
 
-    return false;
+    return MoveType::False;
 }
 
-bool QueenStrategy::validate(const Figure &figure, const Board &board, const Move &move, int row_inc, int col_inc) {
+MoveType QueenStrategy::validate(const Figure &figure, const Board &board, const Move &move, int row_inc, int col_inc) {
     int pos_row = move.from().row();
     int pos_col = move.from().col();
 
@@ -35,14 +35,14 @@ bool QueenStrategy::validate(const Figure &figure, const Board &board, const Mov
             Figure *other = board.get_figure(move.to());
 
             if (other != nullptr && other->color() == figure.color())
-                return false;
-            return true;
+                return MoveType::False;
+            return MoveType::True;
         }
 
         if (board.get_figure({pos_row, pos_col}) != nullptr)
-            return false;
+            return MoveType::False;
     }
-    return false;
+    return MoveType::False;
 }
 
 void QueenStrategy::update_occupation(const Board &board, const Position &pos, std::vector<Position> &coords) const {

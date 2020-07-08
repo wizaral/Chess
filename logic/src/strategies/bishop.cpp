@@ -2,12 +2,12 @@
 
 namespace Chess::Logic {
 
-bool BishopStrategy::validate_move(const Figure &figure, const Board &board, const Move &move) {
+MoveType BishopStrategy::validate_move(const Figure &figure, const Board &board, const Move &move) {
     int rows = move.rows();
     int cols = move.cols();
 
     if (rows != cols || (rows == 0 && cols == 0))
-        return false;
+        return MoveType::False;
 
     int pos_row = move.from().row();
     int pos_col = move.from().col();
@@ -23,14 +23,14 @@ bool BishopStrategy::validate_move(const Figure &figure, const Board &board, con
             Figure *other = board.get_figure(move.to());
 
             if (other != nullptr && other->color() == figure.color())
-                return false;
-            return true;
+                return MoveType::False;
+            return MoveType::True;
         }
 
         if (board.get_figure({pos_row, pos_col}) != nullptr)
-            return false;
+            return MoveType::False;
     }
-    return false;
+    return MoveType::False;
 }
 
 void BishopStrategy::update_occupation(const Board &board, const Position &pos, std::vector<Position> &coords) const {
