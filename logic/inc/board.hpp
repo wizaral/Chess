@@ -5,12 +5,13 @@
 
 #include "definitions.hpp"
 #include "figure.hpp"
+#include "position.hpp"
 
 namespace Chess::Logic {
 
 class Board {
     template <class T>
-    using Field = std::array<std::array<T, board_rows>, board_cols>;
+    using Field = std::array<std::array<T, board_cols>, board_rows>;
 
     Field<std::unique_ptr<Figure>> figures_;
     Field<bool> check_state_light_;
