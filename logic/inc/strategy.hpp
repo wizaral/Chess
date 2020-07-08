@@ -68,8 +68,8 @@ public:
     void update_occupation(const Board &board, const Position &pos, std::vector<Position> &coords) const override;
 private:
     bool validate(const Figure &figure, const Board &board, const Move &move, int row_inc, int col_inc);
-    void bishop_occupation(const Figure &figure, const Board &board, const Position &pos, std::vector<Position> &coords) const;
-    void rook_occupation(const Figure &figure, const Board &board, const Position &pos, std::vector<Position> &coords) const;
+    void bishop_occupation(const Board &board, const Position &pos, std::vector<Position> &coords) const;
+    void rook_occupation(const Board &board, const Position &pos, std::vector<Position> &coords) const;
 };
 
 class KingStrategy final : public Strategy {
