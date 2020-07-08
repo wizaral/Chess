@@ -11,12 +11,6 @@ Game::Game(std::array<std::unique_ptr<Player>, 2> arr)
 void Game::init_game() {
     FigureColor p0c = players_[0]->color(), p1c = players_[1]->color();
 
-    spawn_figures(player0_figures_row, p0c);
-    spawn_pawns(player0_pawns_row, p0c);
-
-    spawn_figures(player1_figures_row, p1c);
-    spawn_pawns(player1_pawns_row, p1c);
-
     if (p0c == FigureColor::Light) {
         board_.add_figure({FigureType::Queen, FigureColor::Light, std::make_unique<Strategy>(QueenStrategy())}, {player0_figures_row, 3});
         board_.add_figure({FigureType::King, FigureColor::Light, std::make_unique<Strategy>(KingStrategy())}, {player0_figures_row, 4});
@@ -28,15 +22,21 @@ void Game::init_game() {
         board_.add_figure({FigureType::Queen, FigureColor::Light, std::make_unique<Strategy>(QueenStrategy())}, {player1_figures_row, 4});
         board_.add_figure({FigureType::King, FigureColor::Light, std::make_unique<Strategy>(KingStrategy())}, {player1_figures_row, 3});
     }
+
+    spawn_figures(player0_figures_row, p0c);
+    spawn_pawns(player0_pawns_row, p0c, player0_step_direction);
+
+    spawn_figures(player1_figures_row, p1c);
+    spawn_pawns(player1_pawns_row, p1c, player1_step_direction);
 }
 
 void Game::loop() {
 
 }
 
-void Game::spawn_pawns(int row, FigureColor color) {
+void Game::spawn_pawns(int row, FigureColor color, int direction) {
     for (int i = 0; i < board_rows; ++i) {
-        board_.add_figure({FigureType::Pawn, color, std::make_unique<Strategy>(PawnStrategy(this))}, {row, i});
+        board_.add_figure({FigureType::Pawn, color, std::make_unique<Strategy>(PawnStrategy(this, direction))}, {row, i});
     }
 }
 

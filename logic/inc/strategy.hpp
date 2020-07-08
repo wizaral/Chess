@@ -2,6 +2,7 @@
 #include <memory>
 
 #include "board.hpp"
+#include "definitions.hpp"
 #include "figure.hpp"
 #include "move.hpp"
 #include "observer.hpp"
@@ -22,7 +23,7 @@ public:
         NoMove, DoubleMove, NormalMove,
     };
 
-    PawnStrategy(Publisher *subscriber);
+    PawnStrategy(Publisher *subscriber, int direction);
     MoveState state() const;
     void update() override;
 
@@ -30,6 +31,7 @@ public:
     bool update_occupation(const Figure &figure, const Board &board, const Position &pos) const override;
 private:
     MoveState state_ = MoveState::NoMove;
+    int direction_ = 0;
 
     bool check_pawn(Figure *figure, FigureColor color);
     bool check_diagonal(const Move &move);

@@ -18,7 +18,7 @@ public:
     void loop();
 private:
     void validate() const;
-    void spawn_pawns(int row, FigureColor color);
+    void spawn_pawns(int row, FigureColor color, int direction);
     void spawn_figures(int row, FigureColor color);
 };
 

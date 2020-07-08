@@ -5,8 +5,9 @@
 
 namespace Chess::Logic {
 
-PawnStrategy::PawnStrategy(Publisher *publisher)
-    : Subscriber(publisher) {}
+PawnStrategy::PawnStrategy(Publisher *publisher, int direction)
+    : Subscriber(publisher)
+    , direction_(direction) {}
 
 PawnStrategy::MoveState PawnStrategy::state() const {
     return state_;
@@ -21,62 +22,47 @@ void PawnStrategy::update() {
 }
 
 bool PawnStrategy::validate_move(const Figure &figure, const Board &board, const Move &move) {
-    FigureColor this_color = figure.color();
-    FigureColor other_color = this_color == FigureColor::Light ? FigureColor::Dark : FigureColor::Light;
     Position from = move.from(), to = move.to();
+
+    if (direction_ > 0 && to.row() <= from.row())
+        return false;
+    if (direction_ < 0 && to.row() >= from.row())
+        return false;
+
     Figure *other = board.get_figure(to);
+    FigureColor other_color = figure.color() == FigureColor::Light ? FigureColor::Dark : FigureColor::Light;
 
-    if (this_color == FigureColor::Light && to.row() <= from.row())
-        return false;
-    if (this_color == FigureColor::Dark && to.row() >= from.row())
-        return false;
-
-    if (this_color == FigureColor::Light) {
-        if (from.row() + 1 == to.row() && check_diagonal(move)) {
-            if (other != nullptr && other->color() == other_color) {
-                state_ = MoveState::NormalMove;
-                return true;
-            }
-            // En passant
-            if (other == nullptr && check_pawn(board.get_figure({to.row() - 1, to.col()}), other_color)) {
-                state_ = MoveState::NormalMove;
-                return true;
-            }
-        }
-        if (state_ == MoveState::NoMove && from.col() == to.col() && from.row() + 2 == to.row() && other == nullptr) {
-            state_ = MoveState::DoubleMove;
-            return true;
-        }
-        if (from.row() + 1 == to.row() && from.col() == to.col() && other == nullptr) {
+    if (from.row() + direction_ == to.row() && check_diagonal(move)) {
+        if (other != nullptr && other->color() == other_color) {
             state_ = MoveState::NormalMove;
             return true;
         }
-    } else {
-        if (from.row() - 1 == to.row() && check_diagonal(move)) {
-            if (other != nullptr && other->color() == other_color) {
-                state_ = MoveState::NormalMove;
-                return true;
-            }
-            // En passant
-            if (other == nullptr && check_pawn(board.get_figure({to.row() + 1, to.col()}), other_color)) {
-                state_ = MoveState::NormalMove;
-                return true;
-            }
-        }
-        if (state_ == MoveState::NoMove && from.col() == to.col() && from.row() - 2 == to.row() && other == nullptr) {
-            state_ = MoveState::DoubleMove;
-            return true;
-        }
-        if (from.row() - 1 == to.row() && from.col() == to.col() && other == nullptr) {
+        // En passant
+        if (other == nullptr && check_pawn(board.get_figure({to.row() - direction_, to.col()}), other_color)) {
             state_ = MoveState::NormalMove;
             return true;
         }
     }
+    if (state_ == MoveState::NoMove && from.col() == to.col() && from.row() + 2 * direction_ == to.row() && other == nullptr) {
+        state_ = MoveState::DoubleMove;
+        return true;
+    }
+    if (from.row() + direction_ == to.row() && from.col() == to.col() && other == nullptr) {
+        state_ = MoveState::NormalMove;
+        return true;
+    }
     return false;
 }
 
-bool PawnStrategy::update_occupation(const Figure &figure, const Board &board, const Position &pos) const {
-    return true;
+void PawnStrategy::update_occupation(const Figure &figure, const Board &board, const Position &pos, std::vector<Position> &coords) const {
+    if (pos.row() + direction_ < board_rows) {
+        if (pos.col() + direction_ < board_cols) {
+            coords.emplace_back(pos.row() + direction_, pos.col() + direction_);
+        }
+        if (pos.col() - direction_ > 0) {
+            coords.emplace_back(pos.row() + direction_, pos.col() - direction_);
+        }
+    }
 }
 
 bool check_pawn(Figure *figure, FigureColor color) {
