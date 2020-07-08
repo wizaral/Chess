@@ -15,7 +15,7 @@ class Strategy {
 public:
     virtual ~Strategy() = default;
     virtual bool validate_move(const Figure &figure, const Board &board, const Move &move) = 0;
-    virtual void update_occupation(const Figure &figure, const Board &board, const Position &pos, std::vector<Position> &coords) const = 0;
+    virtual void update_occupation(const Board &board, const Position &pos, std::vector<Position> &coords) const = 0;
 };
 
 class PawnStrategy final : public Strategy, public Subscriber {
@@ -29,7 +29,7 @@ public:
     void update() override;
 
     bool validate_move(const Figure &figure, const Board &board, const Move &move) override;
-    void update_occupation(const Figure &figure, const Board &board, const Position &pos, std::vector<Position> &coords) const override;
+    void update_occupation(const Board &board, const Position &pos, std::vector<Position> &coords) const override;
 private:
     MoveState state_ = MoveState::NoMove;
     int direction_ = 0;
@@ -45,7 +45,7 @@ public:
     };
 
     bool validate_move(const Figure &figure, const Board &board, const Move &move) override;
-    void update_occupation(const Figure &figure, const Board &board, const Position &pos, std::vector<Position> &coords) const override;
+    void update_occupation(const Board &board, const Position &pos, std::vector<Position> &coords) const override;
 private:
     MoveState state_ = MoveState::NoMove;
 };
@@ -53,21 +53,23 @@ private:
 class KnightStrategy final : public Strategy {
 public:
     bool validate_move(const Figure &figure, const Board &board, const Move &move) override;
-    void update_occupation(const Figure &figure, const Board &board, const Position &pos, std::vector<Position> &coords) const override;
+    void update_occupation(const Board &board, const Position &pos, std::vector<Position> &coords) const override;
 };
 
 class BishopStrategy final : public Strategy {
 public:
     bool validate_move(const Figure &figure, const Board &board, const Move &move) override;
-    void update_occupation(const Figure &figure, const Board &board, const Position &pos, std::vector<Position> &coords) const override;
+    void update_occupation(const Board &board, const Position &pos, std::vector<Position> &coords) const override;
 };
 
 class QueenStrategy final : public Strategy {
 public:
     bool validate_move(const Figure &figure, const Board &board, const Move &move) override;
-    void update_occupation(const Figure &figure, const Board &board, const Position &pos, std::vector<Position> &coords) const override;
+    void update_occupation(const Board &board, const Position &pos, std::vector<Position> &coords) const override;
 private:
     bool validate(const Figure &figure, const Board &board, const Move &move, int row_inc, int col_inc);
+    void bishop_occupation(const Figure &figure, const Board &board, const Position &pos, std::vector<Position> &coords) const;
+    void rook_occupation(const Figure &figure, const Board &board, const Position &pos, std::vector<Position> &coords) const;
 };
 
 class KingStrategy final : public Strategy {
@@ -77,7 +79,7 @@ public:
     };
 
     bool validate_move(const Figure &figure, const Board &board, const Move &move) override;
-    void update_occupation(const Figure &figure, const Board &board, const Position &pos, std::vector<Position> &coords) const override;
+    void update_occupation(const Board &board, const Position &pos, std::vector<Position> &coords) const override;
 private:
     MoveState state_ = MoveState::NoMove;
 };

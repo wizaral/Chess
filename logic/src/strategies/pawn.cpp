@@ -51,13 +51,15 @@ bool PawnStrategy::validate_move(const Figure &figure, const Board &board, const
     return false;
 }
 
-void PawnStrategy::update_occupation(const Figure &figure, const Board &board, const Position &pos, std::vector<Position> &coords) const {
-    if (pos.row() + direction_ < board_rows) {
-        if (pos.col() + direction_ < board_cols) {
-            coords.emplace_back(pos.row() + direction_, pos.col() + direction_);
+void PawnStrategy::update_occupation(const Board &board, const Position &pos, std::vector<Position> &coords) const {
+    int row = pos.row(), col = pos.col();
+
+    if (row + direction_ < board_rows) {
+        if (col + 1 < board_cols) {
+            coords.emplace_back(row + direction_, col + 1);
         }
-        if (pos.col() - direction_ > 0) {
-            coords.emplace_back(pos.row() + direction_, pos.col() - direction_);
+        if (col - 1 >= 0) {
+            coords.emplace_back(row + direction_, col - 1);
         }
     }
 }

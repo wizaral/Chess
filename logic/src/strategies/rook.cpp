@@ -35,4 +35,40 @@ bool RookStrategy::validate_move(const Figure &figure, const Board &board, const
     return false;
 }
 
+void RookStrategy::update_occupation(const Board &board, const Position &pos, std::vector<Position> &coords) const {
+    int row = pos.row(), col = pos.col();
+
+    for (int r = row + 1; r < board_rows; ++r) {
+        coords.emplace_back(r, col);
+
+        if (board.get_figure({r, col}) != nullptr) {
+            break;
+        }
+    }
+
+    for (int r = row - 1; r >= 0; --r) {
+        coords.emplace_back(r, col);
+
+        if (board.get_figure({r, col}) != nullptr) {
+            break;
+        }
+    }
+
+    for (int c = col + 1; c < board_cols; ++c) {
+        coords.emplace_back(row, c);
+
+        if (board.get_figure({row, c}) != nullptr) {
+            break;
+        }
+    }
+
+    for (int c = col - 1; c >= 0; --c) {
+        coords.emplace_back(row, c);
+
+        if (board.get_figure({row, c}) != nullptr) {
+            break;
+        }
+    }
+}
+
 } // namespace Chess::Logic

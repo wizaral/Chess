@@ -33,4 +33,40 @@ bool BishopStrategy::validate_move(const Figure &figure, const Board &board, con
     return false;
 }
 
+void BishopStrategy::update_occupation(const Board &board, const Position &pos, std::vector<Position> &coords) const {
+    int row = pos.row(), col = pos.col();
+
+    for (int r = row + 1, c = col + 1; r < board_rows && c < board_cols; ++r, ++c) {
+        coords.emplace_back(r, c);
+
+        if (board.get_figure({r, c}) != nullptr) {
+            break;
+        }
+    }
+
+    for (int r = row - 1, c = col + 1; r >= 0 && c < board_cols; --r, ++c) {
+        coords.emplace_back(r, c);
+
+        if (board.get_figure({r, c}) != nullptr) {
+            break;
+        }
+    }
+
+    for (int r = row + 1, c = col - 1; r < board_rows && c >= 0; ++r, --c) {
+        coords.emplace_back(r, c);
+
+        if (board.get_figure({r, c}) != nullptr) {
+            break;
+        }
+    }
+
+    for (int r = row - 1, c = col - 1; r >= 0 && c >= 0; --r, --c) {
+        coords.emplace_back(r, c);
+
+        if (board.get_figure({r, c}) != nullptr) {
+            break;
+        }
+    }
+}
+
 } // namespace Chess::Logic

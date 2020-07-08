@@ -45,4 +45,81 @@ bool QueenStrategy::validate(const Figure &figure, const Board &board, const Mov
     return false;
 }
 
+void QueenStrategy::update_occupation(const Board &board, const Position &pos, std::vector<Position> &coords) const {
+    bishop_occupation(figure, board, pos, coords);
+    rook_occupation(figure, board, pos, coords);
+}
+
+void QueenStrategy::bishop_occupation(const Figure &figure, const Board &board, const Position &pos, std::vector<Position> &coords) const {
+    int row = pos.row(), col = pos.col();
+
+    for (int r = row + 1, c = col + 1; r < board_rows && c < board_cols; ++r, ++c) {
+        coords.emplace_back(r, c);
+
+        if (board.get_figure({r, c}) != nullptr) {
+            break;
+        }
+    }
+
+    for (int r = row - 1, c = col + 1; r >= 0 && c < board_cols; --r, ++c) {
+        coords.emplace_back(r, c);
+
+        if (board.get_figure({r, c}) != nullptr) {
+            break;
+        }
+    }
+
+    for (int r = row + 1, c = col - 1; r < board_rows && c >= 0; ++r, --c) {
+        coords.emplace_back(r, c);
+
+        if (board.get_figure({r, c}) != nullptr) {
+            break;
+        }
+    }
+
+    for (int r = row - 1, c = col - 1; r >= 0 && c >= 0; --r, --c) {
+        coords.emplace_back(r, c);
+
+        if (board.get_figure({r, c}) != nullptr) {
+            break;
+        }
+    }
+}
+
+void QueenStrategy::rook_occupation(const Figure &figure, const Board &board, const Position &pos, std::vector<Position> &coords) const {
+    int row = pos.row(), col = pos.col();
+
+    for (int r = row + 1, c = col; r < board_rows; ++r) {
+        coords.emplace_back(r, c);
+
+        if (board.get_figure({r, c}) != nullptr) {
+            break;
+        }
+    }
+
+    for (int r = row - 1, c = col; r >= 0; --r) {
+        coords.emplace_back(r, c);
+
+        if (board.get_figure({r, c}) != nullptr) {
+            break;
+        }
+    }
+
+    for (int r = row, c = col + 1; c < board_cols; ++c) {
+        coords.emplace_back(r, c);
+
+        if (board.get_figure({r, c}) != nullptr) {
+            break;
+        }
+    }
+
+    for (int r = row, c = col - 1; c >= 0; --c) {
+        coords.emplace_back(r, c);
+
+        if (board.get_figure({r, c}) != nullptr) {
+            break;
+        }
+    }
+}
+
 } // namespace Chess::Logic
