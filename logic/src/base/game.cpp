@@ -37,6 +37,7 @@ void Game::loop() {
 void Game::spawn_pawns(int row, FigureColor color, int direction) {
     for (int i = 0; i < board_rows; ++i) {
         board_.add_figure({FigureType::Pawn, color, std::make_unique<Strategy>(PawnStrategy(this, direction))}, {row, i});
+        subscribe(static_cast<PawnStrategy *>(board_.get_figure({row, i})->strategy()));
     }
 }
 
@@ -54,6 +55,20 @@ void Game::spawn_figures(int row, FigureColor color) {
 void Game::validate() const {
     if (players_[0]->color() == players_[1]->color())
         throw(std::logic_error("Players have same figure colors"));
+}
+
+void Game::subscribe(Subscriber *sub) {
+    subs_.push_back(sub);
+}
+
+void Game::unsubscribe(Subscriber *sub) {
+    subs_.remove(sub);
+}
+
+void Game::notify() {
+    for (auto i : subs_) {
+        i->update();
+    }
 }
 
 } // namespace Chess::Logic

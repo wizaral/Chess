@@ -20,6 +20,14 @@ private:
     void validate() const;
     void spawn_pawns(int row, FigureColor color, int direction);
     void spawn_figures(int row, FigureColor color);
+
+    void try_transform_pawn();
+    void transform_pawn(Position pos);
+
+    // Publisher part
+    void subscribe(Subscriber *sub) override;
+    void unsubscribe(Subscriber *sub) override;
+    void notify() override;
 };
 
 } // namespace Chess::Logic
