@@ -42,8 +42,8 @@ GameState KingStrategy::check_castling(const Figure &figure, const Board &board,
                         return GameState::CastlingFigureOnPath;
                     }
                 }
-                return GameState::KingCastling;;
-            } else /*if (distance == 4)*/ {
+                return GameState::KingCastling;
+            } else /* if (distance == 4) */ {
                 if (state[row][4] == true) {
                     return GameState::CastlingKingInCheck;
                 }
@@ -72,8 +72,8 @@ GameState KingStrategy::check_castling(const Figure &figure, const Board &board,
                         return GameState::CastlingFigureOnPath;
                     }
                 }
-                return GameState::KingCastling;;
-            } else /*if (distance == 4)*/ {
+                return GameState::KingCastling;
+            } else /* if (distance == 4) */ {
                 if (state[row][3] == true) {
                     return GameState::CastlingKingInCheck;
                 }
@@ -91,6 +91,10 @@ GameState KingStrategy::check_castling(const Figure &figure, const Board &board,
         }
     }
     return GameState::FiguresAlreadyMoved;
+}
+
+void KingStrategy::castling_update() {
+    state_ = MoveState::NormalMove;
 }
 
 void KingStrategy::update_occupation(const Board &board, const Position &pos, std::vector<Position> &coords) const {

@@ -48,6 +48,7 @@ public:
 
     GameState validate_move(const Figure &figure, const Board &board, const Move &move) override;
     void update_occupation(const Board &board, const Position &pos, std::vector<Position> &coords) const override;
+    void castling_update();
 private:
     MoveState state_ = MoveState::NoMove;
 };
@@ -82,6 +83,7 @@ public:
 
     GameState validate_move(const Figure &figure, const Board &board, const Move &move) override;
     void update_occupation(const Board &board, const Position &pos, std::vector<Position> &coords) const override;
+    void castling_update();
 private:
     MoveState state_ = MoveState::NoMove;
     GameState check_castling(const Figure &figure, const Board &board, const Move &move, Figure *other);

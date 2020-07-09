@@ -34,6 +34,10 @@ GameState RookStrategy::validate_move(const Figure &figure, const Board &board, 
     }
 }
 
+void RookStrategy::castling_update() {
+    state_ = MoveState::NormalMove;
+}
+
 void RookStrategy::update_occupation(const Board &board, const Position &pos, std::vector<Position> &coords) const {
     int row = pos.row(), col = pos.col();
 
