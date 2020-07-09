@@ -3,19 +3,12 @@
 #include <memory>
 
 #include "board.hpp"
+#include "gamestate.hpp"
 #include "input.hpp"
 #include "player.hpp"
 #include "render.hpp"
 
 namespace Chess::Logic {
-
-enum class GameState {
-    NormalMove, KingCastling, QueenCastling, CheckMate,
-    WrongFigureColor, WrongFigureMove, OtherFigureOnPath,
-    KingInCheck, KingWillBeInCheck,
-    CastlingKingInCheck, CastlingSquareInCheck, CastlingFigureOnPath,
-    FailEnPassant, PawnStepBack,
-};
 
 class Game : public Publisher {
     Board board_;
@@ -36,6 +29,7 @@ private:
     void spawn_pawns(int row, FigureColor color, int direction);
     void spawn_figures(int row, FigureColor color);
 
+    GameState logic(Move move);
     void try_transform_pawns();
     void transform_pawn(Position pos);
 
@@ -44,7 +38,6 @@ private:
     void unsubscribe(Subscriber *sub) override;
     void notify() override;
 
-    GameState logic(Move move);
 };
 
 } // namespace Chess::Logic
