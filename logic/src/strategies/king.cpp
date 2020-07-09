@@ -2,7 +2,7 @@
 
 namespace Chess::Logic {
 
-MoveType KingStrategy::validate_move(const Figure &figure, const Board &board, const Move &move) {
+GameState KingStrategy::validate_move(const Figure &figure, const Board &board, const Move &move) {
     Figure *other = board.get_figure(move.to());
     int rows = move.rows();
     int cols = move.cols();
@@ -10,15 +10,15 @@ MoveType KingStrategy::validate_move(const Figure &figure, const Board &board, c
     if (rows == 1 || cols == 1) {
         if (other == nullptr || other->color() != figure.color()) {
             state_ = MoveState::NormalMove;
-            return MoveType::True;  // NormalMove
+            return GameState::NormalMove;
         }
     } else if (other != nullptr && other->type() == FigureType::Rook && other->color() == figure.color()) {
         return check_castling(figure, board, move, other);
     }
-    return MoveType::False; // WrongFigureMove
+    return GameState::WrongFigureMove;
 }
 
-MoveType KingStrategy::check_castling(const Figure &figure, const Board &board, const Move &move, Figure *other) {
+GameState KingStrategy::check_castling(const Figure &figure, const Board &board, const Move &move, Figure *other) {
     FigureColor other_color = figure.color() == FigureColor::Light ? FigureColor::Dark : FigureColor::Light;
     RookStrategy *rst = static_cast<RookStrategy *>(other->strategy());
 
@@ -31,66 +31,66 @@ MoveType KingStrategy::check_castling(const Figure &figure, const Board &board, 
         if ((row == 0 && figure.color() == FigureColor::Light) || (row == 7 && figure.color() == FigureColor::Dark)) {
             if (distance == 3) {
                 if (state[row][4] == true) {
-                    return MoveType::False; // CastlingKingInCheck
+                    return GameState::CastlingKingInCheck;
                 }
 
                 for (int col = 5; col < 7; ++col) {
                     if (state[row][col] == true) {
-                        return MoveType::False; // CastlingSquareInCheck
+                        return GameState::CastlingSquareInCheck;
                     }
                     if (board.get_figure({row, col}) != nullptr) {
-                        return MoveType::False; // CastlingFigureOnPath
+                        return GameState::CastlingFigureOnPath;
                     }
                 }
-                return MoveType::KingCastling;
+                return GameState::KingCastling;;
             } else /*if (distance == 4)*/ {
                 if (state[row][4] == true) {
-                    return MoveType::False; // CastlingKingInCheck
+                    return GameState::CastlingKingInCheck;
                 }
 
                 for (int col = 3; col > 1; --col) {
                     if (state[row][col] == true) {
-                        return MoveType::False; // CastlingSquareInCheck
+                        return GameState::CastlingSquareInCheck;
                     }
                     if (board.get_figure({row, col}) != nullptr) {
-                        return MoveType::False; // CastlingFigureOnPath
+                        return GameState::CastlingFigureOnPath;
                     }
                 }
-                return board.get_figure({row, 1}) == nullptr ? MoveType::QueenCastling : MoveType::False;   // CastlingFigureOnPath
+                return board.get_figure({row, 1}) == nullptr ? GameState::QueenCastling : GameState::CastlingFigureOnPath;
             }
         } else /* if ((row == 0 && figure.color() == FigureColor::Dark) || (row == 7 && figure.color() == FigureColor::Light)) */ {
             if (distance == 3) {
                 if (state[row][3] == true) {
-                    return MoveType::False; // CastlingKingInCheck
+                    return GameState::CastlingKingInCheck;
                 }
 
                 for (int col = 2; col > 0; --col) {
                     if (state[row][col] == true) {
-                        return MoveType::False; // CastlingSquareInCheck
+                        return GameState::CastlingSquareInCheck;
                     }
                     if (board.get_figure({row, col}) != nullptr) {
-                        return MoveType::False; // CastlingFigureOnPath
+                        return GameState::CastlingFigureOnPath;
                     }
                 }
-                return MoveType::KingCastling;
+                return GameState::KingCastling;;
             } else /*if (distance == 4)*/ {
                 if (state[row][3] == true) {
-                    return MoveType::False; // CastlingKingInCheck
+                    return GameState::CastlingKingInCheck;
                 }
 
                 for (int col = 4; col < 6; ++col) {
                     if (state[row][col] == true) {
-                        return MoveType::False; // CastlingSquareInCheck
+                        return GameState::CastlingSquareInCheck;
                     }
                     if (board.get_figure({row, col}) != nullptr) {
-                        return MoveType::False; // CastlingFigureOnPath
+                        return GameState::CastlingFigureOnPath;
                     }
                 }
-                return board.get_figure({row, 6}) == nullptr ? MoveType::QueenCastling : MoveType::False;   // CastlingFigureOnPath
+                return board.get_figure({row, 6}) == nullptr ? GameState::QueenCastling : GameState::CastlingFigureOnPath;
             }
         }
     }
-    return MoveType::False;
+    return GameState::FiguresAlreadyMoved;
 }
 
 void KingStrategy::update_occupation(const Board &board, const Position &pos, std::vector<Position> &coords) const {

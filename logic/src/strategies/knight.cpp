@@ -2,19 +2,19 @@
 
 namespace Chess::Logic {
 
-MoveType KnightStrategy::validate_move(const Figure &figure, const Board &board, const Move &move) {
+GameState KnightStrategy::validate_move(const Figure &figure, const Board &board, const Move &move) {
     int rows = move.rows();
     int cols = move.cols();
 
     if ((rows == 2 && cols == 1) || (rows == 1 && cols == 2)) {
         Figure *other = board.get_figure(move.to());
         if (other == nullptr || other->color() != figure.color()) {
-            return MoveType::True;  // NormalMove
+            return GameState::NormalMove;
         } else {
-            return MoveType::False; // OtherFigureOnPath
+            return GameState::OtherFigureOnPath;
         }
     }
-    return MoveType::False; // WrongFigureMove
+    return GameState::WrongFigureMove;
 }
 
 void KnightStrategy::update_occupation(const Board &board, const Position &pos, std::vector<Position> &coords) const {

@@ -2,12 +2,12 @@
 
 namespace Chess::Logic {
 
-MoveType BishopStrategy::validate_move(const Figure &figure, const Board &board, const Move &move) {
+GameState BishopStrategy::validate_move(const Figure &figure, const Board &board, const Move &move) {
     int rows = move.rows();
     int cols = move.cols();
 
     if (rows != cols || (rows == 0 && cols == 0))
-        return MoveType::False; // WrongFigureMove
+        return GameState::WrongFigureMove;
 
     int pos_row = move.from().row();
     int pos_col = move.from().col();
@@ -23,12 +23,12 @@ MoveType BishopStrategy::validate_move(const Figure &figure, const Board &board,
             Figure *other = board.get_figure(move.to());
 
             if (other != nullptr && other->color() == figure.color())
-                return MoveType::False; // OtherFigureOnPath
-            return MoveType::True;  // NormalMove
+                return GameState::OtherFigureOnPath;
+            return GameState::NormalMove;
         }
 
         if (board.get_figure({pos_row, pos_col}) != nullptr)
-            return MoveType::False; // OtherFigureOnPath
+            return GameState::OtherFigureOnPath;
     }
 }
 

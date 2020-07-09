@@ -2,12 +2,12 @@
 
 namespace Chess::Logic {
 
-MoveType QueenStrategy::validate_move(const Figure &figure, const Board &board, const Move &move) {
+GameState QueenStrategy::validate_move(const Figure &figure, const Board &board, const Move &move) {
     int rows = move.rows();
     int cols = move.cols();
 
     if (rows == 0 && cols == 0)
-        return MoveType::False; // WrongFigureMove
+        return GameState::WrongFigureMove;
 
     if (rows == cols) {
         int row_inc = move.from().row() < move.to().row() ? 1 : -1;
@@ -20,10 +20,10 @@ MoveType QueenStrategy::validate_move(const Figure &figure, const Board &board, 
         return validate(figure, board, move, row_inc, col_inc);
     }
 
-    return MoveType::False; // WrongFigureMove
+    return GameState::WrongFigureMove;
 }
 
-MoveType QueenStrategy::validate(const Figure &figure, const Board &board, const Move &move, int row_inc, int col_inc) {
+GameState QueenStrategy::validate(const Figure &figure, const Board &board, const Move &move, int row_inc, int col_inc) {
     int pos_row = move.from().row();
     int pos_col = move.from().col();
 
@@ -35,12 +35,12 @@ MoveType QueenStrategy::validate(const Figure &figure, const Board &board, const
             Figure *other = board.get_figure(move.to());
 
             if (other != nullptr && other->color() == figure.color())
-                return MoveType::False; // OtherFigureOnPath
-            return MoveType::True;  // NormalMove
+                return GameState::OtherFigureOnPath;
+            return GameState::NormalMove;
         }
 
         if (board.get_figure({pos_row, pos_col}) != nullptr)
-            return MoveType::False; // OtherFigureOnPath
+            return GameState::OtherFigureOnPath;
     }
 }
 
