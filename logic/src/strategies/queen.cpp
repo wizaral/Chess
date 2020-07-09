@@ -7,7 +7,7 @@ MoveType QueenStrategy::validate_move(const Figure &figure, const Board &board, 
     int cols = move.cols();
 
     if (rows == 0 && cols == 0)
-        return MoveType::False;
+        return MoveType::False; // WrongFigureMove
 
     if (rows == cols) {
         int row_inc = move.from().row() < move.to().row() ? 1 : -1;
@@ -20,7 +20,7 @@ MoveType QueenStrategy::validate_move(const Figure &figure, const Board &board, 
         return validate(figure, board, move, row_inc, col_inc);
     }
 
-    return MoveType::False;
+    return MoveType::False; // WrongFigureMove
 }
 
 MoveType QueenStrategy::validate(const Figure &figure, const Board &board, const Move &move, int row_inc, int col_inc) {
@@ -35,14 +35,13 @@ MoveType QueenStrategy::validate(const Figure &figure, const Board &board, const
             Figure *other = board.get_figure(move.to());
 
             if (other != nullptr && other->color() == figure.color())
-                return MoveType::False;
-            return MoveType::True;
+                return MoveType::False; // OtherFigureOnPath
+            return MoveType::True;  // NormalMove
         }
 
         if (board.get_figure({pos_row, pos_col}) != nullptr)
-            return MoveType::False;
+            return MoveType::False; // OtherFigureOnPath
     }
-    return MoveType::False;
 }
 
 void QueenStrategy::update_occupation(const Board &board, const Position &pos, std::vector<Position> &coords) const {

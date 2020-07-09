@@ -13,7 +13,8 @@ enum class GameState {
     NormalMove, KingCastling, QueenCastling, CheckMate,
     WrongFigureColor, WrongFigureMove, OtherFigureOnPath,
     KingInCheck, KingWillBeInCheck,
-    CastlingSquareInCheck, 
+    CastlingKingInCheck, CastlingSquareInCheck, CastlingFigureOnPath,
+    FailEnPassant, PawnStepBack,
 };
 
 class Game : public Publisher {

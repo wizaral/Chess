@@ -7,7 +7,7 @@ MoveType BishopStrategy::validate_move(const Figure &figure, const Board &board,
     int cols = move.cols();
 
     if (rows != cols || (rows == 0 && cols == 0))
-        return MoveType::False;
+        return MoveType::False; // WrongFigureMove
 
     int pos_row = move.from().row();
     int pos_col = move.from().col();
@@ -23,14 +23,13 @@ MoveType BishopStrategy::validate_move(const Figure &figure, const Board &board,
             Figure *other = board.get_figure(move.to());
 
             if (other != nullptr && other->color() == figure.color())
-                return MoveType::False;
-            return MoveType::True;
+                return MoveType::False; // OtherFigureOnPath
+            return MoveType::True;  // NormalMove
         }
 
         if (board.get_figure({pos_row, pos_col}) != nullptr)
-            return MoveType::False;
+            return MoveType::False; // OtherFigureOnPath
     }
-    return MoveType::False;
 }
 
 void BishopStrategy::update_occupation(const Board &board, const Position &pos, std::vector<Position> &coords) const {

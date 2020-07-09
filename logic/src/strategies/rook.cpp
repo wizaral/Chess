@@ -7,7 +7,7 @@ MoveType RookStrategy::validate_move(const Figure &figure, const Board &board, c
     int cols = move.cols();
 
     if ((rows > 0 && cols > 0) || (rows == 0 && cols == 0))
-        return false;
+        return MoveType::False; // WrongFigureMove
 
     int pos_row = move.from().row();
     int pos_col = move.from().col();
@@ -23,16 +23,15 @@ MoveType RookStrategy::validate_move(const Figure &figure, const Board &board, c
             Figure *other = board.get_figure(move.to());
 
             if (other != nullptr && other->color() == figure.color())
-                return false;
+                return MoveType::False; // OtherFigureOnPath
 
             state_ = MoveState::NormalMove;
-            return true;
+            return MoveType::True;  // NormalMove
         }
 
         if (board.get_figure({pos_row, pos_col}) != nullptr)
-            return false;
+            return MoveType::False; // OtherFigureOnPath
     }
-    return false;
 }
 
 void RookStrategy::update_occupation(const Board &board, const Position &pos, std::vector<Position> &coords) const {
