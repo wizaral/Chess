@@ -6,6 +6,17 @@ Figure *Board::get_figure(Position pos) const {
     return figures_[pos.row()][pos.col()].get();
 }
 
+Position Board::get_position(FigureType type, FigureColor color) const {
+    for (int i = 0; i < board_rows; ++i) {
+        for (int j = 0; j < board_cols; ++j) {
+            if (figures_[i][j]->color() == color && figures_[i][j]->type() == type) {
+                return {i, j};
+            }
+        }
+    }
+    return {-1, -1};
+}
+
 const Board::Field<std::unique_ptr<Figure>> &Board::figures() const {
     return figures_;
 }

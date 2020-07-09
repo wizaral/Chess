@@ -21,6 +21,7 @@ public:
     Board() = default;
 
     Figure *get_figure(Position pos) const;
+    Position get_position(FigureType type, FigureColor color) const;
     const Field<std::unique_ptr<Figure>> &figures() const;
 
     bool state(Position pos, FigureColor color) const;
