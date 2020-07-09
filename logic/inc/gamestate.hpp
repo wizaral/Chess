@@ -6,8 +6,12 @@ enum class GameState {
     NormalMove,
     KingCastling,
     QueenCastling,
-    CheckMate,
 
+    CheckMate,
+    Draw,
+
+    OutOfBounds,
+    EmptySquare,
     WrongFigureColor,
     WrongFigureMove,
     OtherFigureOnPath,
@@ -25,7 +29,11 @@ enum class GameState {
 };
 
 inline bool is_error(GameState gstate) {
-    return gstate != GameState::NormalMove && gstate != GameState::KingCastling && gstate != GameState::QueenCastling && gstate != GameState::CheckMate;
+    return gstate != GameState::NormalMove
+        && gstate != GameState::KingCastling
+        && gstate != GameState::QueenCastling
+        && gstate != GameState::CheckMate
+        && gstate != GameState::Draw;
 }
 
 } // namespace Chess::Logic
