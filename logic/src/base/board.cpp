@@ -48,11 +48,14 @@ void Board::move_figure(const Move &move) {
         std::move(figures_[move.to().row()][move.to().col()]);
 }
 
-void Board::reset_state() {
-    for (auto &i : check_state_light_)
-        i.fill(false);
-    for (auto &i : check_state_dark_)
-        i.fill(false);
+void Board::reset_state(FigureColor color) {
+    if (color == FigureColor::Light) {
+        for (auto &i : check_state_light_)
+            i.fill(false);
+    } else {
+        for (auto &i : check_state_dark_)
+            i.fill(false);
+    }
 }
 
 void Board::update_state(const std::vector<Position> &positions, FigureColor color) {
