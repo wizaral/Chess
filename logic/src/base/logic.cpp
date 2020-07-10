@@ -165,7 +165,32 @@ bool Game::is_mate() const {
 }
 
 bool Game::is_draw() const {
+    std::vector<std::pair<FigureType, FigureColor>> figures;
 
+    for (const auto &i : board_.figures()) {
+        for (const auto &j : i) {
+            if (auto ptr = j.get(); ptr != nullptr) {
+                figures.push_back({ptr->type(), ptr->color()});
+            }
+        }
+    }
+
+    if (std::any_of(figures.begin(), figures.end(), [](auto f) {
+        return f.first == FigureType::Queen || f.first == FigureType::Rook || f.first == FigureType::Pawn;
+    })) {
+        return false;
+    }
+
+    std::remove_if(figures.begin(), figures.end(), [](auto f) {
+        return f.first == FigureType::King;
+    });
+
+    if (size_t size = figures.size(); size == 0 || size == 1) {
+        return true;
+    } else if (size == 2 && figures[0].second != figures[1].second) /* diff colors */ {
+        return true;
+    }
+    return false;
 }
 
 GameState Game::logic(Move move) {
@@ -192,10 +217,10 @@ GameState Game::logic(Move move) {
     update_check_state();
     try_transform_pawns();
 
-    // if (is_mate())
-    //     return GameState::CheckMate;
-    // if (is_draw())
-    //     return GameState::Draw;
+    if (is_mate())
+        return GameState::CheckMate;
+    if (is_draw())
+        return GameState::Draw;
     return gstate;
 }
 
