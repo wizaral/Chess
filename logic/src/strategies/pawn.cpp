@@ -71,7 +71,7 @@ GameState PawnStrategy::validate_move(const Figure &figure, const Board &board, 
 void PawnStrategy::update_occupation(const Board &board, const Position &pos, std::vector<Position> &coords) const {
     int row = pos.row(), col = pos.col();
 
-    if (row + direction_ < board_rows) {
+    if (row + direction_ < board_rows && row + direction_ >= 0) {
         if (col + 1 < board_cols) {
             coords.emplace_back(row + direction_, col + 1);
         }
