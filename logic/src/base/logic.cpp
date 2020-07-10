@@ -108,16 +108,44 @@ void Game::update_check_state() {
         }
     }
 
+    board_.reset_state(FigureColor::Light);
     board_.update_state(state_light, FigureColor::Light);
+
+    board_.reset_state(FigureColor::Dark);
     board_.update_state(state_dark, FigureColor::Dark);
 }
 
 void Game::try_transform_pawns() {
-
+    for (int row : {player0_figures_row, player1_figures_row}) {
+        for (int i = 0; i < board_cols; ++i) {
+            if (auto f = board_.figures()[row][i].get(); f != nullptr) {
+                if (f->type() == FigureType::Pawn) {
+                    transform_pawn({row, i});
+                }
+            }
+        }
+    }
 }
 
-void Game::transform_pawn(Logic::Position pos) {
+void Game::transform_pawn(Position pos) {
+    render_->show_pawn_promotion(pos);
+    FigureType ft = input_->promote_figure(get_current_player(), pos);
+    FigureColor fc = get_current_player()->color();
 
+    switch (ft) {
+    case FigureType::Queen:
+        board_.add_figure({ft, fc, std::make_unique<Strategy>(QueenStrategy())}, pos);
+        break;
+    case FigureType::Rook:
+        board_.add_figure({ft, fc, std::make_unique<Strategy>(RookStrategy())}, pos);
+        break;
+    case FigureType::Knight:
+        board_.add_figure({ft, fc, std::make_unique<Strategy>(KnightStrategy())}, pos);
+        break;
+    case FigureType::Bishop:
+        board_.add_figure({ft, fc, std::make_unique<Strategy>(BishopStrategy())}, pos);
+        break;
+    }
 }
 
 bool Game::is_mate() const {
