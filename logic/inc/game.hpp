@@ -1,8 +1,11 @@
 #pragma once
+#include <algorithm>
 #include <array>
 #include <memory>
+#include <optional>
 
 #include "board.hpp"
+#include "figure.hpp"
 #include "gamestate.hpp"
 #include "input.hpp"
 #include "player.hpp"
@@ -33,7 +36,7 @@ private:
     Logic::Player *get_current_player();
 
     Logic::GameState validate_move(Logic::Move move, Logic::FigureColor color) const;
-    bool is_check(Logic::FigureColor color, Logic::Move move) const;
+    bool is_check(Logic::FigureColor color, Logic::Move move);
     bool is_check(Logic::FigureColor color) const;
 
     void castling(Logic::FigureColor color, Logic::Move move);

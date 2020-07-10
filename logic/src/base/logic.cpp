@@ -79,29 +79,69 @@ bool Game::is_check(FigureColor color, Move move) {
 }
 
 void Game::castling(FigureColor color, Move move) {
-    if (move.from().row() == player0_figures_row) {
-        if (color == FigureColor::Light) {
-            board_.move_figure({{player0_figures_row, 4}, {player0_figures_row, 6}});
-            board_.move_figure({{player0_figures_row, 7}, {player0_figures_row, 5}});
+    // if (move.from().row() == player0_figures_row) {
+    //     if (color == FigureColor::Light) {
+    //         board_.move_figure({{player0_figures_row, 4}, {player0_figures_row, 6}});   // king
+    //         board_.move_figure({{player0_figures_row, 7}, {player0_figures_row, 5}});   // rook
 
-            KingStrategy *kst = static_cast<KingStrategy *>(board_.get_figure({player0_figures_row, 6})->strategy());
-            kst->castling_update();
-            RookStrategy *rst = static_cast<RookStrategy *>(board_.get_figure({player0_figures_row, 5})->strategy());
-            rst->castling_update();
-        } else {
-            board_.move_figure({{player0_figures_row, 4}, {player0_figures_row, 6}});
-            board_.move_figure({{player0_figures_row, 7}, {player0_figures_row, 5}});
+    //         KingStrategy *kst = static_cast<KingStrategy *>(board_.get_figure({player0_figures_row, 6})->strategy());
+    //         kst->castling_update();
+    //         RookStrategy *rst = static_cast<RookStrategy *>(board_.get_figure({player0_figures_row, 5})->strategy());
+    //         rst->castling_update();
+    //     } else {
+    //         board_.move_figure({{player0_figures_row, 3}, {player0_figures_row, 1}});   // king
+    //         board_.move_figure({{player0_figures_row, 0}, {player0_figures_row, 2}});   // rook
 
-            // (static_cast<KingStrategy *>(board_.get_figure({player0_figures_row, 6})->strategy()))->castling_update();
-            KingStrategy *kst = static_cast<KingStrategy *>(board_.get_figure({player0_figures_row, 6})->strategy());
-            kst->castling_update();
+    //         // (static_cast<KingStrategy *>(board_.get_figure({player0_figures_row, 6})->strategy()))->castling_update();
+    //         KingStrategy *kst = static_cast<KingStrategy *>(board_.get_figure({player0_figures_row, 1})->strategy());
+    //         kst->castling_update();
 
-            // (static_cast<RookStrategy *>(board_.get_figure({player0_figures_row, 5})->strategy()))->castling_update();
-            RookStrategy *rst = static_cast<RookStrategy *>(board_.get_figure({player0_figures_row, 5})->strategy());
-            rst->castling_update();
-        }
-    } else /* if (move.from().row() == player1_figures_row) */ {
+    //         // (static_cast<RookStrategy *>(board_.get_figure({player0_figures_row, 5})->strategy()))->castling_update();
+    //         RookStrategy *rst = static_cast<RookStrategy *>(board_.get_figure({player0_figures_row, 2})->strategy());
+    //         rst->castling_update();
+    //     }
+    // } else /* if (move.from().row() == player1_figures_row) */ {
+    //     if (color == FigureColor::Dark) {
+    //         board_.move_figure({{player1_figures_row, 4}, {player1_figures_row, 6}});   // king
+    //         board_.move_figure({{player1_figures_row, 7}, {player1_figures_row, 5}});   // rook
 
+    //         KingStrategy *kst = static_cast<KingStrategy *>(board_.get_figure({player1_figures_row, 6})->strategy());
+    //         kst->castling_update();
+    //         RookStrategy *rst = static_cast<RookStrategy *>(board_.get_figure({player1_figures_row, 5})->strategy());
+    //         rst->castling_update();
+    //     } else {
+    //         board_.move_figure({{player1_figures_row, 3}, {player1_figures_row, 1}});   // king
+    //         board_.move_figure({{player1_figures_row, 0}, {player1_figures_row, 2}});   // rook
+
+    //         KingStrategy *kst = static_cast<KingStrategy *>(board_.get_figure({player1_figures_row, 1})->strategy());
+    //         kst->castling_update();
+    //         RookStrategy *rst = static_cast<RookStrategy *>(board_.get_figure({player1_figures_row, 2})->strategy());
+    //         rst->castling_update();
+    //     }
+    // }
+
+    int row = move.from().row();
+    if ((row == player0_figures_row && color == FigureColor::Light)
+        || (move.from().row() == player1_figures_row && color == FigureColor::Dark)) {
+        board_.move_figure({{row, 4}, {row, 6}});   // king
+        board_.move_figure({{row, 7}, {row, 5}});   // rook
+
+        // (static_cast<KingStrategy *>(board_.get_figure({row, 6})->strategy()))->castling_update();
+        KingStrategy *kst = static_cast<KingStrategy *>(board_.get_figure({row, 6})->strategy());
+        kst->castling_update();
+        // (static_cast<KingStrategy *>(board_.get_figure({row, 5})->strategy()))->castling_update();
+        RookStrategy *rst = static_cast<RookStrategy *>(board_.get_figure({row, 5})->strategy());
+        rst->castling_update();
+    } else {
+        board_.move_figure({{row, 3}, {row, 1}});   // king
+        board_.move_figure({{row, 0}, {row, 2}});   // rook
+
+        // (static_cast<KingStrategy *>(board_.get_figure({row, 1})->strategy()))->castling_update();
+        KingStrategy *kst = static_cast<KingStrategy *>(board_.get_figure({row, 1})->strategy());
+        kst->castling_update();
+        // (static_cast<RookStrategy *>(board_.get_figure({row, 2})->strategy()))->castling_update();
+        RookStrategy *rst = static_cast<RookStrategy *>(board_.get_figure({row, 2})->strategy());
+        rst->castling_update();
     }
 }
 
