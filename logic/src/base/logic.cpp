@@ -154,8 +154,11 @@ void Game::try_transform_pawns() {
 
 bool Game::is_mate() {
     FigureColor color = get_current_player()->color() == FigureColor::Light ? FigureColor::Dark : FigureColor::Light;
-    if (!is_check(color))
-        return false;
+    return is_check(color) && is_stalemate();
+}
+
+bool Game::is_stalemate() {
+    FigureColor color = get_current_player()->color() == FigureColor::Light ? FigureColor::Dark : FigureColor::Light;
 
     for (int i = 0; i < board_rows; ++i) {
         for (int j = 0; j < board_cols; ++j) {

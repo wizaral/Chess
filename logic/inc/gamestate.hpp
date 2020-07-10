@@ -8,6 +8,7 @@ enum class GameState {
     QueenCastling,
 
     CheckMate,
+    StaleMate,
     Draw,
 
     OutOfBounds,
@@ -27,6 +28,12 @@ enum class GameState {
     FailEnPassant,
     PawnStepBack,
 };
+
+inline bool is_endgame(GameState gstate) {
+    return gstate == GameState::CheckMate
+        || gstate == GameState::StaleMate
+        || gstate == GameState::Draw;
+}
 
 inline bool is_error(GameState gstate) {
     return gstate != GameState::NormalMove

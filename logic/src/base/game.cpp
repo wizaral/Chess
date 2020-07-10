@@ -81,7 +81,7 @@ void Game::transform_pawn(Logic::Position pos) {
 void Game::loop() {
     Logic::GameState gstate = Logic::GameState::NormalMove;
 
-    for (; gstate != Logic::GameState::CheckMate && gstate != Logic::GameState::Draw; ++player_index_) {
+    for (; !is_endgame(gstate); ++player_index_) {
         Logic::Move m = input_->get_next_move(get_current_player());
         gstate = logic(m);
 
