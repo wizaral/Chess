@@ -2,33 +2,6 @@
 
 namespace Chess::Logic {
 
-void Game::init_game() {
-    FigureColor p0c = players_[0]->color(), p1c = players_[1]->color();
-
-    if (p0c == FigureColor::Light) {
-        board_.add_figure({FigureType::Queen, FigureColor::Light, std::make_unique<Strategy>(QueenStrategy())}, {player0_figures_row, 3});
-        board_.add_figure({FigureType::King, FigureColor::Light, std::make_unique<Strategy>(KingStrategy())}, {player0_figures_row, 4});
-        board_.add_figure({FigureType::Queen, FigureColor::Dark, std::make_unique<Strategy>(QueenStrategy())}, {player1_figures_row, 3});
-        board_.add_figure({FigureType::King, FigureColor::Dark, std::make_unique<Strategy>(KingStrategy())}, {player1_figures_row, 4});
-    } else {
-        board_.add_figure({FigureType::Queen, FigureColor::Dark, std::make_unique<Strategy>(QueenStrategy())}, {player0_figures_row, 4});
-        board_.add_figure({FigureType::King, FigureColor::Dark, std::make_unique<Strategy>(KingStrategy())}, {player0_figures_row, 3});
-        board_.add_figure({FigureType::Queen, FigureColor::Light, std::make_unique<Strategy>(QueenStrategy())}, {player1_figures_row, 4});
-        board_.add_figure({FigureType::King, FigureColor::Light, std::make_unique<Strategy>(KingStrategy())}, {player1_figures_row, 3});
-    }
-
-    spawn_figures(player0_figures_row, p0c);
-    spawn_pawns(player0_pawns_row, p0c, player0_step_direction);
-
-    spawn_figures(player1_figures_row, p1c);
-    spawn_pawns(player1_pawns_row, p1c, player1_step_direction);
-}
-
-void Game::validate() const {
-    if (players_[0]->color() == players_[1]->color())
-        throw std::logic_error("Players have same figure colors");
-}
-
 Player *Game::get_current_player() {
     return players_[player_index_ %= 2].get();
 }
@@ -176,27 +149,6 @@ void Game::try_transform_pawns() {
                 }
             }
         }
-    }
-}
-
-void Game::transform_pawn(Position pos) {
-    render_->show_pawn_promotion(pos);
-    FigureType ft = input_->promote_figure(get_current_player(), pos);
-    FigureColor fc = get_current_player()->color();
-
-    switch (ft) {
-    case FigureType::Queen:
-        board_.add_figure({ft, fc, std::make_unique<Strategy>(QueenStrategy())}, pos);
-        break;
-    case FigureType::Rook:
-        board_.add_figure({ft, fc, std::make_unique<Strategy>(RookStrategy())}, pos);
-        break;
-    case FigureType::Knight:
-        board_.add_figure({ft, fc, std::make_unique<Strategy>(KnightStrategy())}, pos);
-        break;
-    case FigureType::Bishop:
-        board_.add_figure({ft, fc, std::make_unique<Strategy>(BishopStrategy())}, pos);
-        break;
     }
 }
 

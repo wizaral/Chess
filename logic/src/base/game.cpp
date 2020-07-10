@@ -12,6 +12,33 @@ Game::Game(std::array<std::unique_ptr<Logic::Player>, 2> arr,
     init_game();
 }
 
+void Game::init_game() {
+    Logic::FigureColor player0_color = players_[0]->color(), p1c = players_[1]->color();
+
+    if (player0_color == Logic::FigureColor::Light) {
+        board_.add_figure({Logic::FigureType::Queen, Logic::FigureColor::Light, std::make_unique<Logic::Strategy>(Logic::QueenStrategy())}, {Logic::player0_figures_row, 3});
+        board_.add_figure({Logic::FigureType::King, Logic::FigureColor::Light, std::make_unique<Logic::Strategy>(Logic::KingStrategy())}, {Logic::player0_figures_row, 4});
+        board_.add_figure({Logic::FigureType::Queen, Logic::FigureColor::Dark, std::make_unique<Logic::Strategy>(Logic::QueenStrategy())}, {Logic::player1_figures_row, 3});
+        board_.add_figure({Logic::FigureType::King, Logic::FigureColor::Dark, std::make_unique<Logic::Strategy>(Logic::KingStrategy())}, {Logic::player1_figures_row, 4});
+    } else {
+        board_.add_figure({Logic::FigureType::Queen, Logic::FigureColor::Dark, std::make_unique<Logic::Strategy>(Logic::QueenStrategy())}, {Logic::player0_figures_row, 4});
+        board_.add_figure({Logic::FigureType::King, Logic::FigureColor::Dark, std::make_unique<Logic::Strategy>(Logic::KingStrategy())}, {Logic::player0_figures_row, 3});
+        board_.add_figure({Logic::FigureType::Queen, Logic::FigureColor::Light, std::make_unique<Logic::Strategy>(Logic::QueenStrategy())}, {Logic::player1_figures_row, 4});
+        board_.add_figure({Logic::FigureType::King, Logic::FigureColor::Light, std::make_unique<Logic::Strategy>(Logic::KingStrategy())}, {Logic::player1_figures_row, 3});
+    }
+
+    spawn_figures(Logic::player0_figures_row, player0_color);
+    spawn_pawns(Logic::player0_pawns_row, player0_color, Logic::player0_step_direction);
+
+    spawn_figures(Logic::player1_figures_row, p1c);
+    spawn_pawns(Logic::player1_pawns_row, p1c, Logic::player1_step_direction);
+}
+
+void Game::validate() const {
+    if (players_[0]->color() == players_[1]->color())
+        throw std::logic_error("Players have same figure colors");
+}
+
 void Game::spawn_pawns(int row, Logic::FigureColor color, int direction) {
     for (int i = 0; i < Logic::board_rows; ++i) {
         board_.add_figure({Logic::FigureType::Pawn, color, std::make_unique<Logic::Strategy>(Logic::PawnStrategy(this, direction))}, {row, i});
@@ -28,6 +55,27 @@ void Game::spawn_figures(int row, Logic::FigureColor color) {
 
     board_.add_figure({Logic::FigureType::Bishop, color, std::make_unique<Logic::Strategy>(Logic::BishopStrategy())}, {row, 2});
     board_.add_figure({Logic::FigureType::Bishop, color, std::make_unique<Logic::Strategy>(Logic::BishopStrategy())}, {row, 5});
+}
+
+void Game::transform_pawn(Logic::Position pos) {
+    render_->show_pawn_promotion(pos);
+    Logic::FigureType ft = input_->promote_figure(get_current_player(), pos);
+    Logic::FigureColor fc = get_current_player()->color();
+
+    switch (ft) {
+    case Logic::FigureType::Queen:
+        board_.add_figure({ft, fc, std::make_unique<Logic::Strategy>(Logic::QueenStrategy())}, pos);
+        break;
+    case Logic::FigureType::Rook:
+        board_.add_figure({ft, fc, std::make_unique<Logic::Strategy>(Logic::RookStrategy())}, pos);
+        break;
+    case Logic::FigureType::Knight:
+        board_.add_figure({ft, fc, std::make_unique<Logic::Strategy>(Logic::KnightStrategy())}, pos);
+        break;
+    case Logic::FigureType::Bishop:
+        board_.add_figure({ft, fc, std::make_unique<Logic::Strategy>(Logic::BishopStrategy())}, pos);
+        break;
+    }
 }
 
 void Game::loop() {
