@@ -45,7 +45,7 @@ private:
     void try_transform_pawns();
     void transform_pawn(Logic::Position pos);
 
-    bool is_mate() const;
+    bool is_mate();
     bool is_draw() const;
 
     // Publisher part

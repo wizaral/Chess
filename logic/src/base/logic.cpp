@@ -200,8 +200,32 @@ void Game::transform_pawn(Position pos) {
     }
 }
 
-bool Game::is_mate() const {
+bool Game::is_mate() {
+    FigureColor color = get_current_player()->color() == FigureColor::Light ? FigureColor::Dark : FigureColor::Light;
+    if (!is_check(color))
+        return false;
 
+    for (int i = 0; i < board_rows; ++i) {
+        for (int j = 0; j < board_cols; ++j) {
+            auto figure = board_.get_figure({i, j});
+
+            if (figure != nullptr && figure->color() == color) {
+                std::vector<Position> positions;
+                figure->strategy()->update_occupation(board_, {i, j}, positions);
+
+                for (auto pos : positions) {
+                    auto dest = board_.get_figure({i, j});
+
+                    if (dest != nullptr || dest->color() != color) {
+                        if (!is_check(color, {{i, j}, pos})) {
+                            return false;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    return true;
 }
 
 bool Game::is_draw() const {
@@ -250,7 +274,7 @@ GameState Game::logic(Move move) {
         } else {
             board_.move_figure(move);
         }
-    } else /* if (gstate == GameState::*Castling) */ {
+    } else /* if (gstate == GameState::AnyCastling) */ {
         castling(color, move);
     }
 
