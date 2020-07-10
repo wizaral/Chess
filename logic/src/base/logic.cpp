@@ -57,13 +57,25 @@ bool Game::is_check(FigureColor color) const {
     return board_.state(other)[pos.row()][pos.col()];
 }
 
-bool Game::is_check(FigureColor color, Move move) const {
-    // FigureColor other = color == FigureColor::Light ? FigureColor::Dark : FigureColor::Light;
-    // // std::array<std::array<bool, 8>, 8> state = board_.state(other);
-    // // auto state = board_.state(other);
+bool Game::is_check(FigureColor color, Move move) {
+    std::optional<Figure> save;
 
-    // std::array<std::array<bool, 8>, 8> state;
-    // std::copy(board_.state(other).begin(), board_.state(other).end(), state.begin());
+    if (Figure *dest = board_.get_figure(move.to()); dest != nullptr)
+        save = std::move(*dest);
+
+    board_.move_figure(move);
+    update_check_state();
+
+    bool result = is_check(color);
+
+    board_.move_figure({move.to(), move.from()});
+    update_check_state();
+
+    if (save.has_value()) {
+        board_.add_figure({{}, color, std::make_unique<Strategy>()}, move.to());
+        *board_.get_figure(move.to()) = std::move(*save);
+    }
+    return result;
 }
 
 void Game::castling(FigureColor color, Move move) {
