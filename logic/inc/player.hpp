@@ -11,6 +11,9 @@ class Player {
     std::string name_;
 
 public:
+    Player(FigureColor color, std::string name)
+        : color_(color), name_(name) {}
+
     FigureColor color() const;
     const std::string &name() const;
 };
