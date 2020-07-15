@@ -8,11 +8,7 @@ protected:
     Publisher *publisher_;
 
 public:
-    Subscriber(Publisher *publisher)
-        : publisher_(publisher) {
-        publisher_->subscribe(this);
-    }
-
+    Subscriber(Publisher *publisher);
     virtual ~Subscriber() = default;
     virtual void update() = 0;
 };
