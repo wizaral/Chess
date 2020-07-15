@@ -238,6 +238,8 @@ GameState ChessGame::logic(Move move) {
 
     if (is_mate())
         return GameState::CheckMate;
+    if (is_stalemate())
+        return GameState::StaleMate;
     if (is_draw())
         return GameState::Draw;
     return gstate;
