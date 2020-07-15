@@ -1,5 +1,8 @@
 #pragma once
 #include "board.hpp"
+#include "gamestate.hpp"
+#include "position.hpp"
+#include "player.hpp"
 
 namespace Chess {
 
