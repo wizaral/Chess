@@ -29,18 +29,8 @@ enum class GameState {
     PawnStepBack,
 };
 
-inline bool is_endgame(GameState gstate) {
-    return gstate == GameState::CheckMate
-        || gstate == GameState::StaleMate
-        || gstate == GameState::Draw;
-}
-
-inline bool is_error(GameState gstate) {
-    return gstate != GameState::NormalMove
-        && gstate != GameState::KingCastling
-        && gstate != GameState::QueenCastling
-        && gstate != GameState::CheckMate
-        && gstate != GameState::Draw;
-}
+bool is_move(GameState gstate);
+bool is_endgame(GameState gstate);
+bool is_error(GameState gstate);
 
 } // namespace Chess::Logic
