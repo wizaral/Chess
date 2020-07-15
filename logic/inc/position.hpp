@@ -7,6 +7,7 @@ namespace Chess::Logic {
 
 class Position {
     int row_, col_;
+
 public:
     Position(int row, int col);
 

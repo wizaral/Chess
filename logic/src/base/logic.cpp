@@ -2,11 +2,11 @@
 
 namespace Chess::Logic {
 
-Player *Game::get_current_player() {
+Player *ChessGame::get_current_player() {
     return players_[player_index_ %= 2].get();
 }
 
-GameState Game::validate_move(Move move, FigureColor color) const {
+GameState ChessGame::validate_move(Move move, FigureColor color) const {
     try {
         Position::validation(move.from());
         Position::validation(move.to());
@@ -24,13 +24,13 @@ GameState Game::validate_move(Move move, FigureColor color) const {
     return GameState::EmptySquare;
 }
 
-bool Game::is_check(FigureColor color) const {
+bool ChessGame::is_check(FigureColor color) const {
     Position pos = board_.get_position(FigureType::King, color);
     FigureColor other = color == FigureColor::Light ? FigureColor::Dark : FigureColor::Light;
     return board_.state(other)[pos.row()][pos.col()];
 }
 
-bool Game::is_check(FigureColor color, Move move) {
+bool ChessGame::is_check(FigureColor color, Move move) {
     std::optional<Figure> save;
 
     if (Figure *dest = board_.get_figure(move.to()); dest != nullptr)
@@ -51,7 +51,7 @@ bool Game::is_check(FigureColor color, Move move) {
     return result;
 }
 
-void Game::castling(FigureColor color, Move move) {
+void ChessGame::castling(FigureColor color, Move move) {
     // if (move.from().row() == player0_figures_row) {
     //     if (color == FigureColor::Light) {
     //         board_.move_figure({{player0_figures_row, 4}, {player0_figures_row, 6}});   // king
@@ -96,8 +96,8 @@ void Game::castling(FigureColor color, Move move) {
     int row = move.from().row();
     if ((row == player0_figures_row && color == FigureColor::Light)
         || (move.from().row() == player1_figures_row && color == FigureColor::Dark)) {
-        board_.move_figure({{row, 4}, {row, 6}});   // king
-        board_.move_figure({{row, 7}, {row, 5}});   // rook
+        board_.move_figure({{row, 4}, {row, 6}}); // king
+        board_.move_figure({{row, 7}, {row, 5}}); // rook
 
         // (static_cast<KingStrategy *>(board_.get_figure({row, 6})->strategy()))->castling_update();
         KingStrategy *kst = static_cast<KingStrategy *>(board_.get_figure({row, 6})->strategy());
@@ -106,8 +106,8 @@ void Game::castling(FigureColor color, Move move) {
         RookStrategy *rst = static_cast<RookStrategy *>(board_.get_figure({row, 5})->strategy());
         rst->castling_update();
     } else {
-        board_.move_figure({{row, 3}, {row, 1}});   // king
-        board_.move_figure({{row, 0}, {row, 2}});   // rook
+        board_.move_figure({{row, 3}, {row, 1}}); // king
+        board_.move_figure({{row, 0}, {row, 2}}); // rook
 
         // (static_cast<KingStrategy *>(board_.get_figure({row, 1})->strategy()))->castling_update();
         KingStrategy *kst = static_cast<KingStrategy *>(board_.get_figure({row, 1})->strategy());
@@ -118,7 +118,7 @@ void Game::castling(FigureColor color, Move move) {
     }
 }
 
-void Game::update_check_state() {
+void ChessGame::update_check_state() {
     std::vector<Position> state_light, state_dark;
 
     for (int i = 0; i < board_rows; ++i) {
@@ -140,7 +140,7 @@ void Game::update_check_state() {
     board_.update_state(state_dark, FigureColor::Dark);
 }
 
-void Game::try_transform_pawns() {
+void ChessGame::try_transform_pawns() {
     for (int row : {player0_figures_row, player1_figures_row}) {
         for (int i = 0; i < board_cols; ++i) {
             if (auto f = board_.figures()[row][i].get(); f != nullptr) {
@@ -152,12 +152,12 @@ void Game::try_transform_pawns() {
     }
 }
 
-bool Game::is_mate() {
+bool ChessGame::is_mate() {
     FigureColor color = get_current_player()->color() == FigureColor::Light ? FigureColor::Dark : FigureColor::Light;
     return is_check(color) && is_stalemate();
 }
 
-bool Game::is_stalemate() {
+bool ChessGame::is_stalemate() {
     FigureColor color = get_current_player()->color() == FigureColor::Light ? FigureColor::Dark : FigureColor::Light;
 
     for (int i = 0; i < board_rows; ++i) {
@@ -183,7 +183,7 @@ bool Game::is_stalemate() {
     return true;
 }
 
-bool Game::is_draw() const {
+bool ChessGame::is_draw() const {
     std::vector<std::pair<FigureType, FigureColor>> figures;
 
     for (const auto &i : board_.figures()) {
@@ -212,7 +212,7 @@ bool Game::is_draw() const {
     return false;
 }
 
-GameState Game::logic(Move move) {
+GameState ChessGame::logic(Move move) {
     FigureColor color = get_current_player()->color();
     GameState gstate = validate_move(move, color);
     bool check = is_check(color);
@@ -243,4 +243,4 @@ GameState Game::logic(Move move) {
     return gstate;
 }
 
-}
+} // namespace Chess::Logic

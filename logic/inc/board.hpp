@@ -31,7 +31,7 @@ public:
     void remove_figure(Position pos);
     void move_figure(const Move &move);
 
-    void reset_state(FigureColor color );
+    void reset_state(FigureColor color);
     void update_state(const std::vector<Position> &positions, FigureColor color);
 };
 

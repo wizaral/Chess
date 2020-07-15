@@ -13,20 +13,22 @@
 
 namespace Chess {
 
-class Game : public Publisher {
+class ChessGame : public Publisher {
     Logic::Board board_;
     int player_index_ = 0;
     std::array<std::unique_ptr<Logic::Player>, 2> players_;
 
     std::unique_ptr<Render> render_;
     std::unique_ptr<DataInput> input_;
+
 public:
-    Game(std::array<std::unique_ptr<Logic::Player>, 2> arr,
+    ChessGame(std::array<std::unique_ptr<Logic::Player>, 2> arr,
         std::unique_ptr<Render> render,
         std::unique_ptr<DataInput> input);
 
     void init_game();
     void loop();
+
 private:
     void validate() const;
     void spawn_pawns(int row, Logic::FigureColor color, int direction);
@@ -55,4 +57,4 @@ private:
     void notify() override;
 };
 
-} // namespace Chess::Logic
+} // namespace Chess

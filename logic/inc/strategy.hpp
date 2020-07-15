@@ -22,7 +22,10 @@ public:
 class PawnStrategy final : public Strategy, public Subscriber {
 public:
     enum class MoveState {
-        NoMove, DoubleMove, EnPassant, NormalMove,
+        NoMove,
+        DoubleMove,
+        EnPassant,
+        NormalMove,
     };
 
     PawnStrategy(Publisher *subscriber, int direction);
@@ -31,6 +34,7 @@ public:
 
     GameState validate_move(const Figure &figure, const Board &board, const Move &move) override;
     void update_occupation(const Board &board, const Position &pos, std::vector<Position> &coords) const override;
+
 private:
     MoveState state_ = MoveState::NoMove;
     int direction_ = 0;
@@ -42,13 +46,15 @@ private:
 class RookStrategy final : public Strategy {
 public:
     enum class MoveState {
-        NoMove, NormalMove,
+        NoMove,
+        NormalMove,
     };
     MoveState state() const;
 
     GameState validate_move(const Figure &figure, const Board &board, const Move &move) override;
     void update_occupation(const Board &board, const Position &pos, std::vector<Position> &coords) const override;
     void castling_update();
+
 private:
     MoveState state_ = MoveState::NoMove;
 };
@@ -69,6 +75,7 @@ class QueenStrategy final : public Strategy {
 public:
     GameState validate_move(const Figure &figure, const Board &board, const Move &move) override;
     void update_occupation(const Board &board, const Position &pos, std::vector<Position> &coords) const override;
+
 private:
     GameState validate(const Figure &figure, const Board &board, const Move &move, int row_inc, int col_inc);
     void bishop_occupation(const Board &board, const Position &pos, std::vector<Position> &coords) const;
@@ -78,12 +85,14 @@ private:
 class KingStrategy final : public Strategy {
 public:
     enum class MoveState {
-        NoMove, NormalMove,
+        NoMove,
+        NormalMove,
     };
 
     GameState validate_move(const Figure &figure, const Board &board, const Move &move) override;
     void update_occupation(const Board &board, const Position &pos, std::vector<Position> &coords) const override;
     void castling_update();
+
 private:
     MoveState state_ = MoveState::NoMove;
     GameState check_castling(const Figure &figure, const Board &board, const Move &move, Figure *other);

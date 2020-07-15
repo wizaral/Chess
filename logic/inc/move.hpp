@@ -7,6 +7,7 @@ namespace Chess::Logic {
 
 class Move {
     Position from_, to_;
+
 public:
     Move(const Position &from, const Position &to);
 

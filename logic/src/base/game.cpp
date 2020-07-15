@@ -2,7 +2,7 @@
 
 namespace Chess {
 
-Game::Game(std::array<std::unique_ptr<Logic::Player>, 2> arr,
+ChessGame::ChessGame(std::array<std::unique_ptr<Logic::Player>, 2> arr,
             std::unique_ptr<Render> render,
             std::unique_ptr<DataInput> input)
     : players_(std::move(arr))
@@ -12,7 +12,7 @@ Game::Game(std::array<std::unique_ptr<Logic::Player>, 2> arr,
     init_game();
 }
 
-void Game::init_game() {
+void ChessGame::init_game() {
     Logic::FigureColor player0_color = players_[0]->color(), p1c = players_[1]->color();
 
     if (player0_color == Logic::FigureColor::Light) {
@@ -34,19 +34,19 @@ void Game::init_game() {
     spawn_pawns(Logic::player1_pawns_row, p1c, Logic::player1_step_direction);
 }
 
-void Game::validate() const {
+void ChessGame::validate() const {
     if (players_[0]->color() == players_[1]->color())
         throw std::logic_error("Players have same figure colors");
 }
 
-void Game::spawn_pawns(int row, Logic::FigureColor color, int direction) {
+void ChessGame::spawn_pawns(int row, Logic::FigureColor color, int direction) {
     for (int i = 0; i < Logic::board_rows; ++i) {
         board_.add_figure({Logic::FigureType::Pawn, color, std::make_unique<Logic::Strategy>(Logic::PawnStrategy(this, direction))}, {row, i});
         subscribe(static_cast<Logic::PawnStrategy *>(board_.get_figure({row, i})->strategy()));
     }
 }
 
-void Game::spawn_figures(int row, Logic::FigureColor color) {
+void ChessGame::spawn_figures(int row, Logic::FigureColor color) {
     board_.add_figure({Logic::FigureType::Rook, color, std::make_unique<Logic::Strategy>(Logic::RookStrategy())}, {row, 0});
     board_.add_figure({Logic::FigureType::Rook, color, std::make_unique<Logic::Strategy>(Logic::RookStrategy())}, {row, 7});
 
@@ -57,7 +57,7 @@ void Game::spawn_figures(int row, Logic::FigureColor color) {
     board_.add_figure({Logic::FigureType::Bishop, color, std::make_unique<Logic::Strategy>(Logic::BishopStrategy())}, {row, 5});
 }
 
-void Game::transform_pawn(Logic::Position pos) {
+void ChessGame::transform_pawn(Logic::Position pos) {
     render_->show_pawn_promotion(pos);
     Logic::FigureType ft = input_->promote_figure(get_current_player(), pos);
     Logic::FigureColor fc = get_current_player()->color();
@@ -78,7 +78,7 @@ void Game::transform_pawn(Logic::Position pos) {
     }
 }
 
-void Game::loop() {
+void ChessGame::loop() {
     Logic::GameState gstate = Logic::GameState::NormalMove;
 
     for (; !is_endgame(gstate); ++player_index_) {
@@ -96,15 +96,15 @@ void Game::loop() {
     render_->show_endgame(gstate, get_current_player());
 }
 
-void Game::subscribe(Subscriber *sub) {
+void ChessGame::subscribe(Subscriber *sub) {
     subs_.push_back(sub);
 }
 
-void Game::unsubscribe(Subscriber *sub) {
+void ChessGame::unsubscribe(Subscriber *sub) {
     subs_.remove(sub);
 }
 
-void Game::notify() {
+void ChessGame::notify() {
     for (auto i : subs_) {
         i->update();
     }

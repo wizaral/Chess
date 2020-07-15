@@ -3,8 +3,7 @@
 namespace Chess::Logic {
 
 PawnStrategy::PawnStrategy(Publisher *publisher, int direction)
-    : Subscriber(publisher)
-    , direction_(direction) {}
+    : Subscriber(publisher), direction_(direction) {}
 
 PawnStrategy::MoveState PawnStrategy::state() const {
     return state_;
