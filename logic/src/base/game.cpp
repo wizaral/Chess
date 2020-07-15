@@ -82,6 +82,8 @@ void ChessGame::loop() {
     Logic::GameState gstate = Logic::GameState::NormalMove;
 
     for (; !is_endgame(gstate); ++player_index_) {
+        render_->show_board(board_);
+
         Logic::Move m = input_->get_next_move(get_current_player());
         gstate = logic(m);
 
@@ -89,10 +91,10 @@ void ChessGame::loop() {
             render_->show_error(gstate);
             --player_index_;
         }
-        render_->show_board(board_);
     }
 
     ++player_index_;
+    render_->show_board(board_);
     render_->show_endgame(gstate, get_current_player());
 }
 
