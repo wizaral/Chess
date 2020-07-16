@@ -34,6 +34,10 @@ GameState RookStrategy::validate_move(const Figure &figure, const Board &board, 
     }
 }
 
+RookStrategy::MoveState RookStrategy::state() const {
+    return state_;
+}
+
 void RookStrategy::castling_update() {
     state_ = MoveState::NormalMove;
 }

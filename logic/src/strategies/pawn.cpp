@@ -80,7 +80,7 @@ void PawnStrategy::update_occupation(const Board &board, const Position &pos, st
     }
 }
 
-GameState check_pawn(Figure *figure, FigureColor color) {
+GameState PawnStrategy::check_pawn(Figure *figure, FigureColor color) {
     if (figure != nullptr && figure->color() == color && figure->type() == FigureType::Pawn) {
         PawnStrategy *pawn_strategy = static_cast<PawnStrategy *>(figure->strategy());
         if (pawn_strategy->state() == PawnStrategy::MoveState::EnPassant) {
