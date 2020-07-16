@@ -8,6 +8,7 @@ namespace Chess {
 
 class Render {
 public:
+    virtual ~Render() = default;
     virtual void show_menu() = 0;
     virtual void show_board(const Logic::Board &board) = 0;
     virtual void show_next_step(Logic::Player *player) = 0;
