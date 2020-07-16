@@ -47,8 +47,8 @@ private:
     void try_transform_pawns();
     void transform_pawn(Logic::Position pos);
 
-    bool is_mate();
-    bool is_stalemate();
+    Logic::GameState is_mate();
+    bool is_stalemate(Logic::FigureColor color);
     bool is_draw() const;
 
     // Publisher part
