@@ -28,7 +28,7 @@ GameState KingStrategy::check_castling(const Figure &figure, const Board &board,
         int distance = move.cols();
         int row = move.from().row();
 
-        if ((row == 0 && figure.color() == FigureColor::Light) || (row == 7 && figure.color() == FigureColor::Dark)) {
+        if ((row == player0_figures_row && figure.color() == FigureColor::Light) || (row == player1_figures_row && figure.color() == FigureColor::Dark)) {
             if (distance == 3) {
                 if (state[row][4] == true) {
                     return GameState::CastlingKingInCheck;
@@ -58,7 +58,7 @@ GameState KingStrategy::check_castling(const Figure &figure, const Board &board,
                 }
                 return board.get_figure({row, 1}) == nullptr ? GameState::QueenCastling : GameState::CastlingFigureOnPath;
             }
-        } else /* if ((row == 0 && figure.color() == FigureColor::Dark) || (row == 7 && figure.color() == FigureColor::Light)) */ {
+        } else /* if ((row == player1_figures_row && figure.color() == FigureColor::Dark) || (row == player0_figures_row && figure.color() == FigureColor::Light)) */ {
             if (distance == 3) {
                 if (state[row][3] == true) {
                     return GameState::CastlingKingInCheck;
