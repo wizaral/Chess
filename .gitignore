@@ -21,6 +21,7 @@
 # text files
 *.txt
 *.pdf
+*dump
 
 # current project
 SFML*
