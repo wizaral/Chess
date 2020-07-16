@@ -10,7 +10,7 @@ Figure *Board::get_figure(Position pos) const {
 Position Board::get_position(FigureType type, FigureColor color) const {
     for (int i = 0; i < board_rows; ++i) {
         for (int j = 0; j < board_cols; ++j) {
-            if (figures_[i][j]->color() == color && figures_[i][j]->type() == type) {
+            if (auto f = get_figure({ i, j }); f != nullptr && f->color() == color && f->type() == type) {
                 return {i, j};
             }
         }
@@ -45,8 +45,8 @@ void Board::remove_figure(Position pos) {
 }
 
 void Board::move_figure(const Move &move) {
-    figures_[move.from().row()][move.from().col()] =
-        std::move(figures_[move.to().row()][move.to().col()]);
+    figures_[move.to().row()][move.to().col()] =
+        std::move(figures_[move.from().row()][move.from().col()]);
 }
 
 void Board::reset_state(FigureColor color) {
