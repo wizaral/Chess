@@ -1,5 +1,4 @@
 #pragma once
-
 #include <string>
 
 #include "figure.hpp"
@@ -11,8 +10,7 @@ class Player {
     std::string name_;
 
 public:
-    Player(FigureColor color, std::string name)
-        : color_(color), name_(name) {}
+    Player(FigureColor color, std::string name);
 
     FigureColor color() const;
     const std::string &name() const;
