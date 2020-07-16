@@ -1,5 +1,4 @@
 #pragma once
-#include "board.hpp"
 #include "figure.hpp"
 #include "move.hpp"
 #include "player.hpp"

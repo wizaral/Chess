@@ -1,8 +1,6 @@
 #pragma once
 #include <stdexcept>
 
-#include "definitions.hpp"
-
 namespace Chess::Logic {
 
 class Position {

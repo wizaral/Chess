@@ -1,4 +1,4 @@
-#include "game.hpp"
+#include "chess.hpp"
 
 namespace Chess {
 

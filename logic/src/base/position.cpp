@@ -1,4 +1,5 @@
 #include "position.hpp"
+#include "definitions.hpp"
 
 namespace Chess::Logic {
 

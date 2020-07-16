@@ -5,9 +5,9 @@
 #include <optional>
 
 #include "board.hpp"
-#include "figure.hpp"
 #include "gamestate.hpp"
 #include "input.hpp"
+#include "observer.hpp"
 #include "player.hpp"
 #include "render.hpp"
 

@@ -1,8 +1,6 @@
 #pragma once
 #include <memory>
 
-#include "strategy.hpp"
-
 namespace Chess::Logic {
 
 enum class FigureType {
@@ -19,6 +17,8 @@ enum class FigureColor {
     Dark,
 };
 
+class Strategy;
+
 class Figure final {
     FigureType type_;
     FigureColor color_;
@@ -26,8 +26,11 @@ class Figure final {
 
 public:
     Figure(FigureType type, FigureColor color, std::unique_ptr<Strategy> st);
+    Figure(const Figure &f) = delete;
     Figure(Figure &&f);
     ~Figure() = default;
+
+    Figure &operator=(const Figure &f) = delete;
     Figure &operator=(Figure &&f);
 
     FigureType type() const;

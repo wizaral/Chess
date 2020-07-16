@@ -1,4 +1,5 @@
 #include "figure.hpp"
+#include "strategy.hpp"
 
 namespace Chess::Logic {
 

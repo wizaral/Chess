@@ -5,7 +5,7 @@
 
 #include "definitions.hpp"
 #include "figure.hpp"
-#include "position.hpp"
+#include "move.hpp"
 
 namespace Chess::Logic {
 

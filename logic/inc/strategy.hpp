@@ -3,12 +3,10 @@
 #include <vector>
 
 #include "board.hpp"
-#include "definitions.hpp"
 #include "figure.hpp"
 #include "gamestate.hpp"
 #include "move.hpp"
 #include "observer.hpp"
-#include "position.hpp"
 
 namespace Chess::Logic {
 
