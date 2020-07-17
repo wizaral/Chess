@@ -140,10 +140,10 @@ bool ChessGame::is_stalemate(Logic::FigureColor color) {
                 figure->strategy()->update_occupation(board_, {i, j}, positions);
 
                 for (auto pos : positions) {
-                    auto dest = board_.get_figure({i, j});
+                    auto dest = board_.get_figure(pos);
 
-                    if (dest != nullptr || dest->color() != color) {
-                        if (!is_check(color, {{i, j}, pos})) {
+                    if (dest == nullptr || dest->color() != color) {
+                        if (is_check(color, {{i, j}, pos}) == false) {
                             return false;
                         }
                     }
@@ -216,9 +216,7 @@ Logic::GameState ChessGame::logic(Logic::Move move) {
         return state;
     }
 
-    if (is_draw())
-        return Logic::GameState::Draw;
-    return gstate;
+    return is_draw() ? Logic::GameState::Draw : gstate;
 }
 
 } // namespace Chess
