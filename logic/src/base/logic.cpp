@@ -7,10 +7,8 @@ Logic::Player *ChessGame::get_current_player() {
 }
 
 Logic::GameState ChessGame::validate_move(Logic::Move move, Logic::FigureColor color) const {
-    try {
-        Logic::Position::validation(move.from());
-        Logic::Position::validation(move.to());
-    } catch (std::out_of_range &ex) {
+    if (Logic::Position::validation(move.from()) == false
+        || Logic::Position::validation(move.to()) == false) {
         return Logic::GameState::OutOfBounds;
     }
 

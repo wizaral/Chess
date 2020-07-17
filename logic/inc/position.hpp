@@ -12,7 +12,7 @@ public:
     int row() const;
     int col() const;
 
-    static void validation(const Position &pos);
+    static bool validation(const Position &pos);
 };
 
 } // namespace Chess::Logic
