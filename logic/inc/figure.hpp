@@ -17,6 +17,8 @@ enum class FigureColor {
     Dark,
 };
 
+FigureColor operator!(FigureColor color);
+
 class Strategy;
 
 class Figure final {

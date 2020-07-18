@@ -24,7 +24,7 @@ Logic::GameState ChessGame::validate_move(Logic::Move move, Logic::FigureColor c
 
 bool ChessGame::is_check(Logic::FigureColor color) const {
     Logic::Position pos = board_.get_position(Logic::FigureType::King, color);
-    Logic::FigureColor other = color == Logic::FigureColor::Light ? Logic::FigureColor::Dark : Logic::FigureColor::Light;
+    Logic::FigureColor other = !color;
     return board_.state(other)[pos.row()][pos.col()];
 }
 
@@ -119,7 +119,7 @@ void ChessGame::try_transform_pawns() {
 }
 
 Logic::GameState ChessGame::is_mate() {
-    Logic::FigureColor color = get_current_player()->color() == Logic::FigureColor::Light ? Logic::FigureColor::Dark : Logic::FigureColor::Light;
+    Logic::FigureColor color = !get_current_player()->color();
     bool state = is_stalemate(color);
 
     if (is_check(color) && state) {

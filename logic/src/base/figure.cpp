@@ -3,6 +3,10 @@
 
 namespace Chess::Logic {
 
+FigureColor operator!(FigureColor color) {
+    return color == Logic::FigureColor::Light ? Logic::FigureColor::Dark : Logic::FigureColor::Light;
+}
+
 Figure::Figure(FigureType type, FigureColor color, std::unique_ptr<Strategy> st)
     : type_(type), color_(color), st_(std::move(st)) {}
 

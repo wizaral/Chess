@@ -19,7 +19,7 @@ GameState KingStrategy::validate_move(const Figure &figure, const Board &board, 
 }
 
 GameState KingStrategy::check_castling(const Figure &figure, const Board &board, const Move &move, Figure *other) {
-    FigureColor other_color = figure.color() == FigureColor::Light ? FigureColor::Dark : FigureColor::Light;
+    FigureColor other_color = !figure.color();
     RookStrategy *rst = static_cast<RookStrategy *>(other->strategy());
 
     // check first figure move

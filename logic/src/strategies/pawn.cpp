@@ -28,7 +28,7 @@ GameState PawnStrategy::validate_move(const Figure &figure, const Board &board, 
         return GameState::PawnStepBack;
 
     Figure *other = board.get_figure(to);
-    FigureColor other_color = figure.color() == FigureColor::Light ? FigureColor::Dark : FigureColor::Light;
+    FigureColor other_color = !figure.color();
 
     if (from.row() + direction_ == to.row() && check_diagonal(move)) {
         if (other != nullptr) {
