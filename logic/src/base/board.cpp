@@ -38,13 +38,20 @@ void Board::add_figure(Figure figure, Position pos) {
     figures_[pos.row()][pos.col()] = std::make_unique<Figure>(std::move(figure));
 }
 
+void Board::move_figure(const Move &move) {
+    figures_[move.to().row()][move.to().col()] = std::move(figures_[move.from().row()][move.from().col()]);
+}
+
 void Board::remove_figure(Position pos) {
     figures_[pos.row()][pos.col()].reset();
 }
 
-void Board::move_figure(const Move &move) {
-    figures_[move.to().row()][move.to().col()] =
-        std::move(figures_[move.from().row()][move.from().col()]);
+void Board::clear_figures() {
+    for (int i = 0; i < board_rows; ++i) {
+        for (int j = 0; j < board_cols; ++j) {
+            remove_figure({i, j});
+        }
+    }
 }
 
 void Board::reset_state(FigureColor color) {

@@ -28,8 +28,10 @@ public:
     const Field<bool> &state(FigureColor color) const;
 
     void add_figure(Figure figure, Position pos);
-    void remove_figure(Position pos);
     void move_figure(const Move &move);
+
+    void remove_figure(Position pos);
+    void clear_figures();
 
     void reset_state(FigureColor color);
     void update_state(const std::vector<Position> &positions, FigureColor color);
