@@ -7,6 +7,7 @@ namespace Chess {
 
 class FigureFactory {
 public:
+    virtual ~FigureFactory() = default;
     virtual void init_game(Logic::Board &board, int &player_index, std::array<std::unique_ptr<Logic::Player>, 2> &players, Publisher *publisher) = 0;
 };
 
