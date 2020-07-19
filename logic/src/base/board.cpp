@@ -35,12 +35,10 @@ const Board::Field<bool> &Board::state(FigureColor color) const {
 }
 
 void Board::add_figure(Figure figure, Position pos) {
-    Position::validation(pos);
     figures_[pos.row()][pos.col()] = std::make_unique<Figure>(std::move(figure));
 }
 
 void Board::remove_figure(Position pos) {
-    Position::validation(pos);
     figures_[pos.row()][pos.col()].reset();
 }
 
@@ -62,12 +60,10 @@ void Board::reset_state(FigureColor color) {
 void Board::update_state(const std::vector<Position> &positions, FigureColor color) {
     if (color == FigureColor::Light) {
         for (const auto &i : positions) {
-            Position::validation(i);
             check_state_light_[i.row()][i.col()] = true;
         }
     } else {
         for (const auto &i : positions) {
-            Position::validation(i);
             check_state_dark_[i.row()][i.col()] = true;
         }
     }

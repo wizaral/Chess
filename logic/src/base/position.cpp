@@ -14,7 +14,7 @@ int Position::col() const {
     return col_;
 }
 
-bool Position::validation(const Position &pos) {
+[[nodiscard]] bool Position::validation(const Position &pos) {
     if (int row = pos.row(); row < 0 || row >= board_rows) {
         return false;
     }
