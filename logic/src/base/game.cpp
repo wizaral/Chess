@@ -14,7 +14,7 @@ ChessGame::ChessGame(std::array<std::unique_ptr<Logic::Player>, 2> arr,
 }
 
 void ChessGame::init_game() {
-    factory_->init_game(board_, player_index_, players_, this);
+    factory_->init_game(board_, player_index_, this);
 }
 
 void ChessGame::validate() const {

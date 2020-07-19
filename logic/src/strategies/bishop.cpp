@@ -6,8 +6,9 @@ GameState BishopStrategy::validate_move(const Figure &figure, const Board &board
     int rows = move.rows();
     int cols = move.cols();
 
-    if (rows != cols || (rows == 0 && cols == 0))
+    if (rows != cols || (rows == 0 && cols == 0)) {
         return GameState::WrongFigureMove;
+    }
 
     int pos_row = move.from().row();
     int pos_col = move.from().col();
@@ -22,13 +23,15 @@ GameState BishopStrategy::validate_move(const Figure &figure, const Board &board
         if (move.to().row() == pos_row && move.to().col() == pos_col) {
             Figure *other = board.get_figure(move.to());
 
-            if (other != nullptr && other->color() == figure.color())
+            if (other != nullptr && other->color() == figure.color()) {
                 return GameState::OtherFigureOnPath;
+            }
             return GameState::NormalMove;
         }
 
-        if (board.get_figure({pos_row, pos_col}) != nullptr)
+        if (board.get_figure({pos_row, pos_col}) != nullptr) {
             return GameState::OtherFigureOnPath;
+        }
     }
 }
 
@@ -37,7 +40,6 @@ void BishopStrategy::update_occupation(const Board &board, const Position &pos, 
 
     for (int r = row + 1, c = col + 1; r < board_rows && c < board_cols; ++r, ++c) {
         coords.emplace_back(r, c);
-
         if (board.get_figure({r, c}) != nullptr) {
             break;
         }
@@ -45,7 +47,6 @@ void BishopStrategy::update_occupation(const Board &board, const Position &pos, 
 
     for (int r = row - 1, c = col + 1; r >= 0 && c < board_cols; --r, ++c) {
         coords.emplace_back(r, c);
-
         if (board.get_figure({r, c}) != nullptr) {
             break;
         }
@@ -53,7 +54,6 @@ void BishopStrategy::update_occupation(const Board &board, const Position &pos, 
 
     for (int r = row + 1, c = col - 1; r < board_rows && c >= 0; ++r, --c) {
         coords.emplace_back(r, c);
-
         if (board.get_figure({r, c}) != nullptr) {
             break;
         }
@@ -61,7 +61,6 @@ void BishopStrategy::update_occupation(const Board &board, const Position &pos, 
 
     for (int r = row - 1, c = col - 1; r >= 0 && c >= 0; --r, --c) {
         coords.emplace_back(r, c);
-
         if (board.get_figure({r, c}) != nullptr) {
             break;
         }

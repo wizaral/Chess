@@ -20,74 +20,37 @@ GameState KingStrategy::validate_move(const Figure &figure, const Board &board, 
 
 GameState KingStrategy::check_castling(const Figure &figure, const Board &board, const Move &move, Figure *other) {
     FigureColor other_color = !figure.color();
-    RookStrategy *rst = static_cast<RookStrategy *>(other->strategy());
 
     // check first figure move
-    if (state_ == MoveState::NoMove && rst->state() == RookStrategy::MoveState::NoMove) {
-        const std::array<std::array<bool, board_rows>, board_cols> &state = board.state(other_color);
+    if (state_ == MoveState::NoMove && (static_cast<RookStrategy *>(other->strategy()))->state() == RookStrategy::MoveState::NoMove) {
+        const std::array<std::array<bool, board_rows>, board_cols> &state = board.get_check_state(other_color);
         int distance = move.cols();
         int row = move.from().row();
 
-        if ((row == player0_figures_row && figure.color() == FigureColor::White) || (row == player1_figures_row && figure.color() == FigureColor::Black)) {
-            if (distance == 3) {
-                if (state[row][4] == true) {
-                    return GameState::CastlingKingInCheck;
-                }
+        if (state[row][4] == true) {
+            return GameState::CastlingKingInCheck;
+        }
 
-                for (int col = 5; col < 7; ++col) {
-                    if (state[row][col] == true) {
-                        return GameState::CastlingSquareInCheck;
-                    }
-                    if (board.get_figure({row, col}) != nullptr) {
-                        return GameState::CastlingFigureOnPath;
-                    }
+        if (distance == 3) {
+            for (int col = 5; col < 7; ++col) {
+                if (state[row][col] == true) {
+                    return GameState::CastlingSquareInCheck;
                 }
-                return GameState::KingCastling;
-            } else /* if (distance == 4) */ {
-                if (state[row][4] == true) {
-                    return GameState::CastlingKingInCheck;
+                if (board.get_figure({row, col}) != nullptr) {
+                    return GameState::CastlingFigureOnPath;
                 }
-
-                for (int col = 3; col > 1; --col) {
-                    if (state[row][col] == true) {
-                        return GameState::CastlingSquareInCheck;
-                    }
-                    if (board.get_figure({row, col}) != nullptr) {
-                        return GameState::CastlingFigureOnPath;
-                    }
-                }
-                return board.get_figure({row, 1}) == nullptr ? GameState::QueenCastling : GameState::CastlingFigureOnPath;
             }
-        } else /* if ((row == player1_figures_row && figure.color() == FigureColor::Black) || (row == player0_figures_row && figure.color() == FigureColor::White)) */ {
-            if (distance == 3) {
-                if (state[row][3] == true) {
-                    return GameState::CastlingKingInCheck;
+            return GameState::KingCastling;
+        } else /* if (distance == 4) */ {
+            for (int col = 3; col > 1; --col) {
+                if (state[row][col] == true) {
+                    return GameState::CastlingSquareInCheck;
                 }
-
-                for (int col = 2; col > 0; --col) {
-                    if (state[row][col] == true) {
-                        return GameState::CastlingSquareInCheck;
-                    }
-                    if (board.get_figure({row, col}) != nullptr) {
-                        return GameState::CastlingFigureOnPath;
-                    }
+                if (board.get_figure({row, col}) != nullptr) {
+                    return GameState::CastlingFigureOnPath;
                 }
-                return GameState::KingCastling;
-            } else /* if (distance == 4) */ {
-                if (state[row][3] == true) {
-                    return GameState::CastlingKingInCheck;
-                }
-
-                for (int col = 4; col < 6; ++col) {
-                    if (state[row][col] == true) {
-                        return GameState::CastlingSquareInCheck;
-                    }
-                    if (board.get_figure({row, col}) != nullptr) {
-                        return GameState::CastlingFigureOnPath;
-                    }
-                }
-                return board.get_figure({row, 6}) == nullptr ? GameState::QueenCastling : GameState::CastlingFigureOnPath;
             }
+            return board.get_figure({row, 1}) == nullptr ? GameState::QueenCastling : GameState::CastlingFigureOnPath;
         }
     }
     return GameState::FiguresAlreadyMoved;

@@ -6,8 +6,9 @@ GameState QueenStrategy::validate_move(const Figure &figure, const Board &board,
     int rows = move.rows();
     int cols = move.cols();
 
-    if (rows == 0 && cols == 0)
+    if (rows == 0 && cols == 0) {
         return GameState::WrongFigureMove;
+    }
 
     if (rows == cols) {
         int row_inc = move.from().row() < move.to().row() ? 1 : -1;
@@ -34,13 +35,15 @@ GameState QueenStrategy::validate(const Figure &figure, const Board &board, cons
         if (move.to().row() == pos_row && move.to().col() == pos_col) {
             Figure *other = board.get_figure(move.to());
 
-            if (other != nullptr && other->color() == figure.color())
+            if (other != nullptr && other->color() == figure.color()) {
                 return GameState::OtherFigureOnPath;
+            }
             return GameState::NormalMove;
         }
 
-        if (board.get_figure({pos_row, pos_col}) != nullptr)
+        if (board.get_figure({pos_row, pos_col}) != nullptr) {
             return GameState::OtherFigureOnPath;
+        }
     }
 }
 
@@ -54,7 +57,6 @@ void QueenStrategy::bishop_occupation(const Board &board, const Position &pos, s
 
     for (int r = row + 1, c = col + 1; r < board_rows && c < board_cols; ++r, ++c) {
         coords.emplace_back(r, c);
-
         if (board.get_figure({r, c}) != nullptr) {
             break;
         }
@@ -62,7 +64,6 @@ void QueenStrategy::bishop_occupation(const Board &board, const Position &pos, s
 
     for (int r = row - 1, c = col + 1; r >= 0 && c < board_cols; --r, ++c) {
         coords.emplace_back(r, c);
-
         if (board.get_figure({r, c}) != nullptr) {
             break;
         }
@@ -70,7 +71,6 @@ void QueenStrategy::bishop_occupation(const Board &board, const Position &pos, s
 
     for (int r = row + 1, c = col - 1; r < board_rows && c >= 0; ++r, --c) {
         coords.emplace_back(r, c);
-
         if (board.get_figure({r, c}) != nullptr) {
             break;
         }
@@ -78,7 +78,6 @@ void QueenStrategy::bishop_occupation(const Board &board, const Position &pos, s
 
     for (int r = row - 1, c = col - 1; r >= 0 && c >= 0; --r, --c) {
         coords.emplace_back(r, c);
-
         if (board.get_figure({r, c}) != nullptr) {
             break;
         }
@@ -90,7 +89,6 @@ void QueenStrategy::rook_occupation(const Board &board, const Position &pos, std
 
     for (int r = row + 1, c = col; r < board_rows; ++r) {
         coords.emplace_back(r, c);
-
         if (board.get_figure({r, c}) != nullptr) {
             break;
         }
@@ -98,7 +96,6 @@ void QueenStrategy::rook_occupation(const Board &board, const Position &pos, std
 
     for (int r = row - 1, c = col; r >= 0; --r) {
         coords.emplace_back(r, c);
-
         if (board.get_figure({r, c}) != nullptr) {
             break;
         }
@@ -106,7 +103,6 @@ void QueenStrategy::rook_occupation(const Board &board, const Position &pos, std
 
     for (int r = row, c = col + 1; c < board_cols; ++c) {
         coords.emplace_back(r, c);
-
         if (board.get_figure({r, c}) != nullptr) {
             break;
         }
@@ -114,7 +110,6 @@ void QueenStrategy::rook_occupation(const Board &board, const Position &pos, std
 
     for (int r = row, c = col - 1; c >= 0; --c) {
         coords.emplace_back(r, c);
-
         if (board.get_figure({r, c}) != nullptr) {
             break;
         }

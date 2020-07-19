@@ -22,15 +22,17 @@ const Board::Field<std::unique_ptr<Figure>> &Board::figures() const {
     return figures_;
 }
 
-bool Board::state(Position pos, FigureColor color) const {
-    if (color == FigureColor::White)
+bool Board::get_check_state(Position pos, FigureColor color) const {
+    if (color == FigureColor::White) {
         return check_state_white_[pos.row()][pos.col()];
+    }
     return check_state_black_[pos.row()][pos.col()];
 }
 
-const Board::Field<bool> &Board::state(FigureColor color) const {
-    if (color == FigureColor::White)
+const Board::Field<bool> &Board::get_check_state(FigureColor color) const {
+    if (color == FigureColor::White) {
         return check_state_white_;
+    }
     return check_state_black_;
 }
 

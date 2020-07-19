@@ -24,8 +24,8 @@ public:
     Position get_position(FigureType type, FigureColor color) const;
     const Field<std::unique_ptr<Figure>> &figures() const;
 
-    bool state(Position pos, FigureColor color) const;
-    const Field<bool> &state(FigureColor color) const;
+    bool get_check_state(Position pos, FigureColor color) const;
+    const Field<bool> &get_check_state(FigureColor color) const;
 
     void add_figure(Figure figure, Position pos);
     void move_figure(const Move &move);

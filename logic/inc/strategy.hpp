@@ -26,7 +26,8 @@ public:
         NormalMove,
     };
 
-    PawnStrategy(Publisher *subscriber, int direction);
+    PawnStrategy(Publisher *publisher, FigureColor color);
+    PawnStrategy(Publisher *publisher, FigureColor color, MoveState state);
     MoveState state() const;
     void update() override;
 
