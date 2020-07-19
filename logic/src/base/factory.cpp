@@ -5,8 +5,11 @@
 namespace Chess {
 
 void ClassicFactory::init_game(Logic::Board &board, int &player_index, std::array<std::unique_ptr<Logic::Player>, 2> &players, Publisher *publisher) {
-    player_index = 0;
     Logic::FigureColor p0c = players[0]->color(), p1c = players[1]->color();
+    player_index = 0;
+    board.clear_figures();
+    board.reset_state(Logic::FigureColor::Light);
+    board.reset_state(Logic::FigureColor::Dark);
 
     if (p0c == Logic::FigureColor::Light) {
         board.add_figure({Logic::FigureType::Queen, Logic::FigureColor::Light, std::make_unique<Logic::QueenStrategy>()}, {Logic::player0_figures_row, 3});
