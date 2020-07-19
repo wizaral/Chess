@@ -4,11 +4,10 @@
 #include <memory>
 #include <optional>
 
-#include "board.hpp"
+#include "factory.hpp"
 #include "gamestate.hpp"
 #include "input.hpp"
 #include "observer.hpp"
-#include "player.hpp"
 #include "render.hpp"
 
 namespace Chess {
@@ -18,11 +17,13 @@ class ChessGame : public Publisher {
     int player_index_ = 0;
     std::array<std::unique_ptr<Logic::Player>, 2> players_;
 
+    std::unique_ptr<FigureFactory> factory_;
     std::unique_ptr<Render> render_;
     std::unique_ptr<DataInput> input_;
 
 public:
     ChessGame(std::array<std::unique_ptr<Logic::Player>, 2> arr,
+        std::unique_ptr<FigureFactory> factory,
         std::unique_ptr<Render> render,
         std::unique_ptr<DataInput> input);
 
@@ -31,8 +32,6 @@ public:
 
 private:
     void validate() const;
-    void spawn_pawns(int row, Logic::FigureColor color, int direction);
-    void spawn_figures(int row, Logic::FigureColor color);
 
     Logic::GameState logic(Logic::Move move);
     Logic::Player *get_current_player();

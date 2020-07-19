@@ -3,58 +3,24 @@
 namespace Chess {
 
 ChessGame::ChessGame(std::array<std::unique_ptr<Logic::Player>, 2> arr,
+            std::unique_ptr<FigureFactory> factory,
             std::unique_ptr<Render> render,
             std::unique_ptr<DataInput> input)
     : players_(std::move(arr))
+    , factory_(std::move(factory))
     , render_(std::move(render))
     , input_(std::move(input)) {
     validate();
-    init_game();
 }
 
 void ChessGame::init_game() {
-    Logic::FigureColor p0c = players_[0]->color(), p1c = players_[1]->color();
-
-    if (p0c == Logic::FigureColor::Light) {
-        board_.add_figure({Logic::FigureType::Queen, Logic::FigureColor::Light, std::make_unique<Logic::QueenStrategy>()}, {Logic::player0_figures_row, 3});
-        board_.add_figure({Logic::FigureType::King, Logic::FigureColor::Light, std::make_unique<Logic::KingStrategy>()}, {Logic::player0_figures_row, 4});
-        board_.add_figure({Logic::FigureType::Queen, Logic::FigureColor::Dark, std::make_unique<Logic::QueenStrategy>()}, {Logic::player1_figures_row, 3});
-        board_.add_figure({Logic::FigureType::King, Logic::FigureColor::Dark, std::make_unique<Logic::KingStrategy>()}, {Logic::player1_figures_row, 4});
-    } else {
-        board_.add_figure({Logic::FigureType::Queen, Logic::FigureColor::Dark, std::make_unique<Logic::QueenStrategy>()}, {Logic::player0_figures_row, 4});
-        board_.add_figure({Logic::FigureType::King, Logic::FigureColor::Dark, std::make_unique<Logic::KingStrategy>()}, {Logic::player0_figures_row, 3});
-        board_.add_figure({Logic::FigureType::Queen, Logic::FigureColor::Light, std::make_unique<Logic::QueenStrategy>()}, {Logic::player1_figures_row, 4});
-        board_.add_figure({Logic::FigureType::King, Logic::FigureColor::Light, std::make_unique<Logic::KingStrategy>()}, {Logic::player1_figures_row, 3});
-    }
-
-    spawn_figures(Logic::player0_figures_row, p0c);
-    spawn_pawns(Logic::player0_pawns_row, p0c, Logic::player0_step_direction);
-
-    spawn_figures(Logic::player1_figures_row, p1c);
-    spawn_pawns(Logic::player1_pawns_row, p1c, Logic::player1_step_direction);
+    factory_->init_game(board_, player_index_, players_, this);
 }
 
 void ChessGame::validate() const {
-    if (players_[0]->color() == players_[1]->color())
+    if (players_[0]->color() == players_[1]->color()) {
         throw std::logic_error("Players have same figure colors");
-}
-
-void ChessGame::spawn_pawns(int row, Logic::FigureColor color, int direction) {
-    for (int i = 0; i < Logic::board_rows; ++i) {
-        board_.add_figure({Logic::FigureType::Pawn, color, std::make_unique<Logic::PawnStrategy>(this, direction)}, {row, i});
-        subscribe(static_cast<Logic::PawnStrategy *>(board_.get_figure({row, i})->strategy()));
     }
-}
-
-void ChessGame::spawn_figures(int row, Logic::FigureColor color) {
-    board_.add_figure({Logic::FigureType::Rook, color, std::make_unique<Logic::RookStrategy>()}, {row, 0});
-    board_.add_figure({Logic::FigureType::Rook, color, std::make_unique<Logic::RookStrategy>()}, {row, 7});
-
-    board_.add_figure({Logic::FigureType::Knight, color, std::make_unique<Logic::KnightStrategy>()}, {row, 1});
-    board_.add_figure({Logic::FigureType::Knight, color, std::make_unique<Logic::KnightStrategy>()}, {row, 6});
-
-    board_.add_figure({Logic::FigureType::Bishop, color, std::make_unique<Logic::BishopStrategy>()}, {row, 2});
-    board_.add_figure({Logic::FigureType::Bishop, color, std::make_unique<Logic::BishopStrategy>()}, {row, 5});
 }
 
 void ChessGame::transform_pawn(Logic::Position pos) {
