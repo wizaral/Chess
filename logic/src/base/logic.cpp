@@ -52,8 +52,8 @@ bool ChessGame::is_check(Logic::FigureColor color, Logic::Move move) {
 void ChessGame::castling(Logic::FigureColor color, Logic::Move move) {
     int row = move.from().row();
 
-    if ((row == Logic::player0_figures_row && color == Logic::FigureColor::Light)
-        || (row == Logic::player1_figures_row && color == Logic::FigureColor::Dark)) {
+    if ((row == Logic::player0_figures_row && color == Logic::FigureColor::White)
+        || (row == Logic::player1_figures_row && color == Logic::FigureColor::Black)) {
         if (move.cols() == 3) {
             // short
             board_.move_figure({ {row, 4}, {row, 6} }); // king
@@ -85,25 +85,25 @@ void ChessGame::castling(Logic::FigureColor color, Logic::Move move) {
 }
 
 void ChessGame::update_check_state() {
-    std::vector<Logic::Position> state_light, state_dark;
+    std::vector<Logic::Position> state_white, state_black;
 
     for (int i = 0; i < Logic::board_rows; ++i) {
         for (int j = 0; j < Logic::board_cols; ++j) {
             if (auto f = board_.get_figure({i, j}); f != nullptr) {
-                if (f->color() == Logic::FigureColor::Light) {
-                    f->strategy()->update_occupation(board_, Logic::Position{i, j}, state_light);
+                if (f->color() == Logic::FigureColor::White) {
+                    f->strategy()->update_occupation(board_, Logic::Position{i, j}, state_white);
                 } else {
-                    f->strategy()->update_occupation(board_, Logic::Position{i, j}, state_dark);
+                    f->strategy()->update_occupation(board_, Logic::Position{i, j}, state_black);
                 }
             }
         }
     }
 
-    board_.reset_state(Logic::FigureColor::Light);
-    board_.update_state(state_light, Logic::FigureColor::Light);
+    board_.reset_state(Logic::FigureColor::White);
+    board_.update_state(state_white, Logic::FigureColor::White);
 
-    board_.reset_state(Logic::FigureColor::Dark);
-    board_.update_state(state_dark, Logic::FigureColor::Dark);
+    board_.reset_state(Logic::FigureColor::Black);
+    board_.update_state(state_black, Logic::FigureColor::Black);
 }
 
 void ChessGame::try_transform_pawns() {

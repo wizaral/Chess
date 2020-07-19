@@ -13,8 +13,8 @@ enum class FigureType {
 };
 
 enum class FigureColor {
-    Light,
-    Dark,
+    White,
+    Black,
 };
 
 FigureColor operator!(FigureColor color);

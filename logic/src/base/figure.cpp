@@ -4,7 +4,7 @@
 namespace Chess::Logic {
 
 FigureColor operator!(FigureColor color) {
-    return color == Logic::FigureColor::Light ? Logic::FigureColor::Dark : Logic::FigureColor::Light;
+    return color == Logic::FigureColor::White ? Logic::FigureColor::Black : Logic::FigureColor::White;
 }
 
 Figure::Figure(FigureType type, FigureColor color, std::unique_ptr<Strategy> st)

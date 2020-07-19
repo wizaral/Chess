@@ -26,8 +26,8 @@ private:
     };
 
     inline static const std::map<Chess::Logic::FigureColor, char> colors{
-        {Chess::Logic::FigureColor::Light, 'w'},
-        {Chess::Logic::FigureColor::Dark, 'b'},
+        {Chess::Logic::FigureColor::White, 'w'},
+        {Chess::Logic::FigureColor::Black, 'b'},
     };
 
     inline const static std::map<Chess::Logic::GameState, std::string> states{

@@ -23,15 +23,15 @@ const Board::Field<std::unique_ptr<Figure>> &Board::figures() const {
 }
 
 bool Board::state(Position pos, FigureColor color) const {
-    if (color == FigureColor::Light)
-        return check_state_light_[pos.row()][pos.col()];
-    return check_state_dark_[pos.row()][pos.col()];
+    if (color == FigureColor::White)
+        return check_state_white_[pos.row()][pos.col()];
+    return check_state_black_[pos.row()][pos.col()];
 }
 
 const Board::Field<bool> &Board::state(FigureColor color) const {
-    if (color == FigureColor::Light)
-        return check_state_light_;
-    return check_state_dark_;
+    if (color == FigureColor::White)
+        return check_state_white_;
+    return check_state_black_;
 }
 
 void Board::add_figure(Figure figure, Position pos) {
@@ -55,23 +55,23 @@ void Board::clear_figures() {
 }
 
 void Board::reset_state(FigureColor color) {
-    if (color == FigureColor::Light) {
-        for (auto &i : check_state_light_)
+    if (color == FigureColor::White) {
+        for (auto &i : check_state_white_)
             i.fill(false);
     } else {
-        for (auto &i : check_state_dark_)
+        for (auto &i : check_state_black_)
             i.fill(false);
     }
 }
 
 void Board::update_state(const std::vector<Position> &positions, FigureColor color) {
-    if (color == FigureColor::Light) {
+    if (color == FigureColor::White) {
         for (const auto &i : positions) {
-            check_state_light_[i.row()][i.col()] = true;
+            check_state_white_[i.row()][i.col()] = true;
         }
     } else {
         for (const auto &i : positions) {
-            check_state_dark_[i.row()][i.col()] = true;
+            check_state_black_[i.row()][i.col()] = true;
         }
     }
 }
