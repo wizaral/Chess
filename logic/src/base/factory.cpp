@@ -7,8 +7,12 @@ namespace Chess {
 void ClassicFactory::init_game(Logic::Board &board, int &player_index, Publisher *publisher) {
     player_index = 0;
     board.clear_figures();
-    board.reset_state(Logic::FigureColor::White);
-    board.reset_state(Logic::FigureColor::Black);
+
+    board.reset_move_state(Logic::FigureColor::White);
+    board.reset_move_state(Logic::FigureColor::Black);
+
+    board.reset_check_state(Logic::FigureColor::White);
+    board.reset_check_state(Logic::FigureColor::Black);
 
     spawn_figures(board, Logic::white_figures_row, Logic::FigureColor::White);
     spawn_figures(board, Logic::black_figures_row, Logic::FigureColor::Black);

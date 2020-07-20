@@ -2,7 +2,7 @@
 
 namespace Chess::Logic {
 
-GameState BishopStrategy::validate_move(const Figure &figure, const Board &board, const Move &move) {
+GameState BishopStrategy::validate_move(const Figure &figure, const Board &board, const Move &move) const {
     int rows = move.rows();
     int cols = move.cols();
 
@@ -66,5 +66,11 @@ void BishopStrategy::update_occupation(const Board &board, const Position &pos, 
         }
     }
 }
+
+void BishopStrategy::update_movement(const Figure &figure, const Board &board, const Position &pos, std::vector<Position> &coords) const {
+    update_occupation(board, pos, coords);
+}
+
+void BishopStrategy::move_update(const Move &move) {}
 
 } // namespace Chess::Logic

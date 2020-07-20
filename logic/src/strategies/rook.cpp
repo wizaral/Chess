@@ -2,7 +2,7 @@
 
 namespace Chess::Logic {
 
-GameState RookStrategy::validate_move(const Figure &figure, const Board &board, const Move &move) {
+GameState RookStrategy::validate_move(const Figure &figure, const Board &board, const Move &move) const {
     int rows = move.rows();
     int cols = move.cols();
 
@@ -26,8 +26,6 @@ GameState RookStrategy::validate_move(const Figure &figure, const Board &board, 
             if (other != nullptr && other->color() == figure.color()) {
                 return GameState::OtherFigureOnPath;
             }
-
-            state_ = MoveState::NormalMove;
             return GameState::NormalMove;
         }
 
@@ -39,10 +37,6 @@ GameState RookStrategy::validate_move(const Figure &figure, const Board &board, 
 
 RookStrategy::MoveState RookStrategy::state() const {
     return state_;
-}
-
-void RookStrategy::castling_update() {
-    state_ = MoveState::NormalMove;
 }
 
 void RookStrategy::update_occupation(const Board &board, const Position &pos, std::vector<Position> &coords) const {
@@ -75,6 +69,14 @@ void RookStrategy::update_occupation(const Board &board, const Position &pos, st
             break;
         }
     }
+}
+
+void RookStrategy::update_movement(const Figure &figure, const Board &board, const Position &pos, std::vector<Position> &coords) const {
+    update_occupation(board, pos, coords);
+}
+
+void RookStrategy::move_update(const Move &move) {
+    state_ = MoveState::NormalMove;
 }
 
 } // namespace Chess::Logic

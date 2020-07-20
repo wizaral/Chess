@@ -33,15 +33,16 @@ public:
 private:
     void validate() const;
 
-    Logic::GameState logic(Logic::Move move);
+    Logic::GameState logic(const Logic::Move &move);
     Logic::Player *get_current_player();
 
-    Logic::GameState validate_move(Logic::Move move, Logic::FigureColor color) const;
-    bool is_check(Logic::FigureColor color, Logic::Move move);
+    Logic::GameState validate_move(const Logic::Move &move, Logic::FigureColor color) const;
+    bool is_check(Logic::FigureColor color, const Logic::Move &move);
     bool is_check(Logic::FigureColor color) const;
 
-    void castling(Logic::FigureColor color, Logic::Move move);
+    void castling(Logic::FigureColor color, const Logic::Move &move);
     void update_check_state();
+    void update_move_state();
 
     void try_transform_pawns();
     void transform_pawn(Logic::Position pos);

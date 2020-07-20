@@ -2,7 +2,7 @@
 
 namespace Chess::Logic {
 
-GameState KnightStrategy::validate_move(const Figure &figure, const Board &board, const Move &move) {
+GameState KnightStrategy::validate_move(const Figure &figure, const Board &board, const Move &move) const {
     int rows = move.rows();
     int cols = move.cols();
 
@@ -45,5 +45,11 @@ void KnightStrategy::update_occupation(const Board &board, const Position &pos, 
         coords.emplace_back(row - 1, col - 2);
     }
 }
+
+void KnightStrategy::update_movement(const Figure &figure, const Board &board, const Position &pos, std::vector<Position> &coords) const {
+    update_occupation(board, pos, coords);
+}
+
+void KnightStrategy::move_update(const Move &move) {}
 
 } // namespace Chess::Logic

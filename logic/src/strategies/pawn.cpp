@@ -25,7 +25,7 @@ void PawnStrategy::update() {
     }
 }
 
-GameState PawnStrategy::validate_move(const Figure &figure, const Board &board, const Move &move) {
+GameState PawnStrategy::validate_move(const Figure &figure, const Board &board, const Move &move) const {
     Position from = move.from(), to = move.to();
 
     if ((direction_ > 0 && to.row() <= from.row()) || (direction_ < 0 && to.row() >= from.row())) {
@@ -38,19 +38,13 @@ GameState PawnStrategy::validate_move(const Figure &figure, const Board &board, 
     if (from.row() + direction_ == to.row() && check_diagonal(move)) {
         if (other != nullptr) {
             if (other->color() == other_color) {
-                state_ = MoveState::NormalMove;
                 return GameState::NormalMove;
             } else {
                 return GameState::OtherFigureOnPath;
             }
         } else /* if (other == nullptr) */ {
             // En passant
-            GameState gs = check_pawn(board.get_figure({to.row() - direction_, to.col()}), other_color);
-
-            if (gs == GameState::NormalMove) {
-                state_ = MoveState::NormalMove;
-            }
-            return gs;
+            return check_pawn(board.get_figure({to.row() - direction_, to.col()}), other_color);
         }
     }
     // double move
@@ -59,13 +53,11 @@ GameState PawnStrategy::validate_move(const Figure &figure, const Board &board, 
         if (board.get_figure({from.row() + direction_, to.col()}) != nullptr) {
             return GameState::OtherFigureOnPath;
         }
-        state_ = MoveState::DoubleMove;
         return GameState::NormalMove;
     }
     // standard move
     if (from.row() + direction_ == to.row() && from.col() == to.col()) {
         if (other == nullptr) {
-            state_ = MoveState::NormalMove;
             return GameState::NormalMove;
         } else {
             return GameState::OtherFigureOnPath;
@@ -77,17 +69,41 @@ GameState PawnStrategy::validate_move(const Figure &figure, const Board &board, 
 void PawnStrategy::update_occupation(const Board &board, const Position &pos, std::vector<Position> &coords) const {
     int row = pos.row(), col = pos.col();
 
-    if (row + direction_ < board_rows && row + direction_ >= 0) {
+    if (int dest = row + direction_; dest < board_rows && dest >= 0) {
         if (col + 1 < board_cols) {
-            coords.emplace_back(row + direction_, col + 1);
+            coords.emplace_back(dest, col + 1);
         }
         if (col - 1 >= 0) {
-            coords.emplace_back(row + direction_, col - 1);
+            coords.emplace_back(dest, col - 1);
         }
     }
 }
 
-GameState PawnStrategy::check_pawn(Figure *figure, FigureColor color) {
+void PawnStrategy::update_movement(const Figure &figure, const Board &board, const Position &pos, std::vector<Position> &coords) const {
+    int row = pos.row(), col = pos.col();
+    std::array<Position, 4> positions{
+        Position{row + direction_, col + 1},
+        Position{row + direction_, col - 1},
+        Position{row + 2 * direction_, col},
+        Position{row + direction_, col},
+    };
+
+    for (auto i : positions) {
+        if (Position::validation(i) && validate_move(figure, board, {pos, i}) == GameState::NormalMove) {
+            coords.push_back(i);
+        }
+    }
+}
+
+void PawnStrategy::move_update(const Move &move) {
+    if (move.rows() > 1) {
+        state_ = MoveState::DoubleMove;
+    } else {
+        state_ = MoveState::NormalMove;
+    }
+}
+
+GameState PawnStrategy::check_pawn(Figure *figure, FigureColor color) const {
     if (figure != nullptr && figure->color() == color && figure->type() == FigureType::Pawn) {
         if ((static_cast<PawnStrategy *>(figure->strategy()))->state() == PawnStrategy::MoveState::EnPassant) {
             return GameState::NormalMove;
@@ -97,7 +113,7 @@ GameState PawnStrategy::check_pawn(Figure *figure, FigureColor color) {
     return GameState::WrongFigureMove;
 }
 
-bool PawnStrategy::check_diagonal(const Move &move) {
+bool PawnStrategy::check_diagonal(const Move &move) const {
     return move.from().col() + 1 == move.to().col() || move.from().col() - 1 == move.to().col();
 }
 

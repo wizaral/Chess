@@ -2,14 +2,13 @@
 
 namespace Chess::Logic {
 
-GameState KingStrategy::validate_move(const Figure &figure, const Board &board, const Move &move) {
+GameState KingStrategy::validate_move(const Figure &figure, const Board &board, const Move &move) const {
     Figure *other = board.get_figure(move.to());
     int rows = move.rows();
     int cols = move.cols();
 
     if (rows == 1 || cols == 1) {
         if (other == nullptr || other->color() != figure.color()) {
-            state_ = MoveState::NormalMove;
             return GameState::NormalMove;
         }
     } else if (other != nullptr && other->type() == FigureType::Rook && other->color() == figure.color()) {
@@ -18,7 +17,7 @@ GameState KingStrategy::validate_move(const Figure &figure, const Board &board, 
     return GameState::WrongFigureMove;
 }
 
-GameState KingStrategy::check_castling(const Figure &figure, const Board &board, const Move &move, Figure *other) {
+GameState KingStrategy::check_castling(const Figure &figure, const Board &board, const Move &move, Figure *other) const {
     FigureColor other_color = !figure.color();
 
     // check first figure move
@@ -56,10 +55,6 @@ GameState KingStrategy::check_castling(const Figure &figure, const Board &board,
     return GameState::FiguresAlreadyMoved;
 }
 
-void KingStrategy::castling_update() {
-    state_ = MoveState::NormalMove;
-}
-
 void KingStrategy::update_occupation(const Board &board, const Position &pos, std::vector<Position> &coords) const {
     int row = pos.row(), col = pos.col();
 
@@ -88,6 +83,14 @@ void KingStrategy::update_occupation(const Board &board, const Position &pos, st
     if (col - 1 >= 0) {
         coords.emplace_back(row, col - 1);
     }
+}
+
+void KingStrategy::update_movement(const Figure &figure, const Board &board, const Position &pos, std::vector<Position> &coords) const {
+    update_occupation(board, pos, coords);
+}
+
+void KingStrategy::move_update(const Move &move) {
+    state_ = MoveState::NormalMove;
 }
 
 } // namespace Chess::Logic

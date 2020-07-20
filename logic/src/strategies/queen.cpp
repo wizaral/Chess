@@ -2,7 +2,7 @@
 
 namespace Chess::Logic {
 
-GameState QueenStrategy::validate_move(const Figure &figure, const Board &board, const Move &move) {
+GameState QueenStrategy::validate_move(const Figure &figure, const Board &board, const Move &move) const {
     int rows = move.rows();
     int cols = move.cols();
 
@@ -24,7 +24,7 @@ GameState QueenStrategy::validate_move(const Figure &figure, const Board &board,
     return GameState::WrongFigureMove;
 }
 
-GameState QueenStrategy::validate(const Figure &figure, const Board &board, const Move &move, int row_inc, int col_inc) {
+GameState QueenStrategy::validate(const Figure &figure, const Board &board, const Move &move, int row_inc, int col_inc) const {
     int pos_row = move.from().row();
     int pos_col = move.from().col();
 
@@ -51,6 +51,12 @@ void QueenStrategy::update_occupation(const Board &board, const Position &pos, s
     bishop_occupation(board, pos, coords);
     rook_occupation(board, pos, coords);
 }
+
+void QueenStrategy::update_movement(const Figure &figure, const Board &board, const Position &pos, std::vector<Position> &coords) const {
+    update_occupation(board, pos, coords);
+}
+
+void QueenStrategy::move_update(const Move &move) {}
 
 void QueenStrategy::bishop_occupation(const Board &board, const Position &pos, std::vector<Position> &coords) const {
     int row = pos.row(), col = pos.col();
