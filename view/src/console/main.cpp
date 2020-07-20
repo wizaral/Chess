@@ -7,8 +7,8 @@
 
 int main() {
     Chess::ChessGame game({
-        std::make_unique<Chess::Logic::Player>(Chess::Logic::FigureColor::Light, "light"),
-        std::make_unique<Chess::Logic::Player>(Chess::Logic::FigureColor::Dark, "dark"),
+        std::make_unique<Chess::Logic::Player>(Chess::Logic::FigureColor::White, "white"),
+        std::make_unique<Chess::Logic::Player>(Chess::Logic::FigureColor::Black, "black"),
         }, std::make_unique<Chess::ClassicFactory>(), std::make_unique<ConsoleRender>(), std::make_unique<ConsoleInput>());
 
     game.init_game();

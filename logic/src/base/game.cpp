@@ -77,7 +77,7 @@ void ChessGame::unsubscribe(Subscriber *sub) {
 
 void ChessGame::notify() {
     for (auto i : subs_) {
-        i->update();
+        i->update(Subscriber::MessageType::Notify);
     }
 }
 
