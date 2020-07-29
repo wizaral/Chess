@@ -4,6 +4,7 @@ namespace Chess::Logic {
 
 bool is_move(GameState gstate) {
     return gstate == GameState::NormalMove
+        || gstate == GameState::EnPassant
         || gstate == GameState::KingCastling
         || gstate == GameState::QueenCastling;
 }

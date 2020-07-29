@@ -41,6 +41,8 @@ private:
     bool is_check(Logic::FigureColor color) const;
 
     void castling(Logic::FigureColor color, const Logic::Move &move);
+    void en_passant(Logic::FigureColor color, const Logic::Move &move);
+
     void update_check_state();
     void update_move_state();
 

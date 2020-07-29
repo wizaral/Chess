@@ -7,8 +7,7 @@ Logic::Player *ChessGame::get_current_player() {
 }
 
 Logic::GameState ChessGame::validate_move(const Logic::Move &move, Logic::FigureColor color) const {
-    if (Logic::Position::validation(move.from()) == false
-        || Logic::Position::validation(move.to()) == false) {
+    if (Logic::Position::validation(move.from()) == false || Logic::Position::validation(move.to()) == false) {
         return Logic::GameState::OutOfBounds;
     }
 
@@ -59,8 +58,7 @@ void ChessGame::castling(Logic::FigureColor color, const Logic::Move &move) {
 
         (static_cast<Logic::KingStrategy *>(board_.get_figure({row, 6})->strategy()))->move_update(move);
         (static_cast<Logic::RookStrategy *>(board_.get_figure({row, 5})->strategy()))->move_update(move);
-    }
-    else /* if (move.cols() == 4) */ {
+    } else /* if (move.cols() == 4) */ {
         // long (queen) castling
         board_.move_figure({{row, 4}, {row, 2}}); // king
         board_.move_figure({{row, 0}, {row, 3}}); // rook
@@ -68,6 +66,11 @@ void ChessGame::castling(Logic::FigureColor color, const Logic::Move &move) {
         (static_cast<Logic::KingStrategy *>(board_.get_figure({row, 2})->strategy()))->move_update(move);
         (static_cast<Logic::RookStrategy *>(board_.get_figure({row, 3})->strategy()))->move_update(move);
     }
+}
+
+void ChessGame::en_passant(Logic::FigureColor color, const Logic::Move &move) {
+    board_.move_figure(move);
+    board_.remove_figure({move.from().row(), move.to().col()});
 }
 
 void ChessGame::update_check_state() {
@@ -214,6 +217,12 @@ Logic::GameState ChessGame::logic(const Logic::Move &move) {
         } else {
             figure->strategy()->move_update(move);
             board_.move_figure(move);
+        }
+    } else if (gstate == Logic::GameState::EnPassant) {
+        if (is_check(color, move)) {
+            return check ? Logic::GameState::KingInCheck : Logic::GameState::KingWillBeInCheck;
+        } else {
+            en_passant(color, move);
         }
     } else /* if (gstate == Logic::GameState::AnyCastling) */ {
         castling(color, move);

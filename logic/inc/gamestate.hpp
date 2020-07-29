@@ -4,6 +4,7 @@ namespace Chess::Logic {
 
 enum class GameState {
     NormalMove,
+    EnPassant,
     KingCastling,
     QueenCastling,
 

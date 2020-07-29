@@ -106,7 +106,7 @@ void PawnStrategy::move_update(const Move &move) {
 GameState PawnStrategy::check_pawn(Figure *figure, FigureColor color) const {
     if (figure != nullptr && figure->color() == color && figure->type() == FigureType::Pawn) {
         if ((static_cast<PawnStrategy *>(figure->strategy()))->state() == PawnStrategy::MoveState::EnPassant) {
-            return GameState::NormalMove;
+            return GameState::EnPassant;
         }
         return GameState::FailEnPassant;
     }
