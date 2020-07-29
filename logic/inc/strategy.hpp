@@ -33,7 +33,7 @@ public:
     PawnStrategy(Publisher *publisher, FigureColor color);
     PawnStrategy(Publisher *publisher, FigureColor color, MoveState state);
     MoveState state() const;
-    void update() override;
+    void update(MessageType type) override;
 
     GameState validate_move(const Figure &figure, const Board &board, const Move &move) const override;
     void move_update(const Move &move) override;
