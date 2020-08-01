@@ -12,8 +12,8 @@ void ConsoleRender::show_board(const Chess::Logic::Board &board) {
     }
     std::cout << '\n';
 
-    for (int row = 0; row < Chess::Logic::board_rows; ++row) {
-        std::cout << 8 - row << "|";
+    for (int row = Chess::Logic::board_rows - 1; row > -1; --row) {
+        std::cout << row + 1 << "|";
 
         for (int col = 0; col < Chess::Logic::board_cols; ++col) {
             if (auto f = board.get_figure({row, col}); f != nullptr) {
