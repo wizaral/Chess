@@ -16,10 +16,8 @@ private:
     void set_player(std::ifstream &ifile, int &player_index);
     void get_last_move(std::ifstream &ifile);
 
-    void spawn_figure(Chess::Logic::Board &board, Publisher *publisher, const std::string &f, int row, int col);
-    void last_move_figure(Chess::Logic::Board &board, Publisher *publisher, const std::string &f, int row, int col);
-
-    // void spawn_pawn();
-    // void spawn_king();
-    // void spawn_rook();
+    void spawn_figure(Chess::Logic::Board &board, Publisher *publisher, const std::string &figure, int row, int col);
+    void spawn_pawn(Chess::Logic::Board &board, Chess::Logic::FigureColor color, const std::string &figure, int row, int col, Publisher *publisher);
+    void spawn_king(Chess::Logic::Board &board, Chess::Logic::FigureColor color, const std::string &figure, int row, int col);
+    void spawn_rook(Chess::Logic::Board &board, Chess::Logic::FigureColor color, const std::string &figure, int row, int col);
 };
