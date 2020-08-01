@@ -26,6 +26,9 @@ VIEW_FILES = \
 	console\render \
 
 TESTS_FILES = \
+	file_factory \
+	input \
+	render \
 	tests\
 
 
