@@ -13,6 +13,7 @@
 namespace Chess {
 
 class ChessGame : public Publisher {
+protected:
     Logic::Board board_;
     int player_index_ = 0;
     std::array<std::unique_ptr<Logic::Player>, 2> players_;
@@ -26,11 +27,12 @@ public:
         std::unique_ptr<FigureFactory> factory,
         std::unique_ptr<Render> render,
         std::unique_ptr<DataInput> input);
+    virtual ~ChessGame() = default;
 
     void init_game();
     void loop();
 
-private:
+protected:
     void validate() const;
 
     Logic::GameState logic(const Logic::Move &move);
