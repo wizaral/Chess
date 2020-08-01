@@ -26,3 +26,4 @@
 # current project
 SFML*
 chess
+!tests/tests/*.txt
