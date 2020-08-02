@@ -391,7 +391,8 @@ MigrationBackup/
 FodyWeavers.xsd
 
 # Visual Studio Code
-*.vscode
+*.vscode/*
+!*.vscode/c_cpp_properties.json
 *.code-workspace
 
 # Local History for Visual Studio Code
