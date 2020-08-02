@@ -1,5 +1,16 @@
 # Chess
-Classic chess game
+**Classic chess game**
 
-# Compilation
-g++ -std=c++17 \*/src/\*\*/\*.cpp -Ilogic/inc -Iview/inc -Ofast -march=native -flto -Wall -Wextra -Werror -Wpedantic -Wno-unused-parameter -o chess
+## Preparing
+**Put dir SFML-2.5.1 that appropriatet to your compiler in the root of project**
+
+## Instalation:
+### Windows:
+**1. open .sln file with `visual studio`**
+**2. choose `project` you need**
+**3. `build` and `run`**
+
+### Linux/Mac:
+**1. graphics mode: `make`**\
+**2. terminal mode: `make terminal`**\
+**3. run tests mode: `make test`**
