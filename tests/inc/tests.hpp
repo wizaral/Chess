@@ -3,6 +3,12 @@
 #include "t_input.hpp"
 #include "file_factory.hpp"
 
+#if defined(_WIN64) || defined(_WIN32)
+#define DIR_SEP "\\"
+#elif defined(__APPLE__) || defined(__linux__)
+#define DIR_SEP "/"
+#endif
+
 class TestGame : public Chess::ChessGame {
 public:
     template<class T>
