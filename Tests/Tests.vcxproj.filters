@@ -45,8 +45,4 @@
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
-  <ItemGroup>
-    <Text Include="tests\00.txt" />
-    <Text Include="tests\01.txt" />
-  </ItemGroup>
 </Project>
