@@ -1,4 +1,4 @@
-#include <SFML/Graphics.hpp>
+#include "game.hpp"
 
 int main() {
     sf::RenderWindow window(sf::VideoMode(200, 200), "SFML works!");
@@ -17,6 +17,4 @@ int main() {
         window.draw(shape);
         window.display();
     }
-
-    return 0;
 }

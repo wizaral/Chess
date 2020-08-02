@@ -27,7 +27,7 @@ void TestRender::show_board(const Chess::Logic::Board &board) {
     std::cout << std::endl;
 }
 
-void TestRender::show_next_step(Chess::Logic::Player* player) {
+void TestRender::show_next_step(Chess::Logic::Player *player) {
     std::cout << player->name() << " move: ";
 }
 

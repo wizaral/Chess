@@ -1,11 +1,11 @@
 #include <iostream>
-#include "c_input.hpp"
-#include "c_render.hpp"
+#include "t_input.hpp"
+#include "t_render.hpp"
 #include "tests.hpp"
 #include "test_runner.hpp"
 
 void test0() {
-    TestGame game = init(".\\tests\\tests\\1.txt");
+    TestGame game = init("tests\\1.txt");
     game.init_game();
     game.render()->show_board(game.board());
 
