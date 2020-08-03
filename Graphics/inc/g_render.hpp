@@ -29,7 +29,7 @@ public:
     void show_board(const Chess::Logic::Board& board) override;
     void show_next_step(Chess::Logic::Player* player) override;
     void show_error(Chess::Logic::GameState state) override;
-    void show_pawn_promotion(Chess::Logic::Position pos) override;
+    void show_pawn_promotion(const Chess::Logic::Board& board, const Chess::Logic::Position &pos) override;
     void show_endgame(Chess::Logic::GameState state, Chess::Logic::Player* winer) override;
 private:
     void load(Sprite &sprt, const std::string &path);

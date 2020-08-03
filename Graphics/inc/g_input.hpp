@@ -9,7 +9,7 @@ class GraphicsInput : public Chess::DataInput {
 public:
     GraphicsInput(sf::RenderWindow &window);
     Chess::Logic::Move get_next_move(Chess::Logic::Player* player) override;
-    Chess::Logic::FigureType promote_figure(Chess::Logic::Player* player, Chess::Logic::Position pos) override;
+    Chess::Logic::FigureType promote_figure(Chess::Logic::Player* player, const Chess::Logic::Position &pos) override;
 private:
    static Chess::Logic::Position transform(const sf::Vector2i &pos);
 };

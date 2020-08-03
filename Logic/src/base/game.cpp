@@ -26,7 +26,7 @@ void ChessGame::validate() const {
 }
 
 void ChessGame::transform_pawn(Logic::Position pos) {
-    render_->show_pawn_promotion(pos);
+    render_->show_pawn_promotion(board_, pos);
     Logic::FigureType ft = input_->promote_figure(get_current_player(), pos);
     Logic::FigureColor fc = get_current_player()->color();
 
