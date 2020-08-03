@@ -5,11 +5,13 @@ namespace Chess {
 ChessGame::ChessGame(std::array<std::unique_ptr<Logic::Player>, 2> arr,
             std::unique_ptr<FigureFactory> factory,
             std::unique_ptr<Render> render,
-            std::unique_ptr<DataInput> input)
+            std::unique_ptr<DataInput> input,
+            std::function<bool()> condition)
     : players_(std::move(arr))
     , factory_(std::move(factory))
     , render_(std::move(render))
-    , input_(std::move(input)) {
+    , input_(std::move(input))
+    , condition_(condition) {
     validate();
 }
 
@@ -49,7 +51,7 @@ void ChessGame::transform_pawn(Logic::Position pos) {
 void ChessGame::loop() {
     Logic::GameState gstate = Logic::GameState::NormalMove;
 
-    for (; !is_endgame(gstate); ++player_index_) {
+    for (; condition_() && !is_endgame(gstate); ++player_index_) {
         render_->show_board(board_);
 
         render_->show_next_step(get_current_player());

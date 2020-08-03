@@ -1,6 +1,7 @@
 #pragma once
 #include <algorithm>
 #include <array>
+#include <functional>
 #include <memory>
 #include <optional>
 
@@ -22,11 +23,14 @@ protected:
     std::unique_ptr<Render> render_;
     std::unique_ptr<DataInput> input_;
 
+    std::function<bool()> condition_;
+
 public:
     ChessGame(std::array<std::unique_ptr<Logic::Player>, 2> arr,
         std::unique_ptr<FigureFactory> factory,
         std::unique_ptr<Render> render,
-        std::unique_ptr<DataInput> input);
+        std::unique_ptr<DataInput> input,
+        std::function<bool()> condition);
     virtual ~ChessGame() = default;
 
     void init_game();
