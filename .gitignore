@@ -12,6 +12,7 @@ test
 
 # preprocessing, object, assembly, prerequisites, debug
 *.[iosd]
+*.ii
 *.lo
 *.slo
 *.obj
