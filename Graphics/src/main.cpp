@@ -1,20 +1,23 @@
-#include "game.hpp"
+#include "g_input.hpp"
+#include "g_render.hpp"
+#include "chess.hpp"
 
 int main() {
-    sf::RenderWindow window(sf::VideoMode(200, 200), "SFML works!");
-    sf::CircleShape shape(100.f);
-    shape.setFillColor(sf::Color::Green);
+    sf::RenderWindow window(sf::VideoMode(window_width, window_height), "Chess", sf::Style::Titlebar | sf::Style::Close);
+    const auto& mode = sf::VideoMode::getDesktopMode();
+    window.setPosition(sf::Vector2i{(static_cast<int>(mode.width) - window_width) / 2, 0});
 
-    while (window.isOpen()) {
-        sf::Event event;
-        while (window.pollEvent(event)) {
-            if (event.type == sf::Event::Closed) {
-                window.close();
-            }
-        }
+    Chess::ChessGame game({
+        std::make_unique<Chess::Logic::Player>(Chess::Logic::FigureColor::White, "white"),
+        std::make_unique<Chess::Logic::Player>(Chess::Logic::FigureColor::Black, "black"),
+        },
+        std::make_unique<Chess::ClassicFactory>(),
+        std::make_unique<GraphicsRender>(window),
+        std::make_unique<GraphicsInput>(window),
+        [&window]() -> bool {
+            return window.isOpen();
+        });
 
-        window.clear();
-        window.draw(shape);
-        window.display();
-    }
+    game.init_game();
+    game.loop();
 }
