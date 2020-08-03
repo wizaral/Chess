@@ -58,8 +58,7 @@ void ChessGame::loop() {
         Logic::Move m = input_->get_next_move(get_current_player());
         gstate = logic(m);
 
-        if (is_error(gstate)) {
-            render_->show_error(gstate);
+        if (render_->show_error(gstate); is_error(gstate)) {
             --player_index_;
         }
     }
