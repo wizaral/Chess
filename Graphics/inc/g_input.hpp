@@ -12,4 +12,5 @@ public:
     Chess::Logic::FigureType promote_figure(Chess::Logic::Player* player, const Chess::Logic::Position &pos) override;
 private:
    static Chess::Logic::Position transform(const sf::Vector2i &pos);
+   static sf::Vector2f transform(const Chess::Logic::Position &pos);
 };

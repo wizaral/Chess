@@ -1,4 +1,5 @@
 #include "g_render.hpp"
+#include <iostream>
 
 GraphicsRender::GraphicsRender(sf::RenderWindow &window) : window_(window) {
     load(board_, "res" DIR_SEP "board.png");
@@ -39,7 +40,7 @@ void GraphicsRender::show_board(const Chess::Logic::Board &board) {
         for (int col = 0; col < Chess::Logic::board_cols; ++col) {
             if (auto f = board.get_figure({row, col}); f != nullptr) {
                 auto &figure = figures_[static_cast<int>(f->color())][static_cast<int>(f->type())].first;
-                figure.setPosition(sf::Vector2f{offset * col, offset * (8 - row)});
+                figure.setPosition(transform(Chess::Logic::Position{ row, col }));
                 window_.draw(figure);
             }
         }
@@ -64,11 +65,11 @@ void GraphicsRender::show_pawn_promotion(const Chess::Logic::Board& board, const
             if (auto f = board.get_figure({ row, col }); f != nullptr) {
                 if (pos.row() == row && pos.col() == col) {
                     auto& promotion = promotions_[static_cast<int>(f->color())].first;
-                    promotion.setPosition(sf::Vector2f{ offset * col, offset * (8 - row) });
+                    promotion.setPosition(transform(Chess::Logic::Position{ row, col }));
                     window_.draw(promotion);
                 } else {
                     auto& figure = figures_[static_cast<int>(f->color())][static_cast<int>(f->type())].first;
-                    figure.setPosition(sf::Vector2f{ offset * col, offset * (8 - row) });
+                    figure.setPosition(transform(Chess::Logic::Position{ row, col }));
                     window_.draw(figure);
                 }
             }
@@ -89,4 +90,15 @@ void GraphicsRender::show_endgame(Chess::Logic::GameState state, Chess::Logic::P
     //    std::cout << "Draw. Game over!" << std::endl;
     //    break;
     //}
+}
+
+Chess::Logic::Position GraphicsRender::transform(const sf::Vector2i& pos) {
+    int off = static_cast<int>(offset);
+    Chess::Logic::Position p{ 8 - pos.y / off, pos.x / off };
+    std::cout << "Pos " << p.row() << ":" << p.col() << std::endl;
+    return p;
+}
+
+sf::Vector2f GraphicsRender::transform(const Chess::Logic::Position& pos) {
+    return { pos.col() * offset, (8 - pos.row()) * offset };
 }

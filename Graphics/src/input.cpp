@@ -33,8 +33,8 @@ Chess::Logic::FigureType GraphicsInput::promote_figure(Chess::Logic::Player *pla
             sf::Vector2i mpos = sf::Mouse::getPosition(window_);
 
             if (auto ppos = transform(mpos); ppos == pos) {
-                int x = mpos.x - ppos.col() * offset;
-                int y = mpos.y - (8 - ppos.row()) * offset;
+                auto [dx, dy] = transform(ppos);
+                int x = mpos.x - dx, y = mpos.y - dy;
 
                 if (x < 50 && y < 50) {
                     type = Chess::Logic::FigureType::Rook;
@@ -55,7 +55,14 @@ Chess::Logic::FigureType GraphicsInput::promote_figure(Chess::Logic::Player *pla
 }
 
 Chess::Logic::Position GraphicsInput::transform(const sf::Vector2i &pos) {
-    Chess::Logic::Position p{7 - ((pos.y - static_cast<int>(offset)) / static_cast<int>(offset)), pos.x / static_cast<int>(offset)};
-    std::cout << p.row() << ":" << p.col() << std::endl;
+    int off = static_cast<int>(offset);
+    Chess::Logic::Position p{8 - pos.y / off, pos.x / off};
+    std::cout << "Pos " << p.row() << ":" << p.col() << std::endl;
+    return p;
+}
+
+sf::Vector2f GraphicsInput::transform(const Chess::Logic::Position& pos) {
+    sf::Vector2f p{ pos.col() * offset, (8 - pos.row()) * offset };
+    std::cout << "Vec " << p.x << ":" << p.y << std::endl;
     return p;
 }

@@ -33,4 +33,6 @@ public:
     void show_endgame(Chess::Logic::GameState state, Chess::Logic::Player* winer) override;
 private:
     void load(Sprite &sprt, const std::string &path);
+    static Chess::Logic::Position transform(const sf::Vector2i& pos);
+    static sf::Vector2f transform(const Chess::Logic::Position& pos);
 };
