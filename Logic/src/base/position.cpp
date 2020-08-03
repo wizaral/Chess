@@ -24,4 +24,8 @@ int Position::col() const {
     return true;
 }
 
+bool operator==(const Position &lhs, const Position &rhs) {
+    return lhs.row_ == rhs.row_ && lhs.col_ == rhs.col_;
+}
+
 } // namespace Chess::Logic
