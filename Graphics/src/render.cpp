@@ -38,9 +38,9 @@ void GraphicsRender::show_board(const Chess::Logic::Board &board) {
     for (int row = Chess::Logic::board_rows - 1; row > -1; --row) {
         for (int col = 0; col < Chess::Logic::board_cols; ++col) {
             if (auto f = board.get_figure({row, col}); f != nullptr) {
-                auto &figure = figures_[static_cast<int>(f->color())][static_cast<int>(f->type())];
-                figure.first.setPosition(sf::Vector2f{offset * col, offset * (8 - row)});
-                window_.draw(figure.first);
+                auto &figure = figures_[static_cast<int>(f->color())][static_cast<int>(f->type())].first;
+                figure.setPosition(sf::Vector2f{offset * col, offset * (8 - row)});
+                window_.draw(figure);
             }
         }
     }
@@ -55,8 +55,26 @@ void GraphicsRender::show_error(Chess::Logic::GameState state) {
     //std::cout << "Error: " << states.at(state) << std::endl;
 }
 
-void GraphicsRender::show_pawn_promotion(Chess::Logic::Position pos) {
-    //std::cout << "Enter first letter of figure type name in uppercase for promotion pawn on [" << (8 - pos.row()) << "][" << static_cast<char>('A' + pos.col()) << "]: ";
+void GraphicsRender::show_pawn_promotion(const Chess::Logic::Board& board, const Chess::Logic::Position &pos) {
+    window_.clear();
+    window_.draw(board_.first);
+
+    for (int row = Chess::Logic::board_rows - 1; row > -1; --row) {
+        for (int col = 0; col < Chess::Logic::board_cols; ++col) {
+            if (auto f = board.get_figure({ row, col }); f != nullptr) {
+                if (pos.row() == row && pos.col() == col) {
+                    auto& promotion = promotions_[static_cast<int>(f->color())].first;
+                    promotion.setPosition(sf::Vector2f{ offset * col, offset * (8 - row) });
+                    window_.draw(promotion);
+                } else {
+                    auto& figure = figures_[static_cast<int>(f->color())][static_cast<int>(f->type())].first;
+                    figure.setPosition(sf::Vector2f{ offset * col, offset * (8 - row) });
+                    window_.draw(figure);
+                }
+            }
+        }
+    }
+    window_.display();
 }
 
 void GraphicsRender::show_endgame(Chess::Logic::GameState state, Chess::Logic::Player *winer) {
