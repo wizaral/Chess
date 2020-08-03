@@ -15,19 +15,20 @@ PawnStrategy::MoveState PawnStrategy::state() const {
     return state_;
 }
 
-void PawnStrategy::update(MessageType type) {
+bool PawnStrategy::update(MessageType type) {
     if (type == MessageType::Notify) {
         if (state_ == MoveState::DoubleMove) {
             state_ = MoveState::EnPassant;
         } else if (state_ != MoveState::NoMove) {
             state_ = MoveState::NormalMove;
-            publisher_->unsubscribe(this);
             publisher_ = nullptr;
+            return false;
         }
+        return true;
     } else /* if (type MessageType::Destroy ) */ {
-        publisher_->unsubscribe(this);
         publisher_ = nullptr;
     }
+    return false;
 }
 
 GameState PawnStrategy::validate_move(const Figure &figure, const Board &board, const Move &move) const {

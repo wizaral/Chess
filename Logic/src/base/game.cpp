@@ -78,8 +78,12 @@ void ChessGame::unsubscribe(Subscriber *sub) {
 }
 
 void ChessGame::notify() {
-    for (auto i : subs_) {
-        i->update(Subscriber::MessageType::Notify);
+    for (auto it = subs_.begin(); it != subs_.end();) {
+        if ((*it)->update(Subscriber::MessageType::Notify) == false) {
+            it = subs_.erase(it);
+        } else {
+            ++it;
+        }
     }
 }
 

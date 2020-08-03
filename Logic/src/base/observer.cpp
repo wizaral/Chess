@@ -2,11 +2,15 @@
 
 Subscriber::Subscriber(Publisher *publisher)
     : publisher_(publisher) {
-    publisher_->subscribe(this);
+    if (publisher_ != nullptr) {
+        publisher_->subscribe(this);
+    }
 }
 
 Subscriber::~Subscriber() {
-    publisher_->unsubscribe(this);
+    if (publisher_ != nullptr) {
+        publisher_->unsubscribe(this);
+    }
 }
 
 Publisher::~Publisher() {

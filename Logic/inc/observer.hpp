@@ -14,7 +14,7 @@ public:
 
     Subscriber(Publisher *publisher);
     virtual ~Subscriber();
-    virtual void update(MessageType type) = 0;
+    virtual bool update(MessageType type) = 0;
 };
 
 class Publisher {

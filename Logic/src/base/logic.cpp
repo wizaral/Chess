@@ -11,8 +11,7 @@ Logic::GameState ChessGame::validate_move(const Logic::Move &move, Logic::Figure
         return Logic::GameState::OutOfBounds;
     }
 
-    Logic::Figure *figure = board_.get_figure(move.from());
-    if (figure != nullptr) {
+    if (auto figure = board_.get_figure(move.from()); figure != nullptr) {
         if (figure->color() != color) {
             return Logic::GameState::WrongFigureColor;
         }
@@ -228,6 +227,7 @@ Logic::GameState ChessGame::logic(const Logic::Move &move) {
         castling(color, move);
     }
     try_transform_pawns();
+    notify();
 
     if (auto state = is_mate(); is_endgame(state)) {
         return state;
