@@ -1,6 +1,6 @@
 #include "move.hpp"
 
-namespace Chess::Logic {
+namespace Chess {
 
 Move::Move(const Position &from, const Position &to)
     : from_(from), to_(to) {}
@@ -21,4 +21,4 @@ int Move::cols() const {
     return abs(from_.col() - to_.col());
 }
 
-} // namespace Chess::Logic
+} // namespace Chess

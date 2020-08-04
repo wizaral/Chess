@@ -1,6 +1,6 @@
 #include "gamestate.hpp"
 
-namespace Chess::Logic {
+namespace Chess {
 
 bool is_move(GameState gstate) {
     return gstate == GameState::NormalMove
@@ -19,4 +19,4 @@ bool is_error(GameState gstate) {
     return !is_move(gstate) && !is_endgame(gstate);
 }
 
-} // namespace Chess::Logic
+} // namespace Chess

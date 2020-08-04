@@ -1,7 +1,7 @@
 #include "board.hpp"
 #include "strategy.hpp"
 
-namespace Chess::Logic {
+namespace Chess {
 
 Figure *Board::get_figure(Position pos) const {
     return figures_[pos.row()][pos.col()].get();
@@ -100,4 +100,4 @@ void Board::update_move_state(const std::vector<Position> &positions, FigureColo
     }
 }
 
-} // namespace Chess::Logic
+} // namespace Chess

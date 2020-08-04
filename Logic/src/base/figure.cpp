@@ -1,10 +1,10 @@
 #include "figure.hpp"
 #include "strategy.hpp"
 
-namespace Chess::Logic {
+namespace Chess {
 
 FigureColor operator!(FigureColor color) {
-    return color == Logic::FigureColor::White ? Logic::FigureColor::Black : Logic::FigureColor::White;
+    return color == FigureColor::White ? FigureColor::Black : FigureColor::White;
 }
 
 Figure::Figure(FigureType type, FigureColor color, std::unique_ptr<Strategy> st)
@@ -34,4 +34,4 @@ Strategy *Figure::strategy() {
     return st_.get();
 }
 
-} // namespace Chess::Logic
+} // namespace Chess

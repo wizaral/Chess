@@ -3,7 +3,7 @@
 
 #include "position.hpp"
 
-namespace Chess::Logic {
+namespace Chess {
 
 class Move {
     Position from_, to_;
@@ -18,4 +18,4 @@ public:
     int cols() const;
 };
 
-} // namespace Chess::Logic
+} // namespace Chess

@@ -1,7 +1,7 @@
 #pragma once
 #include <memory>
 
-namespace Chess::Logic {
+namespace Chess {
 
 enum class FigureType {
     Pawn,
@@ -40,4 +40,4 @@ public:
     Strategy *strategy();
 };
 
-} // namespace Chess::Logic
+} // namespace Chess

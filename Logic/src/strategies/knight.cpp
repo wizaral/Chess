@@ -1,6 +1,6 @@
 #include "strategy.hpp"
 
-namespace Chess::Logic {
+namespace Chess {
 
 GameState KnightStrategy::validate_move(const Figure &figure, const Board &board, const Move &move) const {
     int rows = move.rows();
@@ -52,4 +52,4 @@ void KnightStrategy::update_movement(const Figure &figure, const Board &board, c
 
 void KnightStrategy::move_update(const Move &move) {}
 
-} // namespace Chess::Logic
+} // namespace Chess

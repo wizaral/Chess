@@ -3,8 +3,8 @@
 
 class ConsoleInput : public Chess::DataInput {
 public:
-    Chess::Logic::Move get_next_move(Chess::Logic::Player *player) override;
-    Chess::Logic::FigureType promote_figure(Chess::Logic::Player *player, Chess::Logic::Position pos) override;
+    Chess::Move get_next_move(Chess::Player *player) override;
+    Chess::FigureType promote_figure(Chess::Player *player, Chess::Position pos) override;
 private:
-    static Chess::Logic::Position transform(int row, char col);
+    static Chess::Position transform(int row, char col);
 };

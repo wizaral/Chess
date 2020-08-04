@@ -1,6 +1,6 @@
 #pragma once
 
-namespace Chess::Logic {
+namespace Chess {
 
 enum class GameState {
     NormalMove,
@@ -35,4 +35,4 @@ bool is_move(GameState gstate);
 bool is_endgame(GameState gstate);
 bool is_error(GameState gstate);
 
-} // namespace Chess::Logic
+} // namespace Chess

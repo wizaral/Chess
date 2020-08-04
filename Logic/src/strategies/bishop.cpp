@@ -1,6 +1,6 @@
 #include "strategy.hpp"
 
-namespace Chess::Logic {
+namespace Chess {
 
 GameState BishopStrategy::validate_move(const Figure &figure, const Board &board, const Move &move) const {
     int rows = move.rows();
@@ -73,4 +73,4 @@ void BishopStrategy::update_movement(const Figure &figure, const Board &board, c
 
 void BishopStrategy::move_update(const Move &move) {}
 
-} // namespace Chess::Logic
+} // namespace Chess

@@ -1,3 +1,3 @@
 #pragma once
-#include "game.hpp"
+#include "logic.hpp"
 #include "strategy.hpp"

@@ -2,7 +2,7 @@
 
 #include "c_input.hpp"
 
-Chess::Logic::Move ConsoleInput::get_next_move(Chess::Logic::Player *player) {
+Chess::Move ConsoleInput::get_next_move(Chess::Player *player) {
     std::string input;
     std::cin >> input;
 
@@ -12,22 +12,22 @@ Chess::Logic::Move ConsoleInput::get_next_move(Chess::Logic::Player *player) {
     return {transform(row_from, col_from), transform(row_to, col_to)};
 }
 
-Chess::Logic::FigureType ConsoleInput::promote_figure(Chess::Logic::Player *player, Chess::Logic::Position pos) {
+Chess::FigureType ConsoleInput::promote_figure(Chess::Player *player, Chess::Position pos) {
     char type;
     std::cin >> type;
 
     switch (type) {
     case 'B':
-        return Chess::Logic::FigureType::Bishop;
+        return Chess::FigureType::Bishop;
     case 'N':
-        return Chess::Logic::FigureType::Knight;
+        return Chess::FigureType::Knight;
     case 'R':
-        return Chess::Logic::FigureType::Rook;
+        return Chess::FigureType::Rook;
     default:
-        return Chess::Logic::FigureType::Queen;
+        return Chess::FigureType::Queen;
     }
 }
 
-Chess::Logic::Position ConsoleInput::transform(int row, char col) {
+Chess::Position ConsoleInput::transform(int row, char col) {
     return {row - 49, (int)col - 97};
 }

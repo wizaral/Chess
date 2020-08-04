@@ -1,6 +1,6 @@
 #include "strategy.hpp"
 
-namespace Chess::Logic {
+namespace Chess {
 
 PawnStrategy::PawnStrategy(Publisher *publisher, FigureColor color) : Subscriber(publisher) {
     direction_ = color == FigureColor::White ? white_step_direction : black_step_direction;
@@ -123,4 +123,4 @@ bool PawnStrategy::check_diagonal(const Move &move) const {
     return move.from().col() + 1 == move.to().col() || move.from().col() - 1 == move.to().col();
 }
 
-} // namespace Chess::Logic
+} // namespace Chess

@@ -1,6 +1,6 @@
 #include "strategy.hpp"
 
-namespace Chess::Logic {
+namespace Chess {
 
 GameState RookStrategy::validate_move(const Figure &figure, const Board &board, const Move &move) const {
     int rows = move.rows();
@@ -79,4 +79,4 @@ void RookStrategy::move_update(const Move &move) {
     state_ = MoveState::NormalMove;
 }
 
-} // namespace Chess::Logic
+} // namespace Chess

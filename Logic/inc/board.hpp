@@ -7,7 +7,7 @@
 #include "figure.hpp"
 #include "move.hpp"
 
-namespace Chess::Logic {
+namespace Chess {
 
 class Board {
     template <class T>
@@ -47,4 +47,4 @@ public:
     void update_move_state(const std::vector<Position> &positions, FigureColor color);
 };
 
-} // namespace Chess::Logic
+} // namespace Chess

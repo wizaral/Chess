@@ -8,7 +8,7 @@
 #include "move.hpp"
 #include "observer.hpp"
 
-namespace Chess::Logic {
+namespace Chess {
 
 class Strategy {
 public:
@@ -117,4 +117,4 @@ private:
     GameState check_castling(const Figure &figure, const Board &board, const Move &move, Figure *other) const;
 };
 
-} // namespace Chess::Logic
+} // namespace Chess

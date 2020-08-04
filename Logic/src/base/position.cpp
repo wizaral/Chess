@@ -1,7 +1,7 @@
 #include "position.hpp"
 #include "definitions.hpp"
 
-namespace Chess::Logic {
+namespace Chess {
 
 Position::Position(int row, int col)
     : row_(row), col_(col) {}
@@ -28,4 +28,4 @@ bool operator==(const Position &lhs, const Position &rhs) {
     return lhs.row_ == rhs.row_ && lhs.col_ == rhs.col_;
 }
 
-} // namespace Chess::Logic
+} // namespace Chess

@@ -1,6 +1,6 @@
 #include "strategy.hpp"
 
-namespace Chess::Logic {
+namespace Chess {
 
 GameState QueenStrategy::validate_move(const Figure &figure, const Board &board, const Move &move) const {
     int rows = move.rows();
@@ -122,4 +122,4 @@ void QueenStrategy::rook_occupation(const Board &board, const Position &pos, std
     }
 }
 
-} // namespace Chess::Logic
+} // namespace Chess

@@ -1,6 +1,6 @@
 #include "strategy.hpp"
 
-namespace Chess::Logic {
+namespace Chess {
 
 GameState KingStrategy::validate_move(const Figure &figure, const Board &board, const Move &move) const {
     Figure *other = board.get_figure(move.to());
@@ -93,4 +93,4 @@ void KingStrategy::move_update(const Move &move) {
     state_ = MoveState::NormalMove;
 }
 
-} // namespace Chess::Logic
+} // namespace Chess

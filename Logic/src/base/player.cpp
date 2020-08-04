@@ -1,6 +1,6 @@
 #include "player.hpp"
 
-namespace Chess::Logic {
+namespace Chess {
 
 Player::Player(FigureColor color, std::string name)
     : color_(color), name_(name) {}
@@ -13,4 +13,4 @@ const std::string &Player::name() const {
     return name_;
 }
 
-} // namespace Chess::Logic
+} // namespace Chess

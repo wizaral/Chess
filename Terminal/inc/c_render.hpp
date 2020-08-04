@@ -9,46 +9,46 @@
 class ConsoleRender : public Chess::Render {
 public:
     void show_menu() override;
-    void show_board(const Chess::Logic::Board &board) override;
-    void show_next_step(Chess::Logic::Player *player) override;
-    void show_error(Chess::Logic::GameState state) override;
-    void show_pawn_promotion(Chess::Logic::Position pos) override;
-    void show_endgame(Chess::Logic::GameState state, Chess::Logic::Player *winer) override;
+    void show_board(const Chess::Board &board) override;
+    void show_next_step(Chess::Player *player) override;
+    void show_error(Chess::GameState state) override;
+    void show_pawn_promotion(Chess::Position pos) override;
+    void show_endgame(Chess::GameState state, Chess::Player *winer) override;
 
 private:
-    inline static const std::map<Chess::Logic::FigureType, char> figures{
-        {Chess::Logic::FigureType::Bishop, 'B'},
-        {Chess::Logic::FigureType::King, 'K'},
-        {Chess::Logic::FigureType::Knight, 'N'},
-        {Chess::Logic::FigureType::Pawn, 'P'},
-        {Chess::Logic::FigureType::Queen, 'Q'},
-        {Chess::Logic::FigureType::Rook, 'R'},
+    inline static const std::map<Chess::FigureType, char> figures{
+        {Chess::FigureType::Bishop, 'B'},
+        {Chess::FigureType::King, 'K'},
+        {Chess::FigureType::Knight, 'N'},
+        {Chess::FigureType::Pawn, 'P'},
+        {Chess::FigureType::Queen, 'Q'},
+        {Chess::FigureType::Rook, 'R'},
     };
 
-    inline static const std::map<Chess::Logic::FigureColor, char> colors{
-        {Chess::Logic::FigureColor::White, 'w'},
-        {Chess::Logic::FigureColor::Black, 'b'},
+    inline static const std::map<Chess::FigureColor, char> colors{
+        {Chess::FigureColor::White, 'w'},
+        {Chess::FigureColor::Black, 'b'},
     };
 
-    inline const static std::map<Chess::Logic::GameState, std::string> states{
-        {Chess::Logic::GameState::CastlingFigureOnPath, "CastlingFigureOnPath"},
-        {Chess::Logic::GameState::CastlingKingInCheck, "CastlingKingInCheck"},
-        {Chess::Logic::GameState::CastlingSquareInCheck, "CastlingSquareInCheck"},
-        {Chess::Logic::GameState::CheckMate, "CheckMate"},
-        {Chess::Logic::GameState::Draw, "Draw"},
-        {Chess::Logic::GameState::EmptySquare, "EmptySquare"},
-        {Chess::Logic::GameState::FailEnPassant, "FailEnPassant"},
-        {Chess::Logic::GameState::FiguresAlreadyMoved, "FiguresAlreadyMoved"},
-        {Chess::Logic::GameState::KingCastling, "KingCastling"},
-        {Chess::Logic::GameState::KingInCheck, "KingInCheck"},
-        {Chess::Logic::GameState::KingWillBeInCheck, "KingWillBeInCheck"},
-        {Chess::Logic::GameState::NormalMove, "NormalMove"},
-        {Chess::Logic::GameState::OtherFigureOnPath, "OtherFigureOnPath"},
-        {Chess::Logic::GameState::OutOfBounds, "OutOfBounds"},
-        {Chess::Logic::GameState::PawnStepBack, "PawnStepBack"},
-        {Chess::Logic::GameState::QueenCastling, "QueenCastling"},
-        {Chess::Logic::GameState::StaleMate, "StaleMate"},
-        {Chess::Logic::GameState::WrongFigureColor, "WrongFigureColor"},
-        {Chess::Logic::GameState::WrongFigureMove, "WrongFigureMove"},
+    inline const static std::map<Chess::GameState, std::string> states{
+        {Chess::GameState::CastlingFigureOnPath, "CastlingFigureOnPath"},
+        {Chess::GameState::CastlingKingInCheck, "CastlingKingInCheck"},
+        {Chess::GameState::CastlingSquareInCheck, "CastlingSquareInCheck"},
+        {Chess::GameState::CheckMate, "CheckMate"},
+        {Chess::GameState::Draw, "Draw"},
+        {Chess::GameState::EmptySquare, "EmptySquare"},
+        {Chess::GameState::FailEnPassant, "FailEnPassant"},
+        {Chess::GameState::FiguresAlreadyMoved, "FiguresAlreadyMoved"},
+        {Chess::GameState::KingCastling, "KingCastling"},
+        {Chess::GameState::KingInCheck, "KingInCheck"},
+        {Chess::GameState::KingWillBeInCheck, "KingWillBeInCheck"},
+        {Chess::GameState::NormalMove, "NormalMove"},
+        {Chess::GameState::OtherFigureOnPath, "OtherFigureOnPath"},
+        {Chess::GameState::OutOfBounds, "OutOfBounds"},
+        {Chess::GameState::PawnStepBack, "PawnStepBack"},
+        {Chess::GameState::QueenCastling, "QueenCastling"},
+        {Chess::GameState::StaleMate, "StaleMate"},
+        {Chess::GameState::WrongFigureColor, "WrongFigureColor"},
+        {Chess::GameState::WrongFigureMove, "WrongFigureMove"},
     };
 };

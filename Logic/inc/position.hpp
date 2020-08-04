@@ -1,7 +1,7 @@
 #pragma once
 #include <stdexcept>
 
-namespace Chess::Logic {
+namespace Chess {
 
 class Position {
     int row_, col_;
@@ -17,4 +17,4 @@ public:
     friend bool operator==(const Position &lhs, const Position &rhs);
 };
 
-} // namespace Chess::Logic
+} // namespace Chess
