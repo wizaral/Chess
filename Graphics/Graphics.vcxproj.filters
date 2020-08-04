@@ -24,12 +24,18 @@
     <ClCompile Include="src\render.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\player.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="inc\g_input.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="inc\g_render.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\g_player.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

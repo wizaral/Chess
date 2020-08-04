@@ -166,10 +166,12 @@
   <ItemGroup>
     <ClCompile Include="src\input.cpp" />
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\player.cpp" />
     <ClCompile Include="src\render.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="inc\g_input.hpp" />
+    <ClInclude Include="inc\g_player.hpp" />
     <ClInclude Include="inc\g_render.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
