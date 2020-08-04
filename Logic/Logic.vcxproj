@@ -26,12 +26,10 @@
     <ClInclude Include="inc\figure.hpp" />
     <ClInclude Include="inc\game.hpp" />
     <ClInclude Include="inc\gamestate.hpp" />
-    <ClInclude Include="inc\input.hpp" />
     <ClInclude Include="inc\move.hpp" />
     <ClInclude Include="inc\observer.hpp" />
     <ClInclude Include="inc\player.hpp" />
     <ClInclude Include="inc\position.hpp" />
-    <ClInclude Include="inc\render.hpp" />
     <ClInclude Include="inc\strategy.hpp" />
   </ItemGroup>
   <ItemGroup>

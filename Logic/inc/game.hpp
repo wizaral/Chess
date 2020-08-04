@@ -7,44 +7,34 @@
 
 #include "factory.hpp"
 #include "gamestate.hpp"
-#include "input.hpp"
 #include "observer.hpp"
-#include "render.hpp"
 
 namespace Chess {
 
 class ChessGame : public Publisher {
-protected:
     Logic::Board board_;
-    int player_index_ = 0;
     std::array<std::unique_ptr<Logic::Player>, 2> players_;
 
-    std::unique_ptr<FigureFactory> factory_;
-    std::unique_ptr<Render> render_;
-    std::unique_ptr<DataInput> input_;
-
-    std::function<bool()> condition_;
+    int player_index_ = 0;
+    Logic::Position pawn_pos_{-1, -1};
+    Logic::GameState state_ = Logic::GameState::NormalMove;
 
 public:
-    ChessGame(std::array<std::unique_ptr<Logic::Player>, 2> arr,
-        std::unique_ptr<FigureFactory> factory,
-        std::unique_ptr<Render> render,
-        std::unique_ptr<DataInput> input,
-        std::function<bool()> condition);
-    virtual ~ChessGame() = default;
+    ChessGame(std::array<std::unique_ptr<Logic::Player>, 2> arr);
 
-    void init_game();
-    void loop();
+    Logic::Player *player();
+    const Logic::Board &board() const;
 
-protected:
-    void validate() const;
-
+    void init_game(std::unique_ptr<FigureFactory> factory);
     Logic::GameState logic(const Logic::Move &move);
-    Logic::Player *get_current_player();
+    Logic::GameState promote_pawn(Logic::FigureType type);
 
+private:
+    void validate_players() const;
     Logic::GameState validate_move(const Logic::Move &move, Logic::FigureColor color) const;
-    bool is_check(Logic::FigureColor color, const Logic::Move &move);
+
     bool is_check(Logic::FigureColor color) const;
+    bool is_check(Logic::FigureColor color, const Logic::Move &move);
 
     void castling(Logic::FigureColor color, const Logic::Move &move);
     void en_passant(Logic::FigureColor color, const Logic::Move &move);
@@ -52,8 +42,8 @@ protected:
     void update_check_state();
     void update_move_state();
 
-    void try_transform_pawns();
-    void transform_pawn(Logic::Position pos);
+    bool try_promote_pawn(const Logic::Figure &figure, const Logic::Position &pos);
+    void after_move_logic();
 
     Logic::GameState is_mate();
     bool is_stalemate(Logic::FigureColor color);

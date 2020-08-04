@@ -7,6 +7,7 @@ enum class GameState {
     EnPassant,
     KingCastling,
     QueenCastling,
+    PawnPromotion,
 
     CheckMate,
     StaleMate,

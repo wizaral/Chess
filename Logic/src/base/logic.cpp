@@ -2,10 +2,6 @@
 
 namespace Chess {
 
-Logic::Player *ChessGame::get_current_player() {
-    return players_[player_index_ %= 2].get();
-}
-
 Logic::GameState ChessGame::validate_move(const Logic::Move &move, Logic::FigureColor color) const {
     if (Logic::Position::validation(move.from()) == false || Logic::Position::validation(move.to()) == false) {
         return Logic::GameState::OutOfBounds;
@@ -55,15 +51,15 @@ void ChessGame::castling(Logic::FigureColor color, const Logic::Move &move) {
         board_.move_figure({{row, 4}, {row, 6}}); // king
         board_.move_figure({{row, 7}, {row, 5}}); // rook
 
-        (static_cast<Logic::KingStrategy *>(board_.get_figure({row, 6})->strategy()))->move_update(move);
-        (static_cast<Logic::RookStrategy *>(board_.get_figure({row, 5})->strategy()))->move_update(move);
+        static_cast<Logic::KingStrategy *>(board_.get_figure({row, 6})->strategy())->move_update(move);
+        static_cast<Logic::RookStrategy *>(board_.get_figure({row, 5})->strategy())->move_update(move);
     } else /* if (move.cols() == 4) */ {
         // long (queen) castling
         board_.move_figure({{row, 4}, {row, 2}}); // king
         board_.move_figure({{row, 0}, {row, 3}}); // rook
 
-        (static_cast<Logic::KingStrategy *>(board_.get_figure({row, 2})->strategy()))->move_update(move);
-        (static_cast<Logic::RookStrategy *>(board_.get_figure({row, 3})->strategy()))->move_update(move);
+        static_cast<Logic::KingStrategy *>(board_.get_figure({row, 2})->strategy())->move_update(move);
+        static_cast<Logic::RookStrategy *>(board_.get_figure({row, 3})->strategy())->move_update(move);
     }
 }
 
@@ -116,20 +112,20 @@ void ChessGame::update_move_state() {
     board_.update_move_state(state_black, Logic::FigureColor::Black);
 }
 
-void ChessGame::try_transform_pawns() {
-    for (int row : {Logic::white_figures_row, Logic::black_figures_row}) {
-        for (int i = 0; i < Logic::board_cols; ++i) {
-            if (auto figure = board_.figures()[row][i].get(); figure != nullptr) {
-                if (figure->type() == Logic::FigureType::Pawn) {
-                    transform_pawn({row, i});
-                }
-            }
+bool ChessGame::try_promote_pawn(const Logic::Figure &figure, const Logic::Position &pos) {
+    if (figure.type() == Logic::FigureType::Pawn){
+        if ((pos.row() == Logic::black_figures_row && figure.color() == Logic::FigureColor::White)
+            || (pos.row() == Logic::white_figures_row && figure.color() == Logic::FigureColor::Black)) {
+            state_ = Logic::GameState::PawnPromotion;
+            pawn_pos_ = pos;
+            return true;
         }
     }
+    return false;
 }
 
 Logic::GameState ChessGame::is_mate() {
-    Logic::FigureColor color = !get_current_player()->color();
+    Logic::FigureColor color = !player()->color();
     bool state = is_stalemate(color);
 
     if (state) {
@@ -185,7 +181,7 @@ bool ChessGame::is_draw() const {
         return figure.first == Logic::FigureType::King;
     }), figures.end());
 
-    if (size_t size = figures.size(); size == 0 || size == 1) {
+    if (size_t size = figures.size(); size < 2) {
         return true;
     } else if (size == 2 && figures[0].second != figures[1].second) /* diff colors */ {
         return true;
@@ -194,46 +190,87 @@ bool ChessGame::is_draw() const {
 }
 
 Logic::GameState ChessGame::logic(const Logic::Move &move) {
-    Logic::FigureColor color = get_current_player()->color();
-    Logic::GameState gstate = validate_move(move, color);
+    if (state_ == Logic::GameState::PawnPromotion) {
+        return Logic::GameState::PawnPromotion;
+    }
 
-    if (is_error(gstate)) {
-        return gstate;
+    Logic::FigureColor color = player()->color();
+    state_ = validate_move(move, color);
+
+    if (is_error(state_)) {
+        return state_;
     }
 
     update_check_state();
     bool check = is_check(color);
 
     Logic::Figure *figure = board_.get_figure(move.from());
-    gstate = figure->strategy()->validate_move(*figure, board_, move);
+    state_ = figure->strategy()->validate_move(*figure, board_, move);
 
-    if (is_error(gstate)) {
-        return gstate;
+    if (is_error(state_)) {
+        return state_;
     }
-    if (gstate == Logic::GameState::NormalMove) {
+    if (state_ == Logic::GameState::NormalMove) {
         if (is_check(color, move)) {
             return check ? Logic::GameState::KingInCheck : Logic::GameState::KingWillBeInCheck;
         } else {
             figure->strategy()->move_update(move);
             board_.move_figure(move);
         }
-    } else if (gstate == Logic::GameState::EnPassant) {
+    } else if (state_ == Logic::GameState::EnPassant) {
         if (is_check(color, move)) {
             return check ? Logic::GameState::KingInCheck : Logic::GameState::KingWillBeInCheck;
         } else {
             en_passant(color, move);
         }
-    } else /* if (gstate == Logic::GameState::AnyCastling) */ {
+    } else /* if (state_ == Logic::GameState::[Any]Castling) */ {
         castling(color, move);
     }
-    try_transform_pawns();
+
+    if (try_promote_pawn(*figure, move.to())) {
+        return state_;
+    }
+
+    after_move_logic();
+    return state_;
+}
+
+void ChessGame::after_move_logic() {
     notify();
 
     if (auto state = is_mate(); is_endgame(state)) {
-        return state;
+        state_ = state;
+    } else if (is_draw()) {
+        state_ = Logic::GameState::Draw;
+    }
+}
+
+Logic::GameState ChessGame::promote_pawn(Logic::FigureType type) {
+    Logic::FigureColor color = player()->color();
+    Logic::PawnStrategy *pawn = static_cast<Logic::PawnStrategy *>(board_.get_figure(pawn_pos_)->strategy());
+    pawn->update(Subscriber::MessageType::Notify);
+    pawn->update(Subscriber::MessageType::Notify);
+
+    switch (type) {
+    case Logic::FigureType::Queen:
+        board_.add_figure({type, color, std::make_unique<Logic::QueenStrategy>()}, pawn_pos_);
+        break;
+    case Logic::FigureType::Rook:
+        board_.add_figure({type, color, std::make_unique<Logic::RookStrategy>()}, pawn_pos_);
+        break;
+    case Logic::FigureType::Knight:
+        board_.add_figure({type, color, std::make_unique<Logic::KnightStrategy>()}, pawn_pos_);
+        break;
+    case Logic::FigureType::Bishop:
+        board_.add_figure({type, color, std::make_unique<Logic::BishopStrategy>()}, pawn_pos_);
+        break;
+    default:
+        break;
     }
 
-    return is_draw() ? Logic::GameState::Draw : gstate;
+    pawn_pos_ = {-1, -1};
+    after_move_logic();
+    return state_;
 }
 
 } // namespace Chess

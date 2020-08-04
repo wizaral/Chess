@@ -36,9 +36,6 @@
     <ClInclude Include="inc\gamestate.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="inc\input.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="inc\move.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -49,9 +46,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="inc\position.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="inc\render.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="inc\board.hpp">
