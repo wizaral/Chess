@@ -2,7 +2,7 @@
 
 namespace Chess {
 
-Player::Player(FigureColor color, std::string name)
+Player::Player(FigureColor color, const std::string &name)
     : color_(color), name_(name) {}
 
 FigureColor Player::color() const {

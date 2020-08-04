@@ -11,7 +11,7 @@ class Player {
     std::string name_;
 
 public:
-    Player(FigureColor color, std::string name);
+    Player(FigureColor color, const std::string &name);
     virtual ~Player() = default;
 
     FigureColor color() const;
