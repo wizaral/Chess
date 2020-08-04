@@ -11,7 +11,7 @@
 #endif
 
 constexpr inline int window_width = 800;
-constexpr inline int window_height = 1000;
+constexpr inline int window_height = 900;
 
 class GraphicsRender : public Chess::Render {
     using Sprite = std::pair<sf::Sprite, sf::Texture>;
@@ -22,7 +22,7 @@ class GraphicsRender : public Chess::Render {
     std::array<Sprite, 2> promotions_;
     sf::Font font_;
 
-    inline const static float offset = 100.0f;
+    inline const static float tile_size = 100.0f;
 public:
     GraphicsRender(sf::RenderWindow &window);
     void show_menu() override;
@@ -31,10 +31,11 @@ public:
     void show_error(Chess::Logic::GameState state) override;
     void show_pawn_promotion(const Chess::Logic::Board& board, const Chess::Logic::Position &pos) override;
     void show_endgame(Chess::Logic::GameState state, Chess::Logic::Player* winer) override;
-private:
-    void load(Sprite &sprt, const std::string &path);
+
     static Chess::Logic::Position transform(const sf::Vector2i& pos);
     static sf::Vector2f transform(const Chess::Logic::Position& pos);
+private:
+    void load(Sprite &sprt, const std::string &path);
 
     inline const static std::map<Chess::Logic::GameState, std::string> states{
         {Chess::Logic::GameState::CastlingFigureOnPath, "Castling: figure on path"},

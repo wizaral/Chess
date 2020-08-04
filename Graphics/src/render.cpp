@@ -3,7 +3,7 @@
 
 GraphicsRender::GraphicsRender(sf::RenderWindow &window) : window_(window) {
     load(board_, "res" DIR_SEP "board.png");
-    board_.first.move(sf::Vector2f{0, 100});
+    board_.first.setPosition(0, 0);
 
     load(promotions_[0], "res" DIR_SEP "wPp.png");
     load(promotions_[1], "res" DIR_SEP "bPp.png");
@@ -51,7 +51,7 @@ void GraphicsRender::show_next_step(Chess::Logic::Player *player) {
     oss << player->name() << " move: ";
     sf::Text text(oss.str(), font_);
     text.setFillColor(sf::Color(255, 255, 255));
-    text.setPosition(10.f, 10.f);
+    text.setPosition(10.f, 810.f);
     window_.draw(text);
     window_.display();
 }
@@ -63,7 +63,7 @@ void GraphicsRender::show_error(Chess::Logic::GameState state) {
         oss << "Error: " << states.at(state);
         sf::Text text(oss.str(), font_);
         text.setFillColor(sf::Color(255, 255, 255));
-        text.setPosition(10.f, 910.f);
+        text.setPosition(10.f, 860.f);
         window_.draw(text);
     }
 }
@@ -108,16 +108,16 @@ void GraphicsRender::show_endgame(Chess::Logic::GameState state, Chess::Logic::P
 
     sf::Text text(oss.str(), font_);
     text.setFillColor(sf::Color(255, 255, 255));
-    text.setPosition(10.f, 910.f);
+    text.setPosition(10.f, 810.f);
     window_.draw(text);
     window_.display();
 }
 
 Chess::Logic::Position GraphicsRender::transform(const sf::Vector2i& pos) {
-    int off = static_cast<int>(offset);
-    return { 8 - pos.y / off, pos.x / off };
+    int off = static_cast<int>(tile_size);
+    return { 7 - pos.y / off, pos.x / off };
 }
 
 sf::Vector2f GraphicsRender::transform(const Chess::Logic::Position& pos) {
-    return { pos.col() * offset, (8 - pos.row()) * offset };
+    return { pos.col() * tile_size, (7 - pos.row()) * tile_size };
 }
