@@ -1,4 +1,4 @@
-#include "g_player.hpp"
+#include "player_real.hpp"
 #include "g_render.hpp"
 
 RealPlayer::RealPlayer(Chess::Logic::FigureColor color, std::string name, sf::RenderWindow &window)
