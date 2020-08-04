@@ -1,5 +1,5 @@
 #include "g_render.hpp"
-#include <iostream>
+#include <sstream>
 
 GraphicsRender::GraphicsRender(sf::RenderWindow &window) : window_(window) {
     load(board_, "res" DIR_SEP "board.png");
@@ -33,7 +33,6 @@ void GraphicsRender::show_menu() {
 }
 
 void GraphicsRender::show_board(const Chess::Logic::Board &board) {
-    window_.clear();
     window_.draw(board_.first);
 
     for (int row = Chess::Logic::board_rows - 1; row > -1; --row) {
@@ -45,15 +44,28 @@ void GraphicsRender::show_board(const Chess::Logic::Board &board) {
             }
         }
     }
-    window_.display();
 }
 
 void GraphicsRender::show_next_step(Chess::Logic::Player *player) {
-    //std::cout << player->name() << " move: ";
+    std::ostringstream oss;
+    oss << player->name() << " move: ";
+    sf::Text text(oss.str(), font_);
+    text.setFillColor(sf::Color(255, 255, 255));
+    text.setPosition(10.f, 10.f);
+    window_.draw(text);
+    window_.display();
 }
 
 void GraphicsRender::show_error(Chess::Logic::GameState state) {
-    //std::cout << "Error: " << states.at(state) << std::endl;
+    window_.clear();
+    if (Chess::Logic::is_error(state)) {
+        std::ostringstream oss;
+        oss << "Error: " << states.at(state);
+        sf::Text text(oss.str(), font_);
+        text.setFillColor(sf::Color(255, 255, 255));
+        text.setPosition(10.f, 910.f);
+        window_.draw(text);
+    }
 }
 
 void GraphicsRender::show_pawn_promotion(const Chess::Logic::Board& board, const Chess::Logic::Position &pos) {
@@ -79,24 +91,31 @@ void GraphicsRender::show_pawn_promotion(const Chess::Logic::Board& board, const
 }
 
 void GraphicsRender::show_endgame(Chess::Logic::GameState state, Chess::Logic::Player *winer) {
-    //switch (state) {
-    //case Chess::Logic::GameState::CheckMate:
-    //    std::cout << "Player " << winer->name() << " has won!" << std::endl;
-    //    break;
-    //case Chess::Logic::GameState::StaleMate:
-    //    std::cout << "Stalemate. Game over!" << std::endl;
-    //    break;
-    //default:
-    //    std::cout << "Draw. Game over!" << std::endl;
-    //    break;
-    //}
+    std::ostringstream oss;
+    oss << "Game over: ";
+
+    switch (state) {
+    case Chess::Logic::GameState::CheckMate:
+        oss << "Player " << winer->name() << " won!";
+        break;
+    case Chess::Logic::GameState::StaleMate:
+        oss << "Stalemate!";
+        break;
+    default:
+        oss << "Draw!";
+        break;
+    }
+
+    sf::Text text(oss.str(), font_);
+    text.setFillColor(sf::Color(255, 255, 255));
+    text.setPosition(10.f, 910.f);
+    window_.draw(text);
+    window_.display();
 }
 
 Chess::Logic::Position GraphicsRender::transform(const sf::Vector2i& pos) {
     int off = static_cast<int>(offset);
-    Chess::Logic::Position p{ 8 - pos.y / off, pos.x / off };
-    std::cout << "Pos " << p.row() << ":" << p.col() << std::endl;
-    return p;
+    return { 8 - pos.y / off, pos.x / off };
 }
 
 sf::Vector2f GraphicsRender::transform(const Chess::Logic::Position& pos) {

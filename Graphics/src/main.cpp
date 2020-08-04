@@ -2,6 +2,14 @@
 #include "g_render.hpp"
 #include "chess.hpp"
 
+void after_game(sf::RenderWindow &window) {
+    for (sf::Event event; window.isOpen() && window.waitEvent(event);) {
+        if (auto ev = event.type; ev == sf::Event::Closed || ev == sf::Event::KeyPressed) {
+            window.close();
+        }
+    }
+}
+
 int main() {
     sf::RenderWindow window(sf::VideoMode(window_width, window_height), "Chess", sf::Style::Titlebar | sf::Style::Close);
     const auto& mode = sf::VideoMode::getDesktopMode();

@@ -56,13 +56,9 @@ Chess::Logic::FigureType GraphicsInput::promote_figure(Chess::Logic::Player *pla
 
 Chess::Logic::Position GraphicsInput::transform(const sf::Vector2i &pos) {
     int off = static_cast<int>(offset);
-    Chess::Logic::Position p{8 - pos.y / off, pos.x / off};
-    std::cout << "Pos " << p.row() << ":" << p.col() << std::endl;
-    return p;
+    return {8 - pos.y / off, pos.x / off};
 }
 
 sf::Vector2f GraphicsInput::transform(const Chess::Logic::Position& pos) {
-    sf::Vector2f p{ pos.col() * offset, (8 - pos.row()) * offset };
-    std::cout << "Vec " << p.x << ":" << p.y << std::endl;
-    return p;
+    return { pos.col() * offset, (8 - pos.row()) * offset };
 }

@@ -35,4 +35,23 @@ private:
     void load(Sprite &sprt, const std::string &path);
     static Chess::Logic::Position transform(const sf::Vector2i& pos);
     static sf::Vector2f transform(const Chess::Logic::Position& pos);
+
+    inline const static std::map<Chess::Logic::GameState, std::string> states{
+        {Chess::Logic::GameState::CastlingFigureOnPath, "Castling: figure on path"},
+        {Chess::Logic::GameState::CastlingKingInCheck, "Castling: king in check"},
+        {Chess::Logic::GameState::CastlingSquareInCheck, "Castling: some square in check"},
+        {Chess::Logic::GameState::CheckMate, "Checkmate"},
+        {Chess::Logic::GameState::Draw, "Draw"},
+        {Chess::Logic::GameState::EmptySquare, "Empty square"},
+        {Chess::Logic::GameState::FailEnPassant, "Fail en passant"},
+        {Chess::Logic::GameState::FiguresAlreadyMoved, "Castling: figures already moved"},
+        {Chess::Logic::GameState::KingInCheck, "King in check"},
+        {Chess::Logic::GameState::KingWillBeInCheck, "King will be in check"},
+        {Chess::Logic::GameState::OtherFigureOnPath, "Other figure on path"},
+        {Chess::Logic::GameState::OutOfBounds, "Move out of bounds"},
+        {Chess::Logic::GameState::PawnStepBack, "Pawn can not move back"},
+        {Chess::Logic::GameState::StaleMate, "Stalemate"},
+        {Chess::Logic::GameState::WrongFigureColor, "Wrong figure color"},
+        {Chess::Logic::GameState::WrongFigureMove, "Wrong figure move"},
+    };
 };
