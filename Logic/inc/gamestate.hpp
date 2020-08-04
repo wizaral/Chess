@@ -29,6 +29,7 @@ enum class GameState {
 
     FailEnPassant,
     PawnStepBack,
+    SIZE,
 };
 
 bool is_move(GameState gstate);

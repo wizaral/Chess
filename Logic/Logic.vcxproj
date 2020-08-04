@@ -24,8 +24,8 @@
     <ClInclude Include="inc\definitions.hpp" />
     <ClInclude Include="inc\factory.hpp" />
     <ClInclude Include="inc\figure.hpp" />
-    <ClInclude Include="inc\game.hpp" />
     <ClInclude Include="inc\gamestate.hpp" />
+    <ClInclude Include="inc\logic.hpp" />
     <ClInclude Include="inc\move.hpp" />
     <ClInclude Include="inc\observer.hpp" />
     <ClInclude Include="inc\player.hpp" />
@@ -36,7 +36,6 @@
     <ClCompile Include="src\base\board.cpp" />
     <ClCompile Include="src\base\factory.cpp" />
     <ClCompile Include="src\base\figure.cpp" />
-    <ClCompile Include="src\base\game.cpp" />
     <ClCompile Include="src\base\gamestate.cpp" />
     <ClCompile Include="src\base\logic.cpp" />
     <ClCompile Include="src\base\move.cpp" />

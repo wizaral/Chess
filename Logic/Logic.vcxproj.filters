@@ -30,9 +30,6 @@
     <ClInclude Include="inc\figure.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="inc\game.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="inc\gamestate.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -51,6 +48,9 @@
     <ClInclude Include="inc\board.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="inc\logic.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\base\board.cpp">
@@ -60,9 +60,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\base\figure.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\base\game.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\base\gamestate.cpp">
