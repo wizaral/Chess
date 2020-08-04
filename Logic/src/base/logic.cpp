@@ -242,6 +242,8 @@ void ChessGame::after_move_logic() {
         state_ = state;
     } else if (is_draw()) {
         state_ = Logic::GameState::Draw;
+    } else {
+        ++player_index_;
     }
 }
 
