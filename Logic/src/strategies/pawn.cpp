@@ -34,8 +34,10 @@ bool PawnStrategy::update(MessageType type) {
 GameState PawnStrategy::validate_move(const Figure &figure, const Board &board, const Move &move) const {
     Position from = move.from(), to = move.to();
 
-    if ((direction_ > 0 && to.row() <= from.row()) || (direction_ < 0 && to.row() >= from.row())) {
+    if ((direction_ > 0 && to.row() < from.row()) || (direction_ < 0 && to.row() > from.row())) {
         return GameState::PawnStepBack;
+    } else if (to.row() == from.row()) {
+        return GameState::WrongFigureMove;
     }
 
     Figure *other = board.get_figure(to);
@@ -50,7 +52,7 @@ GameState PawnStrategy::validate_move(const Figure &figure, const Board &board, 
             }
         } else /* if (other == nullptr) */ {
             // En passant
-            return check_pawn(board.get_figure({to.row() - direction_, to.col()}), other_color);
+            return check_pawn(board.get_figure({from.row(), to.col()}), other_color);
         }
     }
     // double move
