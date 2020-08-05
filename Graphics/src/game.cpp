@@ -33,9 +33,12 @@ void Game::load(Sprite &sprt, const std::string &path) {
 }
 
 void Game::menu() {
+    std::wstring path(L"stockfish.exe");
     logic_ = std::make_unique<Chess::Logic>(std::array<std::unique_ptr<Chess::Player>, 2>{
-        std::make_unique<RealPlayer>(Chess::FigureColor::White, "white", tile_size_, dragging_, window_, move_),
-        std::make_unique<RealPlayer>(Chess::FigureColor::Black, "black", tile_size_, dragging_, window_, move_)
+        std::make_unique<RealPlayer>(Chess::FigureColor::White, "White virgin", tile_size_, dragging_, dragg_pos_, window_, move_),
+        // std::make_unique<RealPlayer>(Chess::FigureColor::Black, "black", tile_size_, dragging_, window_, move_)
+        // std::make_unique<BotPlayer>(Chess::FigureColor::White, "White Chad", path, log_, window_, move_),
+        std::make_unique<BotPlayer>(Chess::FigureColor::Black, "Black Chad", tile_size_, dragging_, dragg_pos_, log_, window_, move_, path)
     });
 
     logic_->init_game(std::make_unique<Chess::ClassicFactory>());
@@ -56,12 +59,16 @@ void Game::loop() {
 
         if (move_.has_value()) {
             state_ = logic_->logic(move_.value());
-            // log(state_);
+
+            if (Chess::is_move(state_)) {
+                log();
+            }
+
             if (state_ == Chess::GameState::PawnPromotion) {
                 promoting_ = move_->to();
-                window_.clear();
-                print_board();
             }
+            window_.clear();
+            print_board();
             move_.reset();
         }
 
@@ -76,6 +83,23 @@ void Game::pawn_promotion() {
     state_ = logic_->promote_pawn(logic_->player()->promote_figure(promoting_));
 
     if (state_ != Chess::GameState::PawnPromotion) {
+        char ftype = '\0';
+
+        switch (auto type = logic_->board().get_figure(promoting_)->type(); type) {
+        case Chess::FigureType::Bishop:
+            ftype = 'b';
+            break;
+        case Chess::FigureType::Knight:
+            ftype = 'n';
+            break;
+        case Chess::FigureType::Rook:
+            ftype = 'r';
+            break;
+        default:
+            ftype = 'q';
+        }
+
+        log_ << ftype;
         promoting_ = Chess::Position{ -1, -1 };
     }
 }
@@ -83,7 +107,7 @@ void Game::pawn_promotion() {
 void Game::after_game() {
     sf::Text text("Press any button to exit", font_);
     text.setFillColor(sf::Color(255, 255, 255));
-    text.setPosition(410.f, 810.f);
+    text.setPosition(10.f, 860.f);
 
     window_.clear();
     print_board();
@@ -97,6 +121,15 @@ void Game::after_game() {
             window_.close();
         }
     }
+}
+
+//#include <iostream>
+
+void Game::log() {
+    //std::cout << ' ' << static_cast<char>(move_->from().col() + 97) << static_cast<char>(move_->from().row() + 49) << static_cast<char>(move_->to().col() + 97) << static_cast<char>(move_->to().row() + 49) << std::endl;
+    log_ << ' ';
+    log_ << static_cast<char>(move_->from().col() + 97) << static_cast<char>(move_->from().row() + 49);
+    log_ << static_cast<char>(move_->to().col() + 97) << static_cast<char>(move_->to().row() + 49);
 }
 
 void Game::print_board() {
@@ -120,10 +153,10 @@ void Game::print_board() {
     }
 
     if (!(dragging_ == Chess::Position{-1, -1})) {
-        sf::Vector2i mpos = sf::Mouse::getPosition(window_) - sf::Vector2i{static_cast<int>(tile_size_) / 2, static_cast<int>(tile_size_) / 2};
+        // sf::Vector2i mpos = sf::Mouse::getPosition(window_) - sf::Vector2i{static_cast<int>(tile_size_) / 2, static_cast<int>(tile_size_) / 2};
         if (auto f = logic_->board().get_figure(dragging_); f != nullptr) {
             auto& figure = figures_[static_cast<int>(f->color())][static_cast<int>(f->type())].first;
-            figure.setPosition(sf::Vector2f(mpos));
+            figure.setPosition(dragg_pos_);
             window_.draw(figure);
         }
     }
@@ -167,6 +200,10 @@ void Game::print_endgame() {
     text.setFillColor(sf::Color(255, 255, 255));
     text.setPosition(10.f, 810.f);
     window_.draw(text);
+}
+
+bool Game::is_exit(const sf::Event &e) {
+    return e.type == sf::Event::Closed || (e.type == sf::Event::KeyPressed && e.key.code == sf::Keyboard::Escape);
 }
 
 Chess::Position Game::transform(const sf::Vector2i& pos) {

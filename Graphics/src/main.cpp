@@ -1,4 +1,5 @@
 #include "game.hpp"
+#include <iostream>
 
 int main() {
     sf::RenderWindow window(sf::VideoMode(window_width, window_height), "Chess", sf::Style::Titlebar | sf::Style::Close);
@@ -6,5 +7,12 @@ int main() {
     window.setFramerateLimit(60);
 
     Game game(window);
-    game.menu();
+
+    try {
+        game.menu();
+    } catch (std::exception &ex) {
+        std::cerr << ex.what() << std::endl;
+        return 1;
+    }
+    return 0;
 }

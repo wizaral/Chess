@@ -2,6 +2,8 @@
 #include <SFML/Graphics.hpp>
 #include <array>
 #include <optional>
+#include <sstream>
+#include <stdexcept>
 #include <string>
 #include "chess.hpp"
 #include "player_bot.hpp"
@@ -22,6 +24,7 @@ class Game {
     sf::RenderWindow &window_;
     inline const static float tile_size_ = 100.0f;
     Chess::GameState state_ = Chess::GameState::NormalMove;
+    std::ostringstream log_;
 
     Sprite board_;
     sf::Font font_;
@@ -29,6 +32,7 @@ class Game {
     std::array<Sprite, 2> promotions_;
     std::array<std::array<Sprite, 6>, 2> figures_;
     Chess::Position dragging_{-1, -1}, promoting_{-1, -1};
+    sf::Vector2f dragg_pos_;
 
     std::optional<Chess::Move> move_;
     std::unique_ptr<Chess::Logic> logic_;
@@ -43,6 +47,8 @@ public:
     static Chess::Position transform(const sf::Vector2i& pos);
     static sf::Vector2f transform(const Chess::Position& pos);
 
+    static bool is_exit(const sf::Event& e);
+
 private:
     void load();
     void load(Sprite &sprt, const std::string &path);
@@ -52,9 +58,9 @@ private:
     void print_state();
     void print_endgame();
 
-    void log(Chess::Player *player, const Chess::Move &move, Chess::GameState state);
     void pawn_promotion();
     void after_game();
+    void log();
 
     inline const static std::array<std::string, static_cast<int>(Chess::GameState::SIZE)> states{
         "Good move",

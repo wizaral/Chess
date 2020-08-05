@@ -1,9 +1,3 @@
-# current project
-SFML*
-chess
-test
-!tests/tests/*.txt
-
 # system files
 *.DS_Store
 *.ini
@@ -398,3 +392,10 @@ FodyWeavers.xsd
 
 # Local History for Visual Studio Code
 .history/
+
+# current project
+SFML*
+chess
+test
+!tests/tests/*.txt
+!Graphics/stockfish.exe
