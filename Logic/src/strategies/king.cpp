@@ -11,8 +11,13 @@ GameState KingStrategy::validate_move(const Figure &figure, const Board &board, 
         if (other == nullptr || other->color() != figure.color()) {
             return GameState::NormalMove;
         }
-    } else if (other != nullptr && other->type() == FigureType::Rook && other->color() == figure.color()) {
-        return check_castling(figure, board, move, other);
+        return GameState::OtherFigureOnPath;
+    }
+    if (other == nullptr && rows == 0 && cols == 2) {
+        other = board.get_figure({move.from().row(), move.from().col() < move.to().col() ? 7 : 0});
+        if (other != nullptr) {
+            return check_castling(figure, board, move, other);
+        }
     }
     return GameState::WrongFigureMove;
 }
@@ -21,16 +26,15 @@ GameState KingStrategy::check_castling(const Figure &figure, const Board &board,
     FigureColor other_color = !figure.color();
 
     // check first figure move
-    if (state_ == MoveState::NoMove && (static_cast<RookStrategy *>(other->strategy()))->state() == RookStrategy::MoveState::NoMove) {
+    if (state_ == MoveState::NoMove && static_cast<RookStrategy *>(other->strategy())->state() == RookStrategy::MoveState::NoMove) {
         const std::array<std::array<bool, board_rows>, board_cols> &state = board.get_check_state(other_color);
-        int distance = move.cols();
         int row = move.from().row();
 
         if (state[row][4] == true) {
             return GameState::CastlingKingInCheck;
         }
 
-        if (distance == 3) {
+        if (int distance = move.from().col() - move.to().col(); distance < 0) {
             for (int col = 5; col < 7; ++col) {
                 if (state[row][col] == true) {
                     return GameState::CastlingSquareInCheck;
@@ -40,7 +44,7 @@ GameState KingStrategy::check_castling(const Figure &figure, const Board &board,
                 }
             }
             return GameState::KingCastling;
-        } else /* if (distance == 4) */ {
+        } else /* if (distance > 0) */ {
             for (int col = 3; col > 1; --col) {
                 if (state[row][col] == true) {
                     return GameState::CastlingSquareInCheck;

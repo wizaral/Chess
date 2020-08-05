@@ -86,14 +86,14 @@ bool Logic::is_check(FigureColor color, const Move &move) {
 void Logic::castling(FigureColor color, const Move &move) {
     int row = move.from().row();
 
-    if (move.cols() == 3) {
+    if (int distance = move.from().col() - move.to().col(); distance < 0) {
         // short (king) castling
         board_.move_figure({{row, 4}, {row, 6}}); // king
         board_.move_figure({{row, 7}, {row, 5}}); // rook
 
         static_cast<KingStrategy *>(board_.get_figure({row, 6})->strategy())->move_update(move);
         static_cast<RookStrategy *>(board_.get_figure({row, 5})->strategy())->move_update(move);
-    } else /* if (move.cols() == 4) */ {
+    } else /* if (distance > 0) */ {
         // long (queen) castling
         board_.move_figure({{row, 4}, {row, 2}}); // king
         board_.move_figure({{row, 0}, {row, 3}}); // rook
