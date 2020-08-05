@@ -311,6 +311,7 @@ GameState Logic::promote_pawn(FigureType type) {
     }
 
     pawn_pos_ = {-1, -1};
+    state_ = GameState::NormalMove;
     after_move_logic();
     return state_;
 }
