@@ -8,6 +8,7 @@ GameState KnightStrategy::validate_move(const Figure &figure, const Board &board
 
     if ((rows == 2 && cols == 1) || (rows == 1 && cols == 2)) {
         Figure *other = board.get_figure(move.to());
+
         if (other == nullptr || other->color() != figure.color()) {
             return GameState::NormalMove;
         } else {
@@ -20,28 +21,28 @@ GameState KnightStrategy::validate_move(const Figure &figure, const Board &board
 void KnightStrategy::update_occupation(const Board &board, const Position &pos, std::vector<Position> &coords) const {
     int row = pos.row(), col = pos.col();
 
-    if (row + 2 < board_rows && col + 1 < board_cols) {
+    if (Position::validation({row + 2, col + 1})) {
         coords.emplace_back(row + 2, col + 1);
     }
-    if (row + 2 < board_rows && col - 1 >= 0) {
+    if (Position::validation({row + 2, col - 1})) {
         coords.emplace_back(row + 2, col - 1);
     }
-    if (row + 1 < board_rows && col + 2 < board_cols) {
+    if (Position::validation({row + 1, col + 2})) {
         coords.emplace_back(row + 1, col + 2);
     }
-    if (row - 1 >= 0 && col + 2 < board_cols) {
+    if (Position::validation({row - 1, col + 2})) {
         coords.emplace_back(row - 1, col + 2);
     }
-    if (row - 2 >= 0 && col + 1 < board_cols) {
+    if (Position::validation({row - 2, col + 1})) {
         coords.emplace_back(row - 2, col + 1);
     }
-    if (row - 2 >= 0 && col - 1 >= 0) {
+    if (Position::validation({row - 2, col - 1})) {
         coords.emplace_back(row - 2, col - 1);
     }
-    if (row + 1 < board_rows && col - 2 >= 0) {
+    if (Position::validation({row + 1, col - 2})) {
         coords.emplace_back(row + 1, col - 2);
     }
-    if (row - 1 >= 0 && col - 2 >= 0) {
+    if (Position::validation({row - 1, col - 2})) {
         coords.emplace_back(row - 1, col - 2);
     }
 }

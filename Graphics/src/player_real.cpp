@@ -25,7 +25,7 @@ Chess::Move RealPlayer::get_next_move() {
             dragging_ = Game::transform(mpos);
 
             if (Chess::Position::validation(dragging_) == false) {
-                dragging_ = Chess::Position{ -1, -1 };
+                dragging_ = Chess::Position{-1, -1};
             }
         } else if (event.type == sf::Event::MouseButtonReleased && event.key.code == sf::Mouse::Left) {
             sf::Vector2i mpos = sf::Mouse::getPosition(window_);

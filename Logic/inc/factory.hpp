@@ -14,6 +14,7 @@ public:
 class ClassicFactory final : public FigureFactory {
 public:
     void init_game(Board &board, int &player_index, Publisher *publisher) override;
+
 private:
     void spawn_pawns(Board &board, int row, FigureColor color, Publisher *publisher);
     void spawn_figures(Board &board, int row, FigureColor color);

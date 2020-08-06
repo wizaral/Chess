@@ -44,10 +44,10 @@ public:
     void menu();
     void loop();
 
-    static Chess::Position transform(const sf::Vector2i& pos);
-    static sf::Vector2f transform(const Chess::Position& pos);
+    static Chess::Position transform(const sf::Vector2i &pos);
+    static sf::Vector2f transform(const Chess::Position &pos);
 
-    static bool is_exit(const sf::Event& e);
+    static bool is_exit(const sf::Event &e);
 
 private:
     void load();

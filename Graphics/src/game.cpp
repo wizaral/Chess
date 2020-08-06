@@ -1,7 +1,7 @@
 #include "game.hpp"
-#include <sstream>
 
-Game::Game(sf::RenderWindow &window) : window_(window) {
+Game::Game(sf::RenderWindow &window)
+    : window_(window) {
     load();
 }
 
@@ -30,19 +30,6 @@ void Game::load(Sprite &sprt, const std::string &path) {
     auto &[sprite, texture] = sprt;
     texture.loadFromFile(path);
     sprite.setTexture(texture);
-}
-
-void Game::menu() {
-    std::wstring path(L"stockfish.exe");
-    logic_ = std::make_unique<Chess::Logic>(std::array<std::unique_ptr<Chess::Player>, 2>{
-        std::make_unique<RealPlayer>(Chess::FigureColor::White, "White virgin", tile_size_, dragging_, dragg_pos_, window_, move_),
-        // std::make_unique<RealPlayer>(Chess::FigureColor::Black, "black", tile_size_, dragging_, window_, move_)
-        // std::make_unique<BotPlayer>(Chess::FigureColor::White, "White Chad", path, log_, window_, move_),
-        std::make_unique<BotPlayer>(Chess::FigureColor::Black, "Black Chad", tile_size_, dragging_, dragg_pos_, log_, window_, move_, path)
-    });
-
-    logic_->init_game(std::make_unique<Chess::ClassicFactory>());
-    loop();
 }
 
 void Game::loop() {
@@ -100,33 +87,32 @@ void Game::pawn_promotion() {
         }
 
         log_ << ftype;
-        promoting_ = Chess::Position{ -1, -1 };
+        promoting_ = Chess::Position{-1, -1};
     }
 }
 
 void Game::after_game() {
-    sf::Text text("Press any button to exit", font_);
-    text.setFillColor(sf::Color(255, 255, 255));
-    text.setPosition(10.f, 860.f);
+    if (window_.isOpen()) {
+        sf::Text text("Press any button to exit", font_);
+        text.setFillColor(sf::Color(255, 255, 255));
+        text.setPosition(10.f, 860.f);
 
-    window_.clear();
-    print_board();
-    print_endgame();
-    window_.draw(text);
-    window_.display();
+        window_.clear();
+        print_board();
+        print_endgame();
+        window_.draw(text);
+        window_.display();
 
-    sf::Event event;
-    while (window_.isOpen() && window_.waitEvent(event)) {
-        if (event.type == sf::Event::Closed || event.type == sf::Event::KeyPressed) {
-            window_.close();
+        sf::Event event;
+        while (window_.isOpen() && window_.waitEvent(event)) {
+            if (event.type == sf::Event::Closed || event.type == sf::Event::KeyPressed) {
+                window_.close();
+            }
         }
     }
 }
 
-//#include <iostream>
-
 void Game::log() {
-    //std::cout << ' ' << static_cast<char>(move_->from().col() + 97) << static_cast<char>(move_->from().row() + 49) << static_cast<char>(move_->to().col() + 97) << static_cast<char>(move_->to().row() + 49) << std::endl;
     log_ << ' ';
     log_ << static_cast<char>(move_->from().col() + 97) << static_cast<char>(move_->from().row() + 49);
     log_ << static_cast<char>(move_->to().col() + 97) << static_cast<char>(move_->to().row() + 49);
@@ -138,9 +124,9 @@ void Game::print_board() {
 
     for (int row = Chess::board_rows - 1; row > -1; --row) {
         for (int col = 0; col < Chess::board_cols; ++col) {
-            if (auto f = board.get_figure({row, col}); f != nullptr && !(dragging_ == Chess::Position{row, col})) {
+            if (auto f = board.get_figure({row, col}); f != nullptr && dragging_ != Chess::Position{row, col}) {
                 if (Chess::Position p{row, col}; p == promoting_) {
-                    auto& promotion = promotions_[static_cast<int>(f->color())].first;
+                    auto &promotion = promotions_[static_cast<int>(f->color())].first;
                     promotion.setPosition(transform(p));
                     window_.draw(promotion);
                 } else {
@@ -152,10 +138,9 @@ void Game::print_board() {
         }
     }
 
-    if (!(dragging_ == Chess::Position{-1, -1})) {
-        // sf::Vector2i mpos = sf::Mouse::getPosition(window_) - sf::Vector2i{static_cast<int>(tile_size_) / 2, static_cast<int>(tile_size_) / 2};
+    if (dragging_ != Chess::Position{-1, -1}) {
         if (auto f = logic_->board().get_figure(dragging_); f != nullptr) {
-            auto& figure = figures_[static_cast<int>(f->color())][static_cast<int>(f->type())].first;
+            auto &figure = figures_[static_cast<int>(f->color())][static_cast<int>(f->type())].first;
             figure.setPosition(dragg_pos_);
             window_.draw(figure);
         }
@@ -191,8 +176,7 @@ void Game::print_endgame() {
 
     if (state_ == Chess::GameState::CheckMate) {
         oss << "Player " << logic_->player()->name() << " won!";
-    }
-    else {
+    } else {
         oss << states[static_cast<int>(state_)];
     }
 
@@ -206,11 +190,11 @@ bool Game::is_exit(const sf::Event &e) {
     return e.type == sf::Event::Closed || (e.type == sf::Event::KeyPressed && e.key.code == sf::Keyboard::Escape);
 }
 
-Chess::Position Game::transform(const sf::Vector2i& pos) {
+Chess::Position Game::transform(const sf::Vector2i &pos) {
     int off = static_cast<int>(tile_size_);
     return {7 - pos.y / off, pos.x / off};
 }
 
-sf::Vector2f Game::transform(const Chess::Position& pos) {
+sf::Vector2f Game::transform(const Chess::Position &pos) {
     return {pos.col() * tile_size_, (7 - pos.row()) * tile_size_};
 }

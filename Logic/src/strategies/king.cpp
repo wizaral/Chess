@@ -62,29 +62,29 @@ GameState KingStrategy::check_castling(const Figure &figure, const Board &board,
 void KingStrategy::update_occupation(const Board &board, const Position &pos, std::vector<Position> &coords) const {
     int row = pos.row(), col = pos.col();
 
-    if (row + 1 < board_rows && col + 1 < board_cols) {
+    if (Position::validation({row + 1, col + 1})) {
         coords.emplace_back(row + 1, col + 1);
     }
-    if (row + 1 < board_rows && col - 1 >= 0) {
+    if (Position::validation({row + 1, col - 1})) {
         coords.emplace_back(row + 1, col - 1);
     }
-    if (row - 1 >= 0 && col + 1 < board_cols) {
+    if (Position::validation({row - 1, col + 1})) {
         coords.emplace_back(row - 1, col + 1);
     }
-    if (row - 1 >= 0 && col - 1 >= 0) {
+    if (Position::validation({row - 1, col - 1})) {
         coords.emplace_back(row - 1, col - 1);
     }
 
-    if (row + 1 < board_rows) {
+    if (Position::validation({row + 1, col})) {
         coords.emplace_back(row + 1, col);
     }
-    if (row - 1 >= 0) {
+    if (Position::validation({row - 1, col})) {
         coords.emplace_back(row - 1, col);
     }
-    if (col + 1 < board_cols) {
+    if (Position::validation({row, col + 1})) {
         coords.emplace_back(row, col + 1);
     }
-    if (col - 1 >= 0) {
+    if (Position::validation({row, col - 1})) {
         coords.emplace_back(row, col - 1);
     }
 }

@@ -10,7 +10,7 @@ Figure *Board::get_figure(const Position &pos) const {
 Position Board::get_position(FigureType type, FigureColor color) const {
     for (int i = 0; i < board_rows; ++i) {
         for (int j = 0; j < board_cols; ++j) {
-            if (auto f = get_figure({ i, j }); f != nullptr && f->color() == color && f->type() == type) {
+            if (auto f = get_figure({i, j}); f != nullptr && f->color() == color && f->type() == type) {
                 return {i, j};
             }
         }

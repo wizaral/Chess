@@ -2,12 +2,14 @@
 
 namespace Chess {
 
-PawnStrategy::PawnStrategy(Publisher *publisher, FigureColor color) : Subscriber(publisher) {
+PawnStrategy::PawnStrategy(Publisher *publisher, FigureColor color)
+    : Subscriber(publisher) {
     direction_ = color == FigureColor::White ? white_step_direction : black_step_direction;
 }
 
 PawnStrategy::PawnStrategy(Publisher *publisher, FigureColor color, MoveState state)
-    : Subscriber(publisher), state_(state) {
+    : Subscriber(publisher)
+    , state_(state) {
     direction_ = color == FigureColor::White ? white_step_direction : black_step_direction;
 }
 
@@ -75,20 +77,20 @@ GameState PawnStrategy::validate_move(const Figure &figure, const Board &board, 
 }
 
 void PawnStrategy::update_occupation(const Board &board, const Position &pos, std::vector<Position> &coords) const {
-    int row = pos.row(), col = pos.col();
+    int dest = pos.row() + direction_;
+    int col = pos.col();
 
-    if (int dest = row + direction_; dest < board_rows && dest >= 0) {
-        if (col + 1 < board_cols) {
-            coords.emplace_back(dest, col + 1);
-        }
-        if (col - 1 >= 0) {
-            coords.emplace_back(dest, col - 1);
-        }
+    if (Position::validation({dest, col + 1})) {
+        coords.emplace_back(dest, col + 1);
+    }
+    if (Position::validation({dest, col - 1})) {
+        coords.emplace_back(dest, col - 1);
     }
 }
 
 void PawnStrategy::update_movement(const Figure &figure, const Board &board, const Position &pos, std::vector<Position> &coords) const {
     int row = pos.row(), col = pos.col();
+
     std::array<Position, 4> positions{
         Position{row + direction_, col + 1},
         Position{row + direction_, col - 1},
@@ -104,11 +106,7 @@ void PawnStrategy::update_movement(const Figure &figure, const Board &board, con
 }
 
 void PawnStrategy::move_update(const Move &move) {
-    if (move.rows() > 1) {
-        state_ = MoveState::DoubleMove;
-    } else {
-        state_ = MoveState::NormalMove;
-    }
+    state_ = move.rows() > 1 ? MoveState::DoubleMove : MoveState::NormalMove;
 }
 
 GameState PawnStrategy::check_pawn(Figure *figure, FigureColor color) const {

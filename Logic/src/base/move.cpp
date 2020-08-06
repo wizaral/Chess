@@ -3,7 +3,8 @@
 namespace Chess {
 
 Move::Move(const Position &from, const Position &to)
-    : from_(from), to_(to) {}
+    : from_(from)
+    , to_(to) {}
 
 Position Move::from() const {
     return from_;

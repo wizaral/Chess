@@ -2,7 +2,8 @@
 
 namespace Chess {
 
-Logic::Logic(std::array<std::unique_ptr<Player>, 2> arr) : players_(std::move(arr)) {
+Logic::Logic(std::array<std::unique_ptr<Player>, 2> arr)
+    : players_(std::move(arr)) {
     validate_players();
 }
 
@@ -124,10 +125,10 @@ void Logic::update_check_state() {
     }
 
     board_.reset_check_state(FigureColor::White);
-    board_.update_check_state(state_white, FigureColor::White);
+    board_.update_check_state(FigureColor::White, state_white);
 
     board_.reset_check_state(FigureColor::Black);
-    board_.update_check_state(state_black, FigureColor::Black);
+    board_.update_check_state(FigureColor::Black, state_black);
 }
 
 void Logic::update_move_state() {
@@ -146,10 +147,10 @@ void Logic::update_move_state() {
     }
 
     board_.reset_move_state(FigureColor::White);
-    board_.update_move_state(state_white, FigureColor::White);
+    board_.update_move_state(FigureColor::White, state_white);
 
     board_.reset_move_state(FigureColor::Black);
-    board_.update_move_state(state_black, FigureColor::Black);
+    board_.update_move_state(FigureColor::Black, state_black);
 }
 
 bool Logic::try_promote_pawn(const Figure &figure, const Position &pos) {

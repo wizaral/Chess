@@ -166,6 +166,7 @@
   <ItemGroup>
     <ClCompile Include="src\game.cpp" />
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\menu.cpp" />
     <ClCompile Include="src\player_bot.cpp" />
     <ClCompile Include="src\player_real.cpp" />
   </ItemGroup>

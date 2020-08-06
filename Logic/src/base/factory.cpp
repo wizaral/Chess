@@ -38,4 +38,4 @@ void ClassicFactory::spawn_figures(Board &board, int row, FigureColor color) {
     board.add_figure({FigureType::Rook, color, std::make_unique<RookStrategy>()}, {row, 7});
 }
 
-}
+} // namespace Chess

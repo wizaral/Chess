@@ -13,7 +13,7 @@ Figure::Figure(FigureType type, FigureColor color, std::unique_ptr<Strategy> st)
 Figure::Figure(Figure &&f)
     : type_(f.type_), color_(f.color_), st_(std::move(f.st_)) {}
 
-Figure &Figure::operator=(Figure&& f) {
+Figure &Figure::operator=(Figure &&f) {
     if (this != &f) {
         type_ = f.type_;
         color_ = f.color_;

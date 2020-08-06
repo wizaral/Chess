@@ -9,7 +9,8 @@ protected:
 
 public:
     enum class MessageType {
-        Notify, Destroy,
+        Notify,
+        Destroy,
     };
 
     Subscriber(Publisher *publisher);

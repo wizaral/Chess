@@ -4,7 +4,8 @@
 namespace Chess {
 
 Position::Position(int row, int col)
-    : row_(row), col_(col) {}
+    : row_(row)
+    , col_(col) {}
 
 int Position::row() const {
     return row_;
