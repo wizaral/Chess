@@ -15,11 +15,8 @@ class Board {
 
     Field<std::unique_ptr<Figure>> figures_;
 
-    Field<bool> check_state_white_;
-    Field<bool> check_state_black_;
-
-    Field<bool> move_state_white_;
-    Field<bool> move_state_black_;
+    std::array<Field<bool>, 2> check_state_;
+    std::array<Field<bool>, 2> move_state_;
 
 public:
     Board() = default;
@@ -41,10 +38,14 @@ public:
     void clear_figures();
 
     void reset_check_state(FigureColor color);
-    void update_check_state(const std::vector<Position> &positions, FigureColor color);
+    void update_check_state(FigureColor color, const std::vector<Position> &positions);
 
     void reset_move_state(FigureColor color);
-    void update_move_state(const std::vector<Position> &positions, FigureColor color);
+    void update_move_state(FigureColor color, const std::vector<Position> &positions);
+
+private:
+    void reset(Field<bool> &field);
+    void update(Field<bool> &field, const std::vector<Position> &positions);
 };
 
 } // namespace Chess

@@ -23,17 +23,11 @@ const Board::Field<std::unique_ptr<Figure>> &Board::figures() const {
 }
 
 bool Board::get_check_state(const Position &pos, FigureColor color) const {
-    if (color == FigureColor::White) {
-        return check_state_white_[pos.row()][pos.col()];
-    }
-    return check_state_black_[pos.row()][pos.col()];
+    return check_state_[static_cast<int>(color)][pos.row()][pos.col()];
 }
 
 const Board::Field<bool> &Board::get_check_state(FigureColor color) const {
-    if (color == FigureColor::White) {
-        return check_state_white_;
-    }
-    return check_state_black_;
+    return check_state_[static_cast<int>(color)];
 }
 
 void Board::add_figure(Figure figure, const Position &pos) {
@@ -57,46 +51,30 @@ void Board::clear_figures() {
 }
 
 void Board::reset_check_state(FigureColor color) {
-    if (color == FigureColor::White) {
-        for (auto &i : check_state_white_)
-            i.fill(false);
-    } else {
-        for (auto &i : check_state_black_)
-            i.fill(false);
-    }
+    reset(check_state_[static_cast<int>(color)]);
 }
 
-void Board::update_check_state(const std::vector<Position> &positions, FigureColor color) {
-    if (color == FigureColor::White) {
-        for (const auto &i : positions) {
-            check_state_white_[i.row()][i.col()] = true;
-        }
-    } else {
-        for (const auto &i : positions) {
-            check_state_black_[i.row()][i.col()] = true;
-        }
-    }
+void Board::update_check_state(FigureColor color, const std::vector<Position> &positions) {
+    update(check_state_[static_cast<int>(color)], positions);
 }
 
 void Board::reset_move_state(FigureColor color) {
-    if (color == FigureColor::White) {
-        for (auto &i : move_state_white_)
-            i.fill(false);
-    } else {
-        for (auto &i : move_state_black_)
-            i.fill(false);
+    reset(move_state_[static_cast<int>(color)]);
+}
+
+void Board::update_move_state(FigureColor color, const std::vector<Position> &positions) {
+    update(move_state_[static_cast<int>(color)], positions);
+}
+
+void Board::reset(Field<bool> &field) {
+    for (auto &i : field) {
+        i.fill(false);
     }
 }
 
-void Board::update_move_state(const std::vector<Position> &positions, FigureColor color) {
-    if (color == FigureColor::White) {
-        for (const auto &i : positions) {
-            move_state_white_[i.row()][i.col()] = true;
-        }
-    } else {
-        for (const auto &i : positions) {
-            move_state_black_[i.row()][i.col()] = true;
-        }
+void Board::update(Field<bool> &field, const std::vector<Position> &positions) {
+    for (const auto &i : positions) {
+        field[i.row()][i.col()] = true;
     }
 }
 
