@@ -15,6 +15,7 @@ public:
     [[nodiscard]] static bool validation(const Position &pos);
 
     friend bool operator==(const Position &lhs, const Position &rhs);
+    friend bool operator!=(const Position &lhs, const Position &rhs);
 };
 
 } // namespace Chess

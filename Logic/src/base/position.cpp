@@ -28,4 +28,8 @@ bool operator==(const Position &lhs, const Position &rhs) {
     return lhs.row_ == rhs.row_ && lhs.col_ == rhs.col_;
 }
 
+bool operator!=(const Position &lhs, const Position &rhs) {
+    return !(lhs == rhs);
+}
+
 } // namespace Chess
