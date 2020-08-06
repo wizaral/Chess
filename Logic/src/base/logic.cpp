@@ -288,32 +288,34 @@ void Logic::after_move_logic() {
 }
 
 GameState Logic::promote_pawn(FigureType type) {
-    FigureColor color = player()->color();
-    PawnStrategy *pawn = static_cast<PawnStrategy *>(board_.get_figure(pawn_pos_)->strategy());
-    pawn->update(Subscriber::MessageType::Notify);
-    pawn->update(Subscriber::MessageType::Notify);
+    if (pawn_pos_ != Position{-1, -1}) {
+        FigureColor color = player()->color();
+        PawnStrategy *pawn = static_cast<PawnStrategy *>(board_.get_figure(pawn_pos_)->strategy());
+        pawn->update(Subscriber::MessageType::Notify);
+        pawn->update(Subscriber::MessageType::Notify);
 
-    switch (type) {
-    case FigureType::Queen:
-        board_.add_figure({type, color, std::make_unique<QueenStrategy>()}, pawn_pos_);
-        break;
-    case FigureType::Rook:
-        board_.add_figure({type, color, std::make_unique<RookStrategy>()}, pawn_pos_);
-        break;
-    case FigureType::Knight:
-        board_.add_figure({type, color, std::make_unique<KnightStrategy>()}, pawn_pos_);
-        break;
-    case FigureType::Bishop:
-        board_.add_figure({type, color, std::make_unique<BishopStrategy>()}, pawn_pos_);
-        break;
-    default:
-        break;
+        switch (type) {
+        case FigureType::Queen:
+            board_.add_figure({type, color, std::make_unique<QueenStrategy>()}, pawn_pos_);
+            break;
+        case FigureType::Rook:
+            board_.add_figure({type, color, std::make_unique<RookStrategy>()}, pawn_pos_);
+            break;
+        case FigureType::Knight:
+            board_.add_figure({type, color, std::make_unique<KnightStrategy>()}, pawn_pos_);
+            break;
+        case FigureType::Bishop:
+            board_.add_figure({type, color, std::make_unique<BishopStrategy>()}, pawn_pos_);
+            break;
+        default:
+            break;
+        }
+
+        pawn_pos_ = {-1, -1};
+        state_ = GameState::NormalMove;
+        after_move_logic();
+        return state_;
     }
-
-    pawn_pos_ = {-1, -1};
-    state_ = GameState::NormalMove;
-    after_move_logic();
-    return state_;
 }
 
 } // namespace Chess
