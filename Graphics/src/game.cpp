@@ -6,11 +6,18 @@ Game::Game(sf::RenderWindow &window)
 }
 
 void Game::load() {
+    load(rect_, "res" DIR_SEP "rect.png");
     load(board_, "res" DIR_SEP "board.png");
-    board_.first.setPosition(0, 0);
+    load(background_, "res" DIR_SEP "bg.jpg");
 
     load(promotions_[0], "res" DIR_SEP "wPp.png");
     load(promotions_[1], "res" DIR_SEP "bPp.png");
+
+    load(buttons_[0], "res" DIR_SEP "pcb.png");
+    load(buttons_[1], "res" DIR_SEP "psb.png");
+    load(buttons_[2], "res" DIR_SEP "pcw.png");
+    load(buttons_[3], "res" DIR_SEP "psw.png");
+    load(buttons_[4], "res" DIR_SEP "play.png");
 
     std::string path{"res" DIR_SEP "__.png"};
     const std::array<char, 6> figures{'P', 'N', 'B', 'R', 'Q', 'K'};

@@ -26,9 +26,10 @@ class Game {
     Chess::GameState state_ = Chess::GameState::NormalMove;
     std::ostringstream log_;
 
-    Sprite board_;
     sf::Font font_;
+    Sprite board_, background_, rect_;
 
+    std::array<Sprite, 5> buttons_;
     std::array<Sprite, 2> promotions_;
     std::array<std::array<Sprite, 6>, 2> figures_;
     Chess::Position dragging_{-1, -1}, promoting_{-1, -1};
