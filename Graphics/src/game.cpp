@@ -51,12 +51,12 @@ void Game::loop() {
         if (move_.has_value()) {
             state_ = logic_->logic(move_.value());
 
-            if (state_ == Chess::GameState::KingCastling || state_ == Chess::GameState::QueenCastling) {
-                castling();
-            }
-
             if (Chess::is_move(state_)) {
                 log();
+            }
+
+            if (state_ == Chess::GameState::KingCastling || state_ == Chess::GameState::QueenCastling) {
+                castling();
             }
 
             if (state_ == Chess::GameState::PawnPromotion) {
