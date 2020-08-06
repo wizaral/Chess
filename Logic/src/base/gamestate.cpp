@@ -6,7 +6,8 @@ bool is_move(GameState gstate) {
     return gstate == GameState::NormalMove
         || gstate == GameState::EnPassant
         || gstate == GameState::KingCastling
-        || gstate == GameState::QueenCastling;
+        || gstate == GameState::QueenCastling
+        || gstate == GameState::PawnPromotion;
 }
 
 bool is_endgame(GameState gstate) {
