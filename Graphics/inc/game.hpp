@@ -53,12 +53,14 @@ private:
     void load();
     void load(Sprite &sprt, const std::string &path);
 
+    void reprint();
     void print_board();
     void print_next_step();
     void print_state();
     void print_endgame();
 
     void pawn_promotion();
+    void castling();
     void after_game();
     void log();
 

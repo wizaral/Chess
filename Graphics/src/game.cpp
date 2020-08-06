@@ -32,12 +32,16 @@ void Game::load(Sprite &sprt, const std::string &path) {
     sprite.setTexture(texture);
 }
 
+void Game::reprint() {
+    window_.clear();
+    print_board();
+    print_next_step();
+}
+
 void Game::loop() {
     while (window_.isOpen() && !Chess::is_endgame(state_)) {
-        window_.clear();
-        print_board();
+        reprint();
 
-        print_next_step();
         if (state_ == Chess::GameState::PawnPromotion) {
             pawn_promotion();
         } else {
@@ -47,6 +51,10 @@ void Game::loop() {
         if (move_.has_value()) {
             state_ = logic_->logic(move_.value());
 
+            if (state_ == Chess::GameState::KingCastling || state_ == Chess::GameState::QueenCastling) {
+                castling();
+            }
+
             if (Chess::is_move(state_)) {
                 log();
             }
@@ -54,8 +62,7 @@ void Game::loop() {
             if (state_ == Chess::GameState::PawnPromotion) {
                 promoting_ = move_->to();
             }
-            window_.clear();
-            print_board();
+            reprint();
             move_.reset();
         }
 
@@ -89,6 +96,37 @@ void Game::pawn_promotion() {
         log_ << ftype;
         promoting_ = Chess::Position{-1, -1};
     }
+}
+
+void Game::castling() {
+    int row = move_->from().row();
+
+    if (int distance = move_->from().col() - move_->to().col(); distance < 0) {
+        move_ = Chess::Move{{row, 7}, {row, 5}};
+    } else /* if (distance > 0) */ {
+        move_ = Chess::Move{{row, 0}, {row, 3}};
+    }
+
+    sf::Vector2f dest{Game::transform(move_->to())};
+    dragging_ = move_->to();
+    dragg_pos_ = Game::transform(move_->from());
+    auto delta = (dest - dragg_pos_) / 25.f;
+
+    while (window_.isOpen() && dragg_pos_ != dest) {
+        sf::Event event;
+
+        while (window_.pollEvent(event)) {
+            if (Game::is_exit(event)) {
+                window_.close();
+            }
+        }
+
+        dragg_pos_ += delta;
+        reprint();
+        print_state();
+        window_.display();
+    }
+    dragging_ = Chess::Position{-1, -1};
 }
 
 void Game::after_game() {
