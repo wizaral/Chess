@@ -1,18 +1,18 @@
 #include "game.hpp"
 
 RealPlayer::RealPlayer(Chess::FigureColor color,
-                       const std::string &name,
+                       const std::string& name,
+                       std::optional<Chess::Move>& move,
                        float tile_size,
-                       Chess::Position &dragging,
-                       sf::Vector2f &dragg_pos,
-                       sf::RenderWindow &window,
-                       std::optional<Chess::Move> &move)
+                       sf::RenderWindow& window,
+                       sf::Vector2f& dragg_pos,
+                       Chess::Position& dragging)
     : Chess::Player(color, name)
+    , move_(move)
     , half_tile_(tile_size / 2)
-    , dragging_(dragging)
-    , dragg_pos_(dragg_pos)
     , window_(window)
-    , move_(move) {}
+    , dragg_pos_(dragg_pos)
+    , dragging_(dragging) {}
 
 Chess::Move RealPlayer::get_next_move() {
     sf::Event event;
