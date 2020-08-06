@@ -99,8 +99,12 @@ void PawnStrategy::update_movement(const Figure &figure, const Board &board, con
     };
 
     for (auto i : positions) {
-        if (Position::validation(i) && validate_move(figure, board, {pos, i}) == GameState::NormalMove) {
-            coords.push_back(i);
+        if (Position::validation(i)) {
+            auto valid = validate_move(figure, board, {pos, i});
+
+            if (valid == GameState::NormalMove || valid == GameState::EnPassant) {
+                coords.push_back(i);
+            }
         }
     }
 }
