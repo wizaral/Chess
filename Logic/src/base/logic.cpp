@@ -73,14 +73,14 @@ bool Logic::is_check(FigureColor color, const Move &move) {
     update_check_state();
 
     bool result = is_check(color);
-
     board_.move_figure({move.to(), move.from()});
-    update_check_state();
 
     if (save.has_value()) {
         board_.add_figure({{}, {}, {}}, move.to());
         *board_.get_figure(move.to()) = std::move(*save);
     }
+
+    update_check_state();
     return result;
 }
 
