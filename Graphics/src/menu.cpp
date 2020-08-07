@@ -1,20 +1,7 @@
 #include "game.hpp"
 
-void Game::menu() {
+void Game::print_menu(std::array<int, 4> &positions) {
     bool exit = false;
-    std::wstring path(L"stockfish.exe");
-
-    board_.first.setPosition(0, 0);
-    background_.first.setPosition(0, 0);
-    std::array<int, 4> positions{1, 0, 0, 1};
-
-    buttons_[0].first.setPosition(100, 100);
-    buttons_[1].first.setPosition(450, 100);
-    buttons_[2].first.setPosition(100, 400);
-    buttons_[3].first.setPosition(450, 400);
-    buttons_[4].first.setPosition(100, 550);
-
-    std::array<std::unique_ptr<Chess::Player>, 2> players;
 
     while (window_.isOpen() && !exit) {
         sf::Event e;
@@ -30,20 +17,16 @@ void Game::menu() {
                 if (buttons_[0].first.getGlobalBounds().contains(pos.x, pos.y)) {
                     positions[0] = 1;
                     positions[1] = 0;
-                }
-                if (buttons_[1].first.getGlobalBounds().contains(pos.x, pos.y)) {
+                } else if (buttons_[1].first.getGlobalBounds().contains(pos.x, pos.y)) {
                     positions[0] = 0;
                     positions[1] = 1;
-                }
-                if (buttons_[2].first.getGlobalBounds().contains(pos.x, pos.y)) {
+                } else if (buttons_[2].first.getGlobalBounds().contains(pos.x, pos.y)) {
                     positions[2] = 1;
                     positions[3] = 0;
-                }
-                if (buttons_[3].first.getGlobalBounds().contains(pos.x, pos.y)) {
+                } else if (buttons_[3].first.getGlobalBounds().contains(pos.x, pos.y)) {
                     positions[2] = 0;
                     positions[3] = 1;
-                }
-                if (buttons_[4].first.getGlobalBounds().contains(pos.x, pos.y - 30)) {
+                } else if (buttons_[4].first.getGlobalBounds().contains(pos.x, pos.y)) {
                     exit = true;
                 }
             }
@@ -65,6 +48,14 @@ void Game::menu() {
         }
         window_.display();
     }
+}
+
+void Game::menu() {
+    std::wstring path(L"stockfish.exe");
+    std::array<int, 4> positions{1, 0, 0, 1};
+    std::array<std::unique_ptr<Chess::Player>, 2> players;
+
+    print_menu(positions);
 
     if (window_.isOpen()) {
         if (positions[0]) {
