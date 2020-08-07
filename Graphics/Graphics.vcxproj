@@ -169,6 +169,7 @@
     <ClCompile Include="src\menu.cpp" />
     <ClCompile Include="src\player_bot.cpp" />
     <ClCompile Include="src\player_real.cpp" />
+    <ClCompile Include="src\render.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="inc\game.hpp" />

@@ -43,7 +43,6 @@ public:
     Game(sf::RenderWindow &window);
 
     void menu();
-    void loop();
 
     static Chess::Position transform(const sf::Vector2i &pos);
     static sf::Vector2f transform(const Chess::Position &pos);
@@ -54,8 +53,12 @@ private:
     void load();
     void load(Sprite &sprt, const std::string &path);
 
+    void loop();
+
     void reprint();
+    void print_menu(std::array<int, 4> &positions);
     void print_board();
+    void print_castling();
     void print_next_step();
     void print_state();
     void print_endgame();
