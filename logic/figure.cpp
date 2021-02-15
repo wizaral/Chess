@@ -4,38 +4,18 @@
 namespace Chess {
 
 FigureColor operator!(FigureColor color) {
-    return static_cast<FigureColor>(static_cast<int>(color) ^ 1);
+    return static_cast<FigureColor>(static_cast<int8_t>(color) ^ FigureColorMask);
 }
 
-Figure::Figure(FigureType type, FigureColor color, std::unique_ptr<Strategy> st)
-: m_type(type)
-, m_color(color)
-, m_strategy(std::move(st)) {}
-
-Figure::Figure(Figure &&f)
-: m_type(f.m_type)
-, m_color(f.m_color)
-, m_strategy(std::move(f.m_strategy)) {}
-
-Figure &Figure::operator=(Figure &&f) {
-    if (this != &f) {
-        m_type = f.m_type;
-        m_color = f.m_color;
-        m_strategy = std::move(f.m_strategy);
-    }
-    return *this;
-}
+Figure::Figure(FigureType type, FigureColor color)
+: m_color_type(static_cast<int8_t>(type) | static_cast<int8_t>(color)) {}
 
 FigureType Figure::type() const {
-    return m_type;
+    return static_cast<FigureType>(m_color_type & FigureTypeMask);
 }
 
 FigureColor Figure::color() const {
-    return m_color;
-}
-
-Strategy *Figure::strategy() {
-    return m_strategy.get();
+    return static_cast<FigureColor>(m_color_type & FigureColorMask);
 }
 
 } // namespace Chess

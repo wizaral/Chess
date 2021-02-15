@@ -1,43 +1,36 @@
 #pragma once
-#include <memory>
 
 namespace Chess {
 
+#define FigureTypeMask 0x3F
+#define FigureColorMask 0xC0
+
 enum class FigureType {
-    Pawn,
-    Knight,
-    Bishop,
-    Rook,
-    Queen,
-    King,
+    Pawn = 1 << 0,
+    Knight = 1 << 1,
+    Bishop = 1 << 2,
+    Rook = 1 << 3,
+    Queen = 1 << 4,
+    King = 1 << 5,
 };
 
 enum class FigureColor {
-    White,
-    Black,
+    White = 1 << 6,
+    Black = 1 << 7,
 };
 
 FigureColor operator!(FigureColor color);
 
-class Strategy;
-
-class Figure final {
-    FigureType m_type;
-    FigureColor m_color;
-    std::unique_ptr<Strategy> m_strategy;
+class Figure {
+protected:
+    int8_t m_color_type;
 
 public:
-    Figure(FigureType type, FigureColor color, std::unique_ptr<Strategy> st);
-    Figure(const Figure &f) = delete;
-    Figure(Figure &&f);
-    ~Figure() = default;
-
-    Figure &operator=(const Figure &f) = delete;
-    Figure &operator=(Figure &&f);
+    Figure(FigureType type, FigureColor color);
+    virtual ~Figure() = default;
 
     FigureType type() const;
     FigureColor color() const;
-    Strategy *strategy();
 };
 
 } // namespace Chess
