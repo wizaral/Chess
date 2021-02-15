@@ -1,16 +1,13 @@
 # Chess
 **Classic chess game**
 
-## Preparing
-**Put dir SFML-2.5.1 that appropriatet to your compiler in the root of project**
+## Required
+**Cmake 3.18**\
+**VS2019 for Windows**\
+**GCC for UNIX systems**
 
-## Instalation:
-### Windows:
-**1. open .sln file with `visual studio`**\
-**2. choose `project` you need and `release` mode**\
-**3. `build` and `run`**
-
-### Linux/Mac:
-**1. graphics mode: `make`**\
-**2. terminal mode: `make terminal`**\
-**3. unittest mode: `make test`**
+## Installation:
+>**1. `git clone --recursive https://github.com/wizaral/Chess`**\
+>**2. `cmake . -Bbuild -Thost=[x86|x64] -Wdev -Werror=dev && cmake --build ./build --config [Debug|Release]`**\
+>>**3.1. For Windows: `./[Debug|Release]/chess.exe`**\
+>>**3.2. For UNIX systems: `./chess`**
