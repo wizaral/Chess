@@ -20,6 +20,7 @@ else()
         -Wpedantic
         # -D GAME_RESOURCES_DIR "${resources_dir}"
     )
+    # fix this for anouther systems
     if(${CMAKE_BUILD_TYPE} STREQUAL "Release")
         add_compile_options(
             -Ofast
