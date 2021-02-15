@@ -3,10 +3,10 @@
 #include <cstring>
 #include <sstream>
 #include <string>
-#include "chess.hpp"
 
 #if defined(_WIN64) || defined(_WIN32)
 #include <windows.h>
+#include "chess.hpp"
 
 class BotPlayer : public Chess::Player {
     STARTUPINFO m_sui;
@@ -38,6 +38,18 @@ protected:
     static Chess::Position transform(char col, char row);
 };
 
+#elif defined(__APPLE__) || defined(__linux__)
+// #include unix headers
+#include "chess.hpp"
+
+class BotPlayer : public Chess::Player {
+    // TODO bot for UNIX systems
+};
+
+#else
+#error unsupported OS
+#endif
+
 class GraphicsBotPlayer : public BotPlayer {
     const float m_half_tile;
     Chess::Position &m_dragging;
@@ -52,6 +64,3 @@ public:
 
     Chess::Move get_next_move() override;
 };
-
-#elif defined(__APPLE__) || defined(__linux__)
-#endif

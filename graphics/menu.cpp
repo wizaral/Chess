@@ -51,7 +51,14 @@ void Game::print_menu(std::array<int, 4> &positions) {
 }
 
 void Game::menu() {
+#if defined(_WIN64) || defined(_WIN32)
     std::string path("stockfish.exe");
+#elif defined(__APPLE__) || defined(__linux__)
+    std::string path("PUT_CORRECT_PATH_HERE");
+#else
+#error unsupported OS
+#endif
+
     std::array<int, 4> positions{1, 0, 0, 1};
     std::array<std::unique_ptr<Chess::Player>, 2> players;
 

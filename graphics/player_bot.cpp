@@ -148,4 +148,7 @@ Chess::Move GraphicsBotPlayer::get_next_move() {
 }
 
 #elif defined(__APPLE__) || defined(__linux__)
+// TODO bot for UNIX systems
+#else
+#error unsupported OS
 #endif
