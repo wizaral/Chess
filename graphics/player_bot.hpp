@@ -3,8 +3,10 @@
 #include <cstring>
 #include <sstream>
 #include <string>
-#include <windows.h>
 #include "chess.hpp"
+
+#if defined(_WIN64) || defined(_WIN32)
+#include <windows.h>
 
 class BotPlayer : public Chess::Player {
     STARTUPINFO m_sui;
@@ -50,3 +52,6 @@ public:
 
     Chess::Move get_next_move() override;
 };
+
+#elif defined(__APPLE__) || defined(__linux__)
+#endif
