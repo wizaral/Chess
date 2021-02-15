@@ -1,13 +1,16 @@
-# Chess
+# **Chess**
 **Classic chess game**
 
-## Required
+## **Required**
 **Cmake 3.18**\
-**VS2019 for Windows**\
-**GCC for UNIX systems**
+**Visual Studio 2019 for Windows**\
+**GCC or Clang for UNIX systems**
 
-## Installation:
-**1. `git clone --recursive https://github.com/wizaral/Chess`**\
-**2. `cmake . -Bbuild -Thost=[x86|x64] -Wdev -Werror=dev && cmake --build ./build --config [Debug|Release]`**\
-**3.1. For Windows: `./[Debug|Release]/chess.exe`**\
-**3.2. For UNIX systems: `./chess`**
+## **Installation:**
+**`git clone --recursive https://github.com/wizaral/Chess`**
+#### **For Windows:**
+**`cmake . -Bbuild -Thost=[x86|x64] -Wdev -Werror=dev && cmake --build ./build --config [Debug|Release]`**\
+**`./[Debug|Release]/chess.exe`**
+#### **For UNIX systems:**
+**`cmake . -Bbuild -Wdev -Werror=dev && cmake --build ./build`**\
+**`./chess`**
