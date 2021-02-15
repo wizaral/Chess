@@ -12,72 +12,80 @@
 *.ii
 
 # Object files
-*.slo
-*.lo
-*.ko
 *.elf
+*.ko
+*.lo
 *.o
 *.obj
+*.slo
 
 # Precompiled Headers
 *.gch
 *.pch
 
 # Dynamic libraries
+*.dll
+*.dylib
 *.so
 *.so.*
-*.dylib
-*.dll
 
 # Static libraries
-*.lai
-*.la
 *.a
+*.la
+*.lai
 *.lib
 *.lo
 
 # Executables
-*.exe
-*.out
 *.app
-*.i*86
-*.x86_64
+*.exe
 *.hex
+*.i*86
+*.out
+*.x86_64
 
 # Linker output
+*.exp
 *.ilk
 *.map
-*.exp
 
 # Debug files
 *.dSYM/
-*.su
 *.idb
 *.pdb
+*.su
 
 # Cmake
-CMakeLists.txt.user
+_deps
+cmake_install.cmake
 CMakeCache.txt
 CMakeFiles
+CMakeLists.txt.user
 CMakeScripts
-Testing
-Makefile
-cmake_install.cmake
-install_manifest.txt
 compile_commands.json
 CTestTestfile.cmake
-_deps
+install_manifest.txt
+Makefile
+Testing
 
 # Visual Studio Code
-.vscode/
 .history/
+.vscode/
 *.code-workspace
 
 # text files
-*.txt
 *.pdf
+*.txt
 *dump
 
 # current project
 !tests/tests/*.txt
 !graphics/stockfish.exe
+!CMakeLists.txt
+
+resources
+!graphics/resources/
+
+[Bb]uild
+[Dd]ebug
+[Rr]elease
