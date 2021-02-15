@@ -80,7 +80,7 @@ Testing
 
 # current project
 !tests/tests/*.txt
-!graphics/stockfish.exe
+!stockfish.exe
 !CMakeLists.txt
 
 resources
