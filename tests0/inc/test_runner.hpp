@@ -168,12 +168,12 @@ inline void Assert(bool b, const std::string &hint = {}) {
 }
 
 class TestRunner {
-    int fails_ = 0;
-    bool should_terminate_ = true;
+    int m_fails = 0;
+    bool m_should_terminate = true;
 public:
     explicit TestRunner() = default;
     explicit TestRunner(bool should_terminate)
-        : should_terminate_(should_terminate) {}
+        : m_should_terminate(should_terminate) {}
 
     template <class TestFunc>
     void RunTest(TestFunc func, const std::string &test_name = {}) {
@@ -181,18 +181,18 @@ public:
             func();
             std::cerr << test_name << " OK" << std::endl;
         } catch (std::exception &ex) {
-            ++fails_;
+            ++m_fails;
             std::cerr << test_name << " fail: " << ex.what() << std::endl;
         } catch (...) {
-            ++fails_;
+            ++m_fails;
             std::cerr << "Unknown exception caught" << std::endl;
         }
     }
 
     ~TestRunner() {
-        if (std::cerr.flush(); fails_ > 0) {
-            std::cerr << fails_ << " unit tests failed. Terminate" << std::endl;
-            if (should_terminate_)
+        if (std::cerr.flush(); m_fails > 0) {
+            std::cerr << m_fails << " unit tests failed. Terminate" << std::endl;
+            if (m_should_terminate)
                 exit(EXIT_FAILURE);
         }
     }

@@ -3,15 +3,15 @@
 namespace Chess {
 
 Player::Player(FigureColor color, const std::string &name)
-    : color_(color)
-    , name_(name) {}
+: m_color(color)
+, m_name(name) {}
 
 FigureColor Player::color() const {
-    return color_;
+    return m_color;
 }
 
 const std::string &Player::name() const {
-    return name_;
+    return m_name;
 }
 
 } // namespace Chess

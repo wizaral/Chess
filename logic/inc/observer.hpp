@@ -5,7 +5,7 @@ class Publisher;
 
 class Subscriber {
 protected:
-    Publisher *publisher_;
+    Publisher *m_publisher;
 
 public:
     enum class MessageType {
@@ -20,7 +20,7 @@ public:
 
 class Publisher {
 protected:
-    std::list<Subscriber *> subs_;
+    std::list<Subscriber *> m_subs;
 
 public:
     virtual ~Publisher();

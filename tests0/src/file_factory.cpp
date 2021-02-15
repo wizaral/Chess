@@ -1,13 +1,13 @@
 #include "file_factory.hpp"
 
-FileFactory::FileFactory(const std::string &ifile_name) : ifile_name_(ifile_name) {}
+FileFactory::FileFactory(const std::string &ifile_name) : m_ifile_name(ifile_name) {}
 
 void FileFactory::change_source(const std::string &ifile_name) {
-    ifile_name_ = ifile_name;
+    m_ifile_name = ifile_name;
 }
 
 void FileFactory::init_game(Chess::Board &board, int &player_index, Publisher *publisher) {
-    if (std::ifstream ifile(ifile_name_); ifile) {
+    if (std::ifstream ifile(m_ifile_name); ifile) {
         set_player(ifile, player_index);
         get_last_move(ifile);
         std::string figure;
@@ -33,12 +33,12 @@ void FileFactory::get_last_move(std::ifstream &ifile) {
     ifile >> last_move;
 
     if (last_move != "----") {
-        last_move_ = {{56 - last_move[1], last_move[0] - 97}, {56 - last_move[3], last_move[2] - 97}};
+        m_last_move = {{56 - last_move[1], last_move[0] - 97}, {56 - last_move[3], last_move[2] - 97}};
 
-        if (Chess::Position::validation(last_move_.from()) == false) {
+        if (Chess::Position::validation(m_last_move.from()) == false) {
             throw std::logic_error("First move start position out of bounds");
         }
-        if (Chess::Position::validation(last_move_.to()) == false) {
+        if (Chess::Position::validation(m_last_move.to()) == false) {
             throw std::logic_error("First move end position out of bounds");
         }
     }
@@ -73,10 +73,10 @@ void FileFactory::spawn_figure(Chess::Board &board, Publisher *publisher, const 
 
 void FileFactory::spawn_pawn(Chess::Board &board, Chess::FigureColor color, const std::string &figure, int row, int col, Publisher *publisher) {
     if (figure[2] != '-') {
-        if (row == last_move_.to().row() && col == last_move_.to().col()) {
+        if (row == m_last_move.to().row() && col == m_last_move.to().col()) {
             // to save en passant state
             board.add_figure({Chess::FigureType::Pawn, color, std::make_unique<Chess::PawnStrategy>(publisher, color)}, {row, col});
-            board.get_figure({row, col})->strategy()->move_update(last_move_);
+            board.get_figure({row, col})->strategy()->move_update(m_last_move);
         } else {
             board.add_figure({Chess::FigureType::Pawn, color, std::make_unique<Chess::PawnStrategy>(publisher, color, Chess::PawnStrategy::MoveState::NormalMove)}, {row, col});
         }
@@ -90,7 +90,7 @@ void FileFactory::spawn_king(Chess::Board &board, Chess::FigureColor color, cons
     board.add_figure({Chess::FigureType::King, color, std::make_unique<Chess::KnightStrategy>()}, {row, col});
 
     if (figure[2] != '-') {
-        board.get_figure({row, col})->strategy()->move_update(last_move_);
+        board.get_figure({row, col})->strategy()->move_update(m_last_move);
     }
 }
 
@@ -98,6 +98,6 @@ void FileFactory::spawn_rook(Chess::Board &board, Chess::FigureColor color, cons
     board.add_figure({Chess::FigureType::Rook, color, std::make_unique<Chess::RookStrategy>()}, {row, col});
 
     if (figure[2] != '-') {
-        board.get_figure({row, col})->strategy()->move_update(last_move_);
+        board.get_figure({row, col})->strategy()->move_update(m_last_move);
     }
 }

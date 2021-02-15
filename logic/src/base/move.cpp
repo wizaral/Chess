@@ -3,23 +3,23 @@
 namespace Chess {
 
 Move::Move(const Position &from, const Position &to)
-    : from_(from)
-    , to_(to) {}
+: m_from(from)
+, m_to(to) {}
 
 Position Move::from() const {
-    return from_;
+    return m_from;
 }
 
 Position Move::to() const {
-    return to_;
+    return m_to;
 }
 
 int Move::rows() const {
-    return abs(from_.row() - to_.row());
+    return abs(m_from.row() - m_to.row());
 }
 
 int Move::cols() const {
-    return abs(from_.col() - to_.col());
+    return abs(m_from.col() - m_to.col());
 }
 
 } // namespace Chess

@@ -7,23 +7,24 @@
 #include "chess.hpp"
 
 class BotPlayer : public Chess::Player {
-    STARTUPINFO sui_;
-    SECURITY_ATTRIBUTES sattr_ = {sizeof(SECURITY_ATTRIBUTES), nullptr, true};
-    PROCESS_INFORMATION pinfo_;
+    STARTUPINFO m_sui;
+    SECURITY_ATTRIBUTES m_sattr = {sizeof(SECURITY_ATTRIBUTES), nullptr, true};
+    PROCESS_INFORMATION m_pinfo;
 
-    HANDLE pipe_in_w_ = nullptr;
-    HANDLE pipe_in_r_ = nullptr;
-    HANDLE pipe_out_w_ = nullptr;
-    HANDLE pipe_out_r_ = nullptr;
+    HANDLE m_pipe_in_w = nullptr;
+    HANDLE m_pipe_in_r = nullptr;
+    HANDLE m_pipe_out_w = nullptr;
+    HANDLE m_pipe_out_r = nullptr;
 
-    char promote_figure_ = '\0';
-    DWORD write_, read_, available_;
+    char m_promote_figure = '\0';
+    DWORD m_write, m_read, m_available;
 
-    static const DWORD buff_size_ = 4096;
+    inline static constexpr DWORD s_buff_size = 4096;
 
 protected:
-    std::optional<Chess::Move> &move_;
-    std::ostringstream &log_;
+    std::optional<Chess::Move> &m_move;
+    std::ostringstream &m_log;
+
 public:
     BotPlayer(Chess::FigureColor color, const std::string &name, std::optional<Chess::Move> &move, std::ostringstream &log, std::wstring &path);
     ~BotPlayer();
@@ -36,12 +37,12 @@ protected:
 };
 
 class GraphicsBotPlayer : public BotPlayer {
-    const float half_tile_;
-    Chess::Position &dragging_;
-    sf::Vector2f &dragg_pos_;
+    const float m_half_tile;
+    Chess::Position &m_dragging;
+    sf::Vector2f &m_dragg_pos;
 
-    sf::RenderWindow &window_;
-    std::optional<Chess::Move> save_;
+    sf::RenderWindow &m_window;
+    std::optional<Chess::Move> m_save;
 
 public:
     GraphicsBotPlayer(Chess::FigureColor color, const std::string &name, std::optional<Chess::Move> &move, std::ostringstream &log, std::wstring &path, float tile_size, sf::RenderWindow &window, sf::Vector2f &dragg_pos, Chess::Position &dragging);

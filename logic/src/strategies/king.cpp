@@ -26,7 +26,7 @@ GameState KingStrategy::check_castling(const Figure &figure, const Board &board,
     FigureColor other_color = !figure.color();
 
     // check first figure move
-    if (state_ == MoveState::NoMove && static_cast<RookStrategy *>(other->strategy())->state() == RookStrategy::MoveState::NoMove) {
+    if (m_state == MoveState::NoMove && static_cast<RookStrategy *>(other->strategy())->state() == RookStrategy::MoveState::NoMove) {
         const std::array<std::array<bool, board_rows>, board_cols> &state = board.get_check_state(other_color);
         int row = move.from().row();
 
@@ -94,7 +94,7 @@ void KingStrategy::update_movement(const Figure &figure, const Board &board, con
 }
 
 void KingStrategy::move_update(const Move &move) {
-    state_ = MoveState::NormalMove;
+    m_state = MoveState::NormalMove;
 }
 
 } // namespace Chess

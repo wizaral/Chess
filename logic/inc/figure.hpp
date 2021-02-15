@@ -22,9 +22,9 @@ FigureColor operator!(FigureColor color);
 class Strategy;
 
 class Figure final {
-    FigureType type_;
-    FigureColor color_;
-    std::unique_ptr<Strategy> st_;
+    FigureType m_type;
+    FigureColor m_color;
+    std::unique_ptr<Strategy> m_strategy;
 
 public:
     Figure(FigureType type, FigureColor color, std::unique_ptr<Strategy> st);

@@ -9,35 +9,29 @@
 #include "player_bot.hpp"
 #include "player_real.hpp"
 
-#if defined(_WIN64) || defined(_WIN32)
-#define DIR_SEP "\\"
-#elif defined(__APPLE__) || defined(__linux__)
-#define DIR_SEP "/"
-#endif
-
 constexpr inline int window_width = 800;
 constexpr inline int window_height = 900;
 
 class Game {
     using Sprite = std::pair<sf::Sprite, sf::Texture>;
 
-    sf::RenderWindow &window_;
-    inline const static float tile_size_ = 100.0f;
-    Chess::GameState state_ = Chess::GameState::NormalMove;
-    std::ostringstream log_;
+    sf::RenderWindow &m_window;
+    inline constexpr static float s_tile_size = 100.0f;
+    Chess::GameState m_state = Chess::GameState::NormalMove;
+    std::ostringstream m_log;
 
-    sf::Font font_;
-    Sprite board_, background_, rect_;
+    sf::Font m_font;
+    Sprite m_board, m_background, m_rect;
 
-    std::array<Sprite, 5> buttons_;
-    std::array<Sprite, 2> promotions_;
-    std::array<std::array<Sprite, 6>, 2> figures_;
-    Chess::Position dragging_{-1, -1}, promoting_{-1, -1};
-    sf::Vector2f dragg_pos_;
+    std::array<Sprite, 5> m_buttons;
+    std::array<Sprite, 2> m_promotions;
+    std::array<std::array<Sprite, 6>, 2> m_figures;
+    Chess::Position m_dragging{-1, -1}, m_promoting{-1, -1};
+    sf::Vector2f m_dragg_pos;
 
-    std::optional<Chess::Move> move_;
-    std::unique_ptr<Chess::Logic> logic_;
-    std::unique_ptr<Chess::FigureFactory> factory_;
+    std::optional<Chess::Move> m_move;
+    std::unique_ptr<Chess::Logic> m_logic;
+    std::unique_ptr<Chess::FigureFactory> m_factory;
 
 public:
     Game(sf::RenderWindow &window);
@@ -68,7 +62,7 @@ private:
     void after_game();
     void log();
 
-    inline const static std::array<std::string, static_cast<int>(Chess::GameState::SIZE)> states{
+    inline const static std::array<std::string, static_cast<int>(Chess::GameState::SIZE)> s_states{
         "Good move",
         "En passant",
         "King castling",

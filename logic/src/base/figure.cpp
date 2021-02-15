@@ -4,34 +4,38 @@
 namespace Chess {
 
 FigureColor operator!(FigureColor color) {
-    return color == FigureColor::White ? FigureColor::Black : FigureColor::White;
+    return static_cast<FigureColor>(static_cast<int>(color) ^ 1);
 }
 
 Figure::Figure(FigureType type, FigureColor color, std::unique_ptr<Strategy> st)
-    : type_(type), color_(color), st_(std::move(st)) {}
+: m_type(type)
+, m_color(color)
+, m_strategy(std::move(st)) {}
 
 Figure::Figure(Figure &&f)
-    : type_(f.type_), color_(f.color_), st_(std::move(f.st_)) {}
+: m_type(f.m_type)
+, m_color(f.m_color)
+, m_strategy(std::move(f.m_strategy)) {}
 
 Figure &Figure::operator=(Figure &&f) {
     if (this != &f) {
-        type_ = f.type_;
-        color_ = f.color_;
-        st_ = std::move(f.st_);
+        m_type = f.m_type;
+        m_color = f.m_color;
+        m_strategy = std::move(f.m_strategy);
     }
     return *this;
 }
 
 FigureType Figure::type() const {
-    return type_;
+    return m_type;
 }
 
 FigureColor Figure::color() const {
-    return color_;
+    return m_color;
 }
 
 Strategy *Figure::strategy() {
-    return st_.get();
+    return m_strategy.get();
 }
 
 } // namespace Chess

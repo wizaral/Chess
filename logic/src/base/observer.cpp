@@ -1,20 +1,20 @@
 #include "observer.hpp"
 
 Subscriber::Subscriber(Publisher *publisher)
-    : publisher_(publisher) {
-    if (publisher_ != nullptr) {
-        publisher_->subscribe(this);
+: m_publisher(publisher) {
+    if (m_publisher != nullptr) {
+        m_publisher->subscribe(this);
     }
 }
 
 Subscriber::~Subscriber() {
-    if (publisher_ != nullptr) {
-        publisher_->unsubscribe(this);
+    if (m_publisher != nullptr) {
+        m_publisher->unsubscribe(this);
     }
 }
 
 Publisher::~Publisher() {
-    for (auto i : subs_) {
+    for (auto i : m_subs) {
         i->update(Subscriber::MessageType::Destroy);
     }
 }

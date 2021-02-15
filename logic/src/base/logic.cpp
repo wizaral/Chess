@@ -3,40 +3,40 @@
 namespace Chess {
 
 Logic::Logic(std::array<std::unique_ptr<Player>, 2> arr)
-    : players_(std::move(arr)) {
+: m_players(std::move(arr)) {
     validate_players();
 }
 
 Player *Logic::player() {
-    return players_[player_index_ %= 2].get();
+    return m_players[m_player_index %= 2].get();
 }
 
 const Board &Logic::board() const {
-    return board_;
+    return m_board;
 }
 
 void Logic::init_game(std::unique_ptr<FigureFactory> factory) {
-    factory->init_game(board_, player_index_, this);
+    factory->init_game(m_board, m_player_index, this);
 }
 
 void Logic::validate_players() const {
-    if (players_[0]->color() == players_[1]->color()) {
+    if (m_players[0]->color() == m_players[1]->color()) {
         throw std::logic_error("Players have same figure colors");
     }
 }
 
 void Logic::subscribe(Subscriber *sub) {
-    subs_.push_back(sub);
+    m_subs.push_back(sub);
 }
 
 void Logic::unsubscribe(Subscriber *sub) {
-    subs_.remove(sub);
+    m_subs.remove(sub);
 }
 
 void Logic::notify() {
-    for (auto it = subs_.begin(); it != subs_.end();) {
+    for (auto it = m_subs.begin(); it != m_subs.end();) {
         if ((*it)->update(Subscriber::MessageType::Notify) == false) {
-            it = subs_.erase(it);
+            it = m_subs.erase(it);
         } else {
             ++it;
         }
@@ -48,7 +48,7 @@ GameState Logic::validate_move(const Move &move, FigureColor color) const {
         return GameState::OutOfBounds;
     }
 
-    if (auto figure = board_.get_figure(move.from()); figure != nullptr) {
+    if (auto figure = m_board.get_figure(move.from()); figure != nullptr) {
         if (figure->color() != color) {
             return GameState::WrongFigureColor;
         }
@@ -58,26 +58,26 @@ GameState Logic::validate_move(const Move &move, FigureColor color) const {
 }
 
 bool Logic::is_check(FigureColor color) const {
-    Position pos = board_.get_position(FigureType::King, color);
-    return board_.get_check_state(!color)[pos.row()][pos.col()];
+    Position pos = m_board.get_position(FigureType::King, color);
+    return m_board.get_check_state(!color)[pos.row()][pos.col()];
 }
 
 bool Logic::is_check(FigureColor color, const Move &move) {
     std::optional<Figure> save;
 
-    if (Figure *dest = board_.get_figure(move.to()); dest != nullptr) {
+    if (Figure *dest = m_board.get_figure(move.to()); dest != nullptr) {
         save = std::move(*dest);
     }
 
-    board_.move_figure(move);
+    m_board.move_figure(move);
     update_check_state();
 
     bool result = is_check(color);
-    board_.move_figure({move.to(), move.from()});
+    m_board.move_figure({move.to(), move.from()});
 
     if (save.has_value()) {
-        board_.add_figure({{}, {}, {}}, move.to());
-        *board_.get_figure(move.to()) = std::move(*save);
+        m_board.add_figure({{}, {}, {}}, move.to());
+        *m_board.get_figure(move.to()) = std::move(*save);
     }
 
     update_check_state();
@@ -89,24 +89,24 @@ void Logic::castling(FigureColor color, const Move &move) {
 
     if (int distance = move.from().col() - move.to().col(); distance < 0) {
         // short (king) castling
-        board_.move_figure({{row, 4}, {row, 6}}); // king
-        board_.move_figure({{row, 7}, {row, 5}}); // rook
+        m_board.move_figure({{row, 4}, {row, 6}}); // king
+        m_board.move_figure({{row, 7}, {row, 5}}); // rook
 
-        static_cast<KingStrategy *>(board_.get_figure({row, 6})->strategy())->move_update(move);
-        static_cast<RookStrategy *>(board_.get_figure({row, 5})->strategy())->move_update(move);
+        static_cast<KingStrategy *>(m_board.get_figure({row, 6})->strategy())->move_update(move);
+        static_cast<RookStrategy *>(m_board.get_figure({row, 5})->strategy())->move_update(move);
     } else /* if (distance > 0) */ {
         // long (queen) castling
-        board_.move_figure({{row, 4}, {row, 2}}); // king
-        board_.move_figure({{row, 0}, {row, 3}}); // rook
+        m_board.move_figure({{row, 4}, {row, 2}}); // king
+        m_board.move_figure({{row, 0}, {row, 3}}); // rook
 
-        static_cast<KingStrategy *>(board_.get_figure({row, 2})->strategy())->move_update(move);
-        static_cast<RookStrategy *>(board_.get_figure({row, 3})->strategy())->move_update(move);
+        static_cast<KingStrategy *>(m_board.get_figure({row, 2})->strategy())->move_update(move);
+        static_cast<RookStrategy *>(m_board.get_figure({row, 3})->strategy())->move_update(move);
     }
 }
 
 void Logic::en_passant(FigureColor color, const Move &move) {
-    board_.move_figure(move);
-    board_.remove_figure({move.from().row(), move.to().col()});
+    m_board.move_figure(move);
+    m_board.remove_figure({move.from().row(), move.to().col()});
 }
 
 void Logic::update_check_state() {
@@ -114,21 +114,21 @@ void Logic::update_check_state() {
 
     for (int i = 0; i < board_rows; ++i) {
         for (int j = 0; j < board_cols; ++j) {
-            if (auto figure = board_.get_figure({i, j}); figure != nullptr) {
+            if (auto figure = m_board.get_figure({i, j}); figure != nullptr) {
                 if (figure->color() == FigureColor::White) {
-                    figure->strategy()->update_occupation(board_, {i, j}, state_white);
+                    figure->strategy()->update_occupation(m_board, {i, j}, state_white);
                 } else {
-                    figure->strategy()->update_occupation(board_, {i, j}, state_black);
+                    figure->strategy()->update_occupation(m_board, {i, j}, state_black);
                 }
             }
         }
     }
 
-    board_.reset_check_state(FigureColor::White);
-    board_.update_check_state(FigureColor::White, state_white);
+    m_board.reset_check_state(FigureColor::White);
+    m_board.update_check_state(FigureColor::White, state_white);
 
-    board_.reset_check_state(FigureColor::Black);
-    board_.update_check_state(FigureColor::Black, state_black);
+    m_board.reset_check_state(FigureColor::Black);
+    m_board.update_check_state(FigureColor::Black, state_black);
 }
 
 void Logic::update_move_state() {
@@ -136,29 +136,29 @@ void Logic::update_move_state() {
 
     for (int i = 0; i < board_rows; ++i) {
         for (int j = 0; j < board_cols; ++j) {
-            if (auto figure = board_.get_figure({i, j}); figure != nullptr) {
+            if (auto figure = m_board.get_figure({i, j}); figure != nullptr) {
                 if (figure->color() == FigureColor::White) {
-                    figure->strategy()->update_movement(*figure, board_, {i, j}, state_white);
+                    figure->strategy()->update_movement(*figure, m_board, {i, j}, state_white);
                 } else {
-                    figure->strategy()->update_movement(*figure, board_, {i, j}, state_black);
+                    figure->strategy()->update_movement(*figure, m_board, {i, j}, state_black);
                 }
             }
         }
     }
 
-    board_.reset_move_state(FigureColor::White);
-    board_.update_move_state(FigureColor::White, state_white);
+    m_board.reset_move_state(FigureColor::White);
+    m_board.update_move_state(FigureColor::White, state_white);
 
-    board_.reset_move_state(FigureColor::Black);
-    board_.update_move_state(FigureColor::Black, state_black);
+    m_board.reset_move_state(FigureColor::Black);
+    m_board.update_move_state(FigureColor::Black, state_black);
 }
 
 bool Logic::try_promote_pawn(const Figure &figure, const Position &pos) {
     if (figure.type() == FigureType::Pawn) {
         if ((pos.row() == black_figures_row && figure.color() == FigureColor::White)
             || (pos.row() == white_figures_row && figure.color() == FigureColor::Black)) {
-            state_ = GameState::PawnPromotion;
-            pawn_pos_ = pos;
+            m_state = GameState::PawnPromotion;
+            m_pawn_pos = pos;
             return true;
         }
     }
@@ -178,14 +178,14 @@ GameState Logic::is_mate() {
 bool Logic::is_stalemate(FigureColor color) {
     for (int i = 0; i < board_rows; ++i) {
         for (int j = 0; j < board_cols; ++j) {
-            auto figure = board_.get_figure({i, j});
+            auto figure = m_board.get_figure({i, j});
 
             if (figure != nullptr && figure->color() == color) {
                 std::vector<Position> positions;
-                figure->strategy()->update_movement(*figure, board_, {i, j}, positions);
+                figure->strategy()->update_movement(*figure, m_board, {i, j}, positions);
 
                 for (auto pos : positions) {
-                    auto dest = board_.get_figure(pos);
+                    auto dest = m_board.get_figure(pos);
 
                     if (dest == nullptr || dest->color() != color) {
                         if (is_check(color, {{i, j}, pos}) == false) {
@@ -202,7 +202,7 @@ bool Logic::is_stalemate(FigureColor color) {
 bool Logic::is_draw() const {
     std::vector<std::pair<FigureType, FigureColor>> figures;
 
-    for (const auto &i : board_.figures()) {
+    for (const auto &i : m_board.figures()) {
         for (const auto &j : i) {
             if (auto ptr = j.get(); ptr != nullptr) {
                 figures.push_back({ptr->type(), ptr->color()});
@@ -231,91 +231,91 @@ bool Logic::is_draw() const {
 }
 
 GameState Logic::logic(const Move &move) {
-    if (state_ == GameState::PawnPromotion) {
+    if (m_state == GameState::PawnPromotion) {
         return GameState::PawnPromotion;
     }
 
     FigureColor color = player()->color();
-    state_ = validate_move(move, color);
+    m_state = validate_move(move, color);
 
-    if (is_error(state_)) {
-        return state_;
+    if (is_error(m_state)) {
+        return m_state;
     }
 
     update_check_state();
     bool check = is_check(color);
 
-    Figure *figure = board_.get_figure(move.from());
-    state_ = figure->strategy()->validate_move(*figure, board_, move);
+    Figure *figure = m_board.get_figure(move.from());
+    m_state = figure->strategy()->validate_move(*figure, m_board, move);
 
-    if (is_error(state_)) {
-        return state_;
+    if (is_error(m_state)) {
+        return m_state;
     }
-    if (state_ == GameState::NormalMove) {
+    if (m_state == GameState::NormalMove) {
         if (is_check(color, move)) {
             return check ? GameState::KingInCheck : GameState::KingWillBeInCheck;
         } else {
             figure->strategy()->move_update(move);
-            board_.move_figure(move);
+            m_board.move_figure(move);
         }
-    } else if (state_ == GameState::EnPassant) {
+    } else if (m_state == GameState::EnPassant) {
         if (is_check(color, move)) {
             return check ? GameState::KingInCheck : GameState::KingWillBeInCheck;
         } else {
             en_passant(color, move);
         }
-    } else /* if (state_ == GameState::[Any]Castling) */ {
+    } else /* if (m_state == GameState::[Any]Castling) */ {
         castling(color, move);
     }
 
     if (try_promote_pawn(*figure, move.to())) {
-        return state_;
+        return m_state;
     }
 
     after_move_logic();
-    return state_;
+    return m_state;
 }
 
 void Logic::after_move_logic() {
     notify();
 
     if (auto state = is_mate(); is_endgame(state)) {
-        state_ = state;
+        m_state = state;
     } else if (is_draw()) {
-        state_ = GameState::Draw;
+        m_state = GameState::Draw;
     } else {
-        ++player_index_;
+        ++m_player_index;
     }
 }
 
 GameState Logic::promote_pawn(FigureType type) {
-    if (pawn_pos_ != Position{-1, -1}) {
+    if (m_pawn_pos != Position{-1, -1}) {
         FigureColor color = player()->color();
-        PawnStrategy *pawn = static_cast<PawnStrategy *>(board_.get_figure(pawn_pos_)->strategy());
+        PawnStrategy *pawn = static_cast<PawnStrategy *>(m_board.get_figure(m_pawn_pos)->strategy());
         pawn->update(Subscriber::MessageType::Notify);
         pawn->update(Subscriber::MessageType::Notify);
 
         switch (type) {
         case FigureType::Queen:
-            board_.add_figure({type, color, std::make_unique<QueenStrategy>()}, pawn_pos_);
+            m_board.add_figure({type, color, std::make_unique<QueenStrategy>()}, m_pawn_pos);
             break;
         case FigureType::Rook:
-            board_.add_figure({type, color, std::make_unique<RookStrategy>()}, pawn_pos_);
+            m_board.add_figure({type, color, std::make_unique<RookStrategy>()}, m_pawn_pos);
             break;
         case FigureType::Knight:
-            board_.add_figure({type, color, std::make_unique<KnightStrategy>()}, pawn_pos_);
+            m_board.add_figure({type, color, std::make_unique<KnightStrategy>()}, m_pawn_pos);
             break;
         case FigureType::Bishop:
-            board_.add_figure({type, color, std::make_unique<BishopStrategy>()}, pawn_pos_);
+            m_board.add_figure({type, color, std::make_unique<BishopStrategy>()}, m_pawn_pos);
             break;
         default:
             break;
         }
 
-        pawn_pos_ = {-1, -1};
-        state_ = GameState::NormalMove;
+        m_pawn_pos = {-1, -1};
+        m_state = GameState::NormalMove;
         after_move_logic();
-        return state_;
+        return m_state;
     }
 }
 

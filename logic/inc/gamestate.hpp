@@ -32,8 +32,8 @@ enum class GameState {
     SIZE,
 };
 
-bool is_move(GameState gstate);
-bool is_endgame(GameState gstate);
-bool is_error(GameState gstate);
+bool is_move(GameState state);
+bool is_endgame(GameState state);
+bool is_error(GameState state);
 
 } // namespace Chess

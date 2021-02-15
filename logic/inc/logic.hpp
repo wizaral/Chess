@@ -12,12 +12,12 @@
 namespace Chess {
 
 class Logic : public Publisher {
-    Board board_;
-    std::array<std::unique_ptr<Player>, 2> players_;
+    Board m_board;
+    std::array<std::unique_ptr<Player>, 2> m_players;
 
-    int player_index_ = 0;
-    Position pawn_pos_{-1, -1};
-    GameState state_ = GameState::NormalMove;
+    int m_player_index = 0;
+    Position m_pawn_pos{-1, -1};
+    GameState m_state = GameState::NormalMove;
 
 public:
     Logic(std::array<std::unique_ptr<Player>, 2> arr);

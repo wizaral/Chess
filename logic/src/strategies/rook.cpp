@@ -36,7 +36,7 @@ GameState RookStrategy::validate_move(const Figure &figure, const Board &board, 
 }
 
 RookStrategy::MoveState RookStrategy::state() const {
-    return state_;
+    return m_state;
 }
 
 void RookStrategy::update_occupation(const Board &board, const Position &pos, std::vector<Position> &coords) const {
@@ -76,7 +76,7 @@ void RookStrategy::update_movement(const Figure &figure, const Board &board, con
 }
 
 void RookStrategy::move_update(const Move &move) {
-    state_ = MoveState::NormalMove;
+    m_state = MoveState::NormalMove;
 }
 
 } // namespace Chess

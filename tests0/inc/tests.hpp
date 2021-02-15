@@ -3,12 +3,6 @@
 #include "t_input.hpp"
 #include "file_factory.hpp"
 
-#if defined(_WIN64) || defined(_WIN32)
-#define DIR_SEP "\\"
-#elif defined(__APPLE__) || defined(__linux__)
-#define DIR_SEP "/"
-#endif
-
 class TestGame : public Chess::Logic {
 public:
     template<class T>
@@ -28,11 +22,11 @@ public:
     }
 
     const Field<std::unique_ptr<Chess::Figure>> &figures() const {
-        return board_.figures();
+        return m_board.figures();
     }
 
     const Chess::Board &board() const {
-        return board_;
+        return m_board;
     }
 
     Chess::Render *render() {

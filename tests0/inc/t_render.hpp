@@ -15,7 +15,7 @@ public:
     void show_pawn_promotion(Chess::Position pos) override;
     void show_endgame(Chess::GameState state, Chess::Player *winer) override;
 
-    inline static const std::map<Chess::FigureType, char> figures{
+    inline static const std::map<Chess::FigureType, char> s_figures{
         {Chess::FigureType::Bishop, 'B'},
         {Chess::FigureType::King, 'K'},
         {Chess::FigureType::Knight, 'N'},
@@ -24,12 +24,12 @@ public:
         {Chess::FigureType::Rook, 'R'},
     };
 
-    inline static const std::map<Chess::FigureColor, char> colors{
+    inline static const std::map<Chess::FigureColor, char> s_colors{
         {Chess::FigureColor::White, 'w'},
         {Chess::FigureColor::Black, 'b'},
     };
 
-    inline const static std::map<Chess::GameState, std::string> states{
+    inline const static std::map<Chess::GameState, std::string> s_states{
         {Chess::GameState::CastlingFigureOnPath, "CastlingFigureOnPath"},
         {Chess::GameState::CastlingKingInCheck, "CastlingKingInCheck"},
         {Chess::GameState::CastlingSquareInCheck, "CastlingSquareInCheck"},
@@ -53,5 +53,5 @@ public:
 };
 
 inline std::ostream &operator<<(std::ostream &os, const Chess::GameState &gs) {
-    return os << TestRender::states.at(gs);
+    return os << TestRender::s_states.at(gs);
 }

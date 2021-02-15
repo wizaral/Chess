@@ -7,8 +7,8 @@
 namespace Chess {
 
 class Player {
-    FigureColor color_;
-    std::string name_;
+    FigureColor m_color;
+    std::string m_name;
 
 public:
     Player(FigureColor color, const std::string &name);

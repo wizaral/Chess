@@ -42,8 +42,8 @@ public:
     void update_movement(const Figure &figure, const Board &board, const Position &pos, std::vector<Position> &coords) const override;
 
 private:
-    MoveState state_ = MoveState::NoMove;
-    int direction_ = 0;
+    MoveState m_state = MoveState::NoMove;
+    int m_direction = 0;
 
     GameState check_pawn(Figure *figure, FigureColor color) const;
     bool check_diagonal(const Move &move) const;
@@ -64,7 +64,7 @@ public:
     void update_movement(const Figure &figure, const Board &board, const Position &pos, std::vector<Position> &coords) const override;
 
 private:
-    MoveState state_ = MoveState::NoMove;
+    MoveState m_state = MoveState::NoMove;
 };
 
 class KnightStrategy final : public Strategy {
@@ -113,7 +113,7 @@ public:
     void update_movement(const Figure &figure, const Board &board, const Position &pos, std::vector<Position> &coords) const override;
 
 private:
-    MoveState state_ = MoveState::NoMove;
+    MoveState m_state = MoveState::NoMove;
     GameState check_castling(const Figure &figure, const Board &board, const Move &move, Figure *other) const;
 };
 

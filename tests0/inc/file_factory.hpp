@@ -5,8 +5,8 @@
 #include "chess.hpp"
 
 class FileFactory final : public Chess::FigureFactory {
-    std::string ifile_name_;
-    Chess::Move last_move_ {{-1, -1}, {-1, -1}};
+    std::string m_ifile_name;
+    Chess::Move m_last_move {{-1, -1}, {-1, -1}};
 public:
     FileFactory(const std::string &ifile_name);
 

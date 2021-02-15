@@ -13,10 +13,10 @@ class Board {
     template <class T>
     using Field = std::array<std::array<T, board_cols>, board_rows>;
 
-    Field<std::unique_ptr<Figure>> figures_;
+    Field<std::unique_ptr<Figure>> m_figures;
 
-    std::array<Field<bool>, 2> check_state_;
-    std::array<Field<bool>, 2> move_state_;
+    std::array<Field<bool>, 2> m_check_state;
+    std::array<Field<bool>, 2> m_move_state;
 
 public:
     Board() = default;

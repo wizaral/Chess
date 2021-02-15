@@ -4,31 +4,31 @@ namespace Chess {
 
 PawnStrategy::PawnStrategy(Publisher *publisher, FigureColor color)
     : Subscriber(publisher) {
-    direction_ = color == FigureColor::White ? white_step_direction : black_step_direction;
+    m_direction = color == FigureColor::White ? white_step_direction : black_step_direction;
 }
 
 PawnStrategy::PawnStrategy(Publisher *publisher, FigureColor color, MoveState state)
     : Subscriber(publisher)
-    , state_(state) {
-    direction_ = color == FigureColor::White ? white_step_direction : black_step_direction;
+    , m_state(state) {
+    m_direction = color == FigureColor::White ? white_step_direction : black_step_direction;
 }
 
 PawnStrategy::MoveState PawnStrategy::state() const {
-    return state_;
+    return m_state;
 }
 
 bool PawnStrategy::update(MessageType type) {
     if (type == MessageType::Notify) {
-        if (state_ == MoveState::DoubleMove) {
-            state_ = MoveState::EnPassant;
-        } else if (state_ != MoveState::NoMove) {
-            state_ = MoveState::NormalMove;
-            publisher_ = nullptr;
+        if (m_state == MoveState::DoubleMove) {
+            m_state = MoveState::EnPassant;
+        } else if (m_state != MoveState::NoMove) {
+            m_state = MoveState::NormalMove;
+            m_publisher = nullptr;
             return false;
         }
         return true;
     } else /* if (type MessageType::Destroy ) */ {
-        publisher_ = nullptr;
+        m_publisher = nullptr;
     }
     return false;
 }
@@ -36,7 +36,7 @@ bool PawnStrategy::update(MessageType type) {
 GameState PawnStrategy::validate_move(const Figure &figure, const Board &board, const Move &move) const {
     Position from = move.from(), to = move.to();
 
-    if ((direction_ > 0 && to.row() < from.row()) || (direction_ < 0 && to.row() > from.row())) {
+    if ((m_direction > 0 && to.row() < from.row()) || (m_direction < 0 && to.row() > from.row())) {
         return GameState::PawnStepBack;
     } else if (to.row() == from.row()) {
         return GameState::WrongFigureMove;
@@ -45,7 +45,7 @@ GameState PawnStrategy::validate_move(const Figure &figure, const Board &board, 
     Figure *other = board.get_figure(to);
     FigureColor other_color = !figure.color();
 
-    if (from.row() + direction_ == to.row() && check_diagonal(move)) {
+    if (from.row() + m_direction == to.row() && check_diagonal(move)) {
         if (other != nullptr) {
             if (other->color() == other_color) {
                 return GameState::NormalMove;
@@ -58,15 +58,15 @@ GameState PawnStrategy::validate_move(const Figure &figure, const Board &board, 
         }
     }
     // double move
-    if (state_ == MoveState::NoMove && from.col() == to.col() && from.row() + 2 * direction_ == to.row() && other == nullptr) {
+    if (m_state == MoveState::NoMove && from.col() == to.col() && from.row() + 2 * m_direction == to.row() && other == nullptr) {
         // check figure between start point and destination
-        if (board.get_figure({from.row() + direction_, to.col()}) != nullptr) {
+        if (board.get_figure({from.row() + m_direction, to.col()}) != nullptr) {
             return GameState::OtherFigureOnPath;
         }
         return GameState::NormalMove;
     }
     // standard move
-    if (from.row() + direction_ == to.row() && from.col() == to.col()) {
+    if (from.row() + m_direction == to.row() && from.col() == to.col()) {
         if (other == nullptr) {
             return GameState::NormalMove;
         } else {
@@ -77,7 +77,7 @@ GameState PawnStrategy::validate_move(const Figure &figure, const Board &board, 
 }
 
 void PawnStrategy::update_occupation(const Board &board, const Position &pos, std::vector<Position> &coords) const {
-    int dest = pos.row() + direction_;
+    int dest = pos.row() + m_direction;
     int col = pos.col();
 
     if (Position::validation({dest, col + 1})) {
@@ -92,10 +92,10 @@ void PawnStrategy::update_movement(const Figure &figure, const Board &board, con
     int row = pos.row(), col = pos.col();
 
     std::array<Position, 4> positions{
-        Position{row + direction_, col + 1},
-        Position{row + direction_, col - 1},
-        Position{row + 2 * direction_, col},
-        Position{row + direction_, col},
+        Position{row + m_direction, col + 1},
+        Position{row + m_direction, col - 1},
+        Position{row + 2 * m_direction, col},
+        Position{row + m_direction, col},
     };
 
     for (auto i : positions) {
@@ -110,7 +110,7 @@ void PawnStrategy::update_movement(const Figure &figure, const Board &board, con
 }
 
 void PawnStrategy::move_update(const Move &move) {
-    state_ = move.rows() > 1 ? MoveState::DoubleMove : MoveState::NormalMove;
+    m_state = move.rows() > 1 ? MoveState::DoubleMove : MoveState::NormalMove;
 }
 
 GameState PawnStrategy::check_pawn(Figure *figure, FigureColor color) const {

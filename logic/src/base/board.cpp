@@ -4,7 +4,7 @@
 namespace Chess {
 
 Figure *Board::get_figure(const Position &pos) const {
-    return figures_[pos.row()][pos.col()].get();
+    return m_figures[pos.row()][pos.col()].get();
 }
 
 Position Board::get_position(FigureType type, FigureColor color) const {
@@ -19,27 +19,27 @@ Position Board::get_position(FigureType type, FigureColor color) const {
 }
 
 const Board::Field<std::unique_ptr<Figure>> &Board::figures() const {
-    return figures_;
+    return m_figures;
 }
 
 bool Board::get_check_state(const Position &pos, FigureColor color) const {
-    return check_state_[static_cast<int>(color)][pos.row()][pos.col()];
+    return m_check_state[static_cast<int>(color)][pos.row()][pos.col()];
 }
 
 const Board::Field<bool> &Board::get_check_state(FigureColor color) const {
-    return check_state_[static_cast<int>(color)];
+    return m_check_state[static_cast<int>(color)];
 }
 
 void Board::add_figure(Figure figure, const Position &pos) {
-    figures_[pos.row()][pos.col()] = std::make_unique<Figure>(std::move(figure));
+    m_figures[pos.row()][pos.col()] = std::make_unique<Figure>(std::move(figure));
 }
 
 void Board::move_figure(const Move &move) {
-    figures_[move.to().row()][move.to().col()] = std::move(figures_[move.from().row()][move.from().col()]);
+    m_figures[move.to().row()][move.to().col()] = std::move(m_figures[move.from().row()][move.from().col()]);
 }
 
 void Board::remove_figure(const Position &pos) {
-    figures_[pos.row()][pos.col()].reset();
+    m_figures[pos.row()][pos.col()].reset();
 }
 
 void Board::clear_figures() {
@@ -51,19 +51,19 @@ void Board::clear_figures() {
 }
 
 void Board::reset_check_state(FigureColor color) {
-    reset(check_state_[static_cast<int>(color)]);
+    reset(m_check_state[static_cast<int>(color)]);
 }
 
 void Board::update_check_state(FigureColor color, const std::vector<Position> &positions) {
-    update(check_state_[static_cast<int>(color)], positions);
+    update(m_check_state[static_cast<int>(color)], positions);
 }
 
 void Board::reset_move_state(FigureColor color) {
-    reset(move_state_[static_cast<int>(color)]);
+    reset(m_move_state[static_cast<int>(color)]);
 }
 
 void Board::update_move_state(FigureColor color, const std::vector<Position> &positions) {
-    update(move_state_[static_cast<int>(color)], positions);
+    update(m_move_state[static_cast<int>(color)], positions);
 }
 
 void Board::reset(Field<bool> &field) {

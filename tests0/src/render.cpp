@@ -17,7 +17,7 @@ void TestRender::show_board(const Chess::Board &board) {
 
         for (int col = 0; col < Chess::board_cols; ++col) {
             if (auto f = board.get_figure({row, col}); f != nullptr) {
-                std::cout << colors.at(f->color()) << figures.at(f->type()) << '|';
+                std::cout << s_colors.at(f->color()) << s_figures.at(f->type()) << '|';
             } else {
                 std::cout << "  |";
             }
@@ -32,7 +32,7 @@ void TestRender::show_next_step(Chess::Player *player) {
 }
 
 void TestRender::show_error(Chess::GameState state) {
-    std::cout << "Error: " << states.at(state) << std::endl;
+    std::cout << "Error: " << s_states.at(state) << std::endl;
 }
 
 void TestRender::show_pawn_promotion(Chess::Position pos) {

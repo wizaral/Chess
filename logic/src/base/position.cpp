@@ -4,15 +4,15 @@
 namespace Chess {
 
 Position::Position(int row, int col)
-    : row_(row)
-    , col_(col) {}
+: m_row(row)
+, m_col(col) {}
 
 int Position::row() const {
-    return row_;
+    return m_row;
 }
 
 int Position::col() const {
-    return col_;
+    return m_col;
 }
 
 [[nodiscard]] bool Position::validation(const Position &pos) {
@@ -26,7 +26,7 @@ int Position::col() const {
 }
 
 bool operator==(const Position &lhs, const Position &rhs) {
-    return lhs.row_ == rhs.row_ && lhs.col_ == rhs.col_;
+    return lhs.m_row == rhs.m_row && lhs.m_col == rhs.m_col;
 }
 
 bool operator!=(const Position &lhs, const Position &rhs) {

@@ -6,7 +6,7 @@
 namespace Chess {
 
 class Move {
-    Position from_, to_;
+    Position m_from, m_to;
 
 public:
     Move(const Position &from, const Position &to);

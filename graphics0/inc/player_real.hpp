@@ -5,12 +5,12 @@
 #include "chess.hpp"
 
 class RealPlayer : public Chess::Player {
-    std::optional<Chess::Move> &move_;
+    std::optional<Chess::Move> &m_move;
 
-    const float half_tile_;
-    sf::RenderWindow &window_;
-    sf::Vector2f &dragg_pos_;
-    Chess::Position &dragging_;
+    const float m_half_tile;
+    sf::RenderWindow &m_window;
+    sf::Vector2f &m_dragg_pos;
+    Chess::Position &m_dragging;
 
 public:
     RealPlayer(Chess::FigureColor color, const std::string &name, std::optional<Chess::Move> &move, float tile_size, sf::RenderWindow &window, sf::Vector2f &dragg_pos, Chess::Position &dragging);
