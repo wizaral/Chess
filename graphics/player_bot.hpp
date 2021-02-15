@@ -26,7 +26,7 @@ protected:
     std::ostringstream &m_log;
 
 public:
-    BotPlayer(Chess::FigureColor color, const std::string &name, std::optional<Chess::Move> &move, std::ostringstream &log, std::wstring &path);
+    BotPlayer(Chess::FigureColor color, const std::string &name, std::optional<Chess::Move> &move, std::ostringstream &log, std::string &path);
     ~BotPlayer();
 
     Chess::Move get_next_move() override;
@@ -45,7 +45,7 @@ class GraphicsBotPlayer : public BotPlayer {
     std::optional<Chess::Move> m_save;
 
 public:
-    GraphicsBotPlayer(Chess::FigureColor color, const std::string &name, std::optional<Chess::Move> &move, std::ostringstream &log, std::wstring &path, float tile_size, sf::RenderWindow &window, sf::Vector2f &dragg_pos, Chess::Position &dragging);
+    GraphicsBotPlayer(Chess::FigureColor color, const std::string &name, std::optional<Chess::Move> &move, std::ostringstream &log, std::string &path, float tile_size, sf::RenderWindow &window, sf::Vector2f &dragg_pos, Chess::Position &dragging);
     ~GraphicsBotPlayer() = default;
 
     Chess::Move get_next_move() override;

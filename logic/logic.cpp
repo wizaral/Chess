@@ -315,8 +315,8 @@ GameState Logic::promote_pawn(FigureType type) {
         m_pawn_pos = {-1, -1};
         m_state = GameState::NormalMove;
         after_move_logic();
-        return m_state;
     }
+    return m_state;
 }
 
 } // namespace Chess

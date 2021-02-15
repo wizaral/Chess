@@ -1,5 +1,5 @@
-#include "game.hpp"
 #include <iostream>
+#include "game.hpp"
 
 int main() {
     sf::RenderWindow window(sf::VideoMode(window_width, window_height), "Chess", sf::Style::Titlebar | sf::Style::Close);

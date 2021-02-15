@@ -6,31 +6,34 @@ Game::Game(sf::RenderWindow &window)
 }
 
 void Game::load() {
-    load(m_rect, "res/rect.png");
-    load(m_board, "res/board.png");
-    load(m_background, "res/bg.jpg");
+    load(m_rect, GAME_RESOURCES_DIR"rect.png");
+    load(m_board, GAME_RESOURCES_DIR"board.png");
+    load(m_background, GAME_RESOURCES_DIR"bg.jpg");
 
-    load(m_promotions[0], "res/wPp.png");
-    load(m_promotions[1], "res/bPp.png");
+    load(m_promotions[0], GAME_RESOURCES_DIR"wPp.png");
+    load(m_promotions[1], GAME_RESOURCES_DIR"bPp.png");
 
-    load(m_buttons[0], "res/pcb.png");
-    load(m_buttons[1], "res/psb.png");
-    load(m_buttons[2], "res/pcw.png");
-    load(m_buttons[3], "res/psw.png");
-    load(m_buttons[4], "res/play.png");
+    load(m_buttons[0], GAME_RESOURCES_DIR"pcb.png");
+    load(m_buttons[1], GAME_RESOURCES_DIR"psb.png");
+    load(m_buttons[2], GAME_RESOURCES_DIR"pcw.png");
+    load(m_buttons[3], GAME_RESOURCES_DIR"psw.png");
+    load(m_buttons[4], GAME_RESOURCES_DIR"play.png");
 
-    std::string path{"res/__.png"};
+    std::string path{GAME_RESOURCES_DIR"__.png"};
     const std::array<char, 6> figures{'P', 'N', 'B', 'R', 'Q', 'K'};
     const std::array<char, 2> colors{'w', 'b'};
 
+    auto color_index = path.find_first_of('_');
+    auto type_index = path.find_last_of('_');
+
     for (int i = 0; i < 2; ++i) {
-        path[4] = colors[i];
+        path[color_index] = colors[i];
         for (int j = 0; j < 6; ++j) {
-            path[5] = figures[j];
+            path[type_index] = figures[j];
             load(m_figures[i][j], path);
         }
     }
-    m_font.loadFromFile("res/sansation.ttf");
+    m_font.loadFromFile(GAME_RESOURCES_DIR"sansation.ttf");
 
     m_board.first.setPosition(0, 0);
     m_background.first.setPosition(0, 0);

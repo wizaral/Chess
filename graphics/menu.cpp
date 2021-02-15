@@ -51,7 +51,7 @@ void Game::print_menu(std::array<int, 4> &positions) {
 }
 
 void Game::menu() {
-    std::wstring path(L"stockfish.exe");
+    std::string path("stockfish.exe");
     std::array<int, 4> positions{1, 0, 0, 1};
     std::array<std::unique_ptr<Chess::Player>, 2> players;
 

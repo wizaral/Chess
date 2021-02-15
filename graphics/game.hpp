@@ -9,6 +9,8 @@
 #include "player_bot.hpp"
 #include "player_real.hpp"
 
+#define GAME_RESOURCES_DIR "resources/"
+
 constexpr inline int window_width = 800;
 constexpr inline int window_height = 900;
 

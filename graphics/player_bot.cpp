@@ -6,7 +6,7 @@ BotPlayer::BotPlayer(Chess::FigureColor color,
                      const std::string &name,
                      std::optional<Chess::Move> &move,
                      std::ostringstream &log,
-                     std::wstring &path)
+                     std::string &path)
     : Chess::Player(color, name)
     , m_move(move)
     , m_log(log) {
@@ -108,7 +108,7 @@ GraphicsBotPlayer::GraphicsBotPlayer(Chess::FigureColor color,
                                      const std::string &name,
                                      std::optional<Chess::Move> &move,
                                      std::ostringstream &log,
-                                     std::wstring &path,
+                                     std::string &path,
                                      float tile_size,
                                      sf::RenderWindow &window,
                                      sf::Vector2f &dragg_pos,
