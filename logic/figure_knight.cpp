@@ -1,15 +1,15 @@
-#include "strategy.hpp"
+#include "figure_knight.hpp"
 
 namespace Chess {
 
-GameState KnightStrategy::validate_move(const Figure &figure, const Board &board, const Move &move) const {
+GameState Knight::validate_move(const Board &board, const Move &move) const {
     int rows = move.rows();
     int cols = move.cols();
 
     if ((rows == 2 && cols == 1) || (rows == 1 && cols == 2)) {
         Figure *other = board.get_figure(move.to());
 
-        if (other == nullptr || other->color() != figure.color()) {
+        if (other == nullptr || other->color() != color()) {
             return GameState::NormalMove;
         } else {
             return GameState::OtherFigureOnPath;
@@ -18,7 +18,7 @@ GameState KnightStrategy::validate_move(const Figure &figure, const Board &board
     return GameState::WrongFigureMove;
 }
 
-void KnightStrategy::update_occupation(const Board &board, const Position &pos, std::vector<Position> &coords) const {
+void Knight::update_occupation(const Board &board, const Position &pos, std::vector<Position> &coords) const {
     int row = pos.row(), col = pos.col();
 
     if (Position::validation({row + 2, col + 1})) {
@@ -47,10 +47,10 @@ void KnightStrategy::update_occupation(const Board &board, const Position &pos, 
     }
 }
 
-void KnightStrategy::update_movement(const Figure &figure, const Board &board, const Position &pos, std::vector<Position> &coords) const {
+void Knight::update_movement(const Board &board, const Position &pos, std::vector<Position> &coords) const {
     update_occupation(board, pos, coords);
 }
 
-void KnightStrategy::move_update(const Move &move) {}
+void Knight::move_update(const Move &move) {}
 
 } // namespace Chess

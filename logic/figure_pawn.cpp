@@ -1,23 +1,23 @@
-#include "strategy.hpp"
+#include "figure_pawn.hpp"
 
 namespace Chess {
 
-PawnStrategy::PawnStrategy(Publisher *publisher, FigureColor color)
-    : Subscriber(publisher) {
+Pawn::Pawn(Publisher *publisher, FigureColor color)
+: Subscriber(publisher) {
     m_direction = color == FigureColor::White ? white_step_direction : black_step_direction;
 }
 
-PawnStrategy::PawnStrategy(Publisher *publisher, FigureColor color, MoveState state)
-    : Subscriber(publisher)
-    , m_state(state) {
+Pawn::Pawn(Publisher *publisher, FigureColor color, MoveState state)
+: Subscriber(publisher)
+, m_state(state) {
     m_direction = color == FigureColor::White ? white_step_direction : black_step_direction;
 }
 
-PawnStrategy::MoveState PawnStrategy::state() const {
+Pawn::MoveState Pawn::state() const {
     return m_state;
 }
 
-bool PawnStrategy::update(MessageType type) {
+bool Pawn::update(MessageType type) {
     if (type == MessageType::Notify) {
         if (m_state == MoveState::DoubleMove) {
             m_state = MoveState::EnPassant;
@@ -33,7 +33,7 @@ bool PawnStrategy::update(MessageType type) {
     return false;
 }
 
-GameState PawnStrategy::validate_move(const Figure &figure, const Board &board, const Move &move) const {
+GameState Pawn::validate_move(const Board &board, const Move &move) const {
     Position from = move.from(), to = move.to();
 
     if ((m_direction > 0 && to.row() < from.row()) || (m_direction < 0 && to.row() > from.row())) {
@@ -43,7 +43,7 @@ GameState PawnStrategy::validate_move(const Figure &figure, const Board &board, 
     }
 
     Figure *other = board.get_figure(to);
-    FigureColor other_color = !figure.color();
+    FigureColor other_color = !color();
 
     if (from.row() + m_direction == to.row() && check_diagonal(move)) {
         if (other != nullptr) {
@@ -76,7 +76,7 @@ GameState PawnStrategy::validate_move(const Figure &figure, const Board &board, 
     return GameState::WrongFigureMove;
 }
 
-void PawnStrategy::update_occupation(const Board &board, const Position &pos, std::vector<Position> &coords) const {
+void Pawn::update_occupation(const Board &board, const Position &pos, std::vector<Position> &coords) const {
     int dest = pos.row() + m_direction;
     int col = pos.col();
 
@@ -88,7 +88,7 @@ void PawnStrategy::update_occupation(const Board &board, const Position &pos, st
     }
 }
 
-void PawnStrategy::update_movement(const Figure &figure, const Board &board, const Position &pos, std::vector<Position> &coords) const {
+void Pawn::update_movement(const Board &board, const Position &pos, std::vector<Position> &coords) const {
     int row = pos.row(), col = pos.col();
 
     std::array<Position, 4> positions{
@@ -100,7 +100,7 @@ void PawnStrategy::update_movement(const Figure &figure, const Board &board, con
 
     for (auto i : positions) {
         if (Position::validation(i)) {
-            auto valid = validate_move(figure, board, {pos, i});
+            auto valid = validate_move(board, {pos, i});
 
             if (valid == GameState::NormalMove || valid == GameState::EnPassant) {
                 coords.push_back(i);
@@ -109,13 +109,13 @@ void PawnStrategy::update_movement(const Figure &figure, const Board &board, con
     }
 }
 
-void PawnStrategy::move_update(const Move &move) {
+void Pawn::move_update(const Move &move) {
     m_state = move.rows() > 1 ? MoveState::DoubleMove : MoveState::NormalMove;
 }
 
-GameState PawnStrategy::check_pawn(Figure *figure, FigureColor color) const {
+GameState Pawn::check_pawn(Figure *figure, FigureColor color) const {
     if (figure != nullptr && figure->color() == color && figure->type() == FigureType::Pawn) {
-        if (static_cast<PawnStrategy *>(figure->strategy())->state() == PawnStrategy::MoveState::EnPassant) {
+        if (static_cast<Pawn *>(figure)->state() == Pawn::MoveState::EnPassant) {
             return GameState::EnPassant;
         }
         return GameState::FailEnPassant;
@@ -123,7 +123,7 @@ GameState PawnStrategy::check_pawn(Figure *figure, FigureColor color) const {
     return GameState::WrongFigureMove;
 }
 
-bool PawnStrategy::check_diagonal(const Move &move) const {
+bool Pawn::check_diagonal(const Move &move) const {
     return move.from().col() + 1 == move.to().col() || move.from().col() - 1 == move.to().col();
 }
 

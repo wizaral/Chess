@@ -1,14 +1,14 @@
-#include "strategy.hpp"
+#include "figure_king.hpp"
 
 namespace Chess {
 
-GameState KingStrategy::validate_move(const Figure &figure, const Board &board, const Move &move) const {
+GameState King::validate_move(const Board &board, const Move &move) const {
     Figure *other = board.get_figure(move.to());
     int rows = move.rows();
     int cols = move.cols();
 
     if (rows == 1 || cols == 1) {
-        if (other == nullptr || other->color() != figure.color()) {
+        if (other == nullptr || other->color() != color()) {
             return GameState::NormalMove;
         }
         return GameState::OtherFigureOnPath;
@@ -16,17 +16,17 @@ GameState KingStrategy::validate_move(const Figure &figure, const Board &board, 
     if (other == nullptr && rows == 0 && cols == 2) {
         other = board.get_figure({move.from().row(), move.from().col() < move.to().col() ? 7 : 0});
         if (other != nullptr) {
-            return check_castling(figure, board, move, other);
+            return check_castling(board, move, other);
         }
     }
     return GameState::WrongFigureMove;
 }
 
-GameState KingStrategy::check_castling(const Figure &figure, const Board &board, const Move &move, Figure *other) const {
-    FigureColor other_color = !figure.color();
+GameState King::check_castling(const Board &board, const Move &move, Figure *other) const {
+    FigureColor other_color = !color();
 
     // check first figure move
-    if (m_state == MoveState::NoMove && static_cast<RookStrategy *>(other->strategy())->state() == RookStrategy::MoveState::NoMove) {
+    if (m_state == MoveState::NoMove && static_cast<Rook *>(other)->state() == Rook::MoveState::NoMove) {
         const std::array<std::array<bool, board_rows>, board_cols> &state = board.get_check_state(other_color);
         int row = move.from().row();
 
@@ -59,7 +59,7 @@ GameState KingStrategy::check_castling(const Figure &figure, const Board &board,
     return GameState::FiguresAlreadyMoved;
 }
 
-void KingStrategy::update_occupation(const Board &board, const Position &pos, std::vector<Position> &coords) const {
+void King::update_occupation(const Board &board, const Position &pos, std::vector<Position> &coords) const {
     int row = pos.row(), col = pos.col();
 
     if (Position::validation({row + 1, col + 1})) {
@@ -89,11 +89,11 @@ void KingStrategy::update_occupation(const Board &board, const Position &pos, st
     }
 }
 
-void KingStrategy::update_movement(const Figure &figure, const Board &board, const Position &pos, std::vector<Position> &coords) const {
+void King::update_movement(const Board &board, const Position &pos, std::vector<Position> &coords) const {
     update_occupation(board, pos, coords);
 }
 
-void KingStrategy::move_update(const Move &move) {
+void King::move_update(const Move &move) {
     m_state = MoveState::NormalMove;
 }
 

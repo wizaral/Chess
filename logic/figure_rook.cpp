@@ -1,8 +1,8 @@
-#include "strategy.hpp"
+#include "figure_rook.hpp"
 
 namespace Chess {
 
-GameState RookStrategy::validate_move(const Figure &figure, const Board &board, const Move &move) const {
+GameState Rook::validate_move(const Board &board, const Move &move) const {
     int rows = move.rows();
     int cols = move.cols();
 
@@ -23,7 +23,7 @@ GameState RookStrategy::validate_move(const Figure &figure, const Board &board, 
         if (move.to().row() == pos_row && move.to().col() == pos_col) {
             Figure *other = board.get_figure(move.to());
 
-            if (other != nullptr && other->color() == figure.color()) {
+            if (other != nullptr && other->color() == color()) {
                 return GameState::OtherFigureOnPath;
             }
             return GameState::NormalMove;
@@ -35,11 +35,11 @@ GameState RookStrategy::validate_move(const Figure &figure, const Board &board, 
     }
 }
 
-RookStrategy::MoveState RookStrategy::state() const {
+Rook::MoveState Rook::state() const {
     return m_state;
 }
 
-void RookStrategy::update_occupation(const Board &board, const Position &pos, std::vector<Position> &coords) const {
+void Rook::update_occupation(const Board &board, const Position &pos, std::vector<Position> &coords) const {
     int row = pos.row(), col = pos.col();
 
     for (int r = row + 1; r < board_rows; ++r) {
@@ -71,11 +71,11 @@ void RookStrategy::update_occupation(const Board &board, const Position &pos, st
     }
 }
 
-void RookStrategy::update_movement(const Figure &figure, const Board &board, const Position &pos, std::vector<Position> &coords) const {
+void Rook::update_movement(const Board &board, const Position &pos, std::vector<Position> &coords) const {
     update_occupation(board, pos, coords);
 }
 
-void RookStrategy::move_update(const Move &move) {
+void Rook::move_update(const Move &move) {
     m_state = MoveState::NormalMove;
 }
 
