@@ -5,7 +5,7 @@ namespace Chess {
 #define FigureTypeMask 0x3F
 #define FigureColorMask 0xC0
 
-enum class FigureType {
+enum class FigureType : uint8_t {
     Pawn = 1 << 0,
     Knight = 1 << 1,
     Bishop = 1 << 2,
@@ -14,7 +14,7 @@ enum class FigureType {
     King = 1 << 5,
 };
 
-enum class FigureColor {
+enum class FigureColor : uint8_t {
     White = 1 << 6,
     Black = 1 << 7,
 };
@@ -23,7 +23,7 @@ FigureColor operator!(FigureColor color);
 
 class Figure {
 protected:
-    int8_t m_color_type;
+    uint8_t m_color_type;
 
 public:
     Figure(FigureType type, FigureColor color);
