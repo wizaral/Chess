@@ -1,9 +1,11 @@
-#include "strategy.hpp"
+#include "figure.hpp"
 
 namespace Chess {
 
-class Queen final : public Figure, public Strategy {
+class Queen final : public Figure {
 public:
+    using Figure::Figure;
+
     GameState validate_move(const Board &board, const Move &move) const override;
     void move_update(const Move &move) override;
 

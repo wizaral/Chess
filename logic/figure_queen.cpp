@@ -1,3 +1,4 @@
+#include "board.hpp"
 #include "figure_queen.hpp"
 
 namespace Chess {
@@ -33,7 +34,7 @@ GameState Queen::validate(const Board &board, const Move &move, int row_inc, int
         pos_col += col_inc;
 
         if (move.to().row() == pos_row && move.to().col() == pos_col) {
-            Figure *other = board.get_figure(move.to());
+            auto other = board.get_figure(move.to());
 
             if (other != nullptr && other->color() == color()) {
                 return GameState::OtherFigureOnPath;

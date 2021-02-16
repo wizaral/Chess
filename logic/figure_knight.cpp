@@ -1,3 +1,4 @@
+#include "board.hpp"
 #include "figure_knight.hpp"
 
 namespace Chess {
@@ -7,7 +8,7 @@ GameState Knight::validate_move(const Board &board, const Move &move) const {
     int cols = move.cols();
 
     if ((rows == 2 && cols == 1) || (rows == 1 && cols == 2)) {
-        Figure *other = board.get_figure(move.to());
+        auto other = board.get_figure(move.to());
 
         if (other == nullptr || other->color() != color()) {
             return GameState::NormalMove;
