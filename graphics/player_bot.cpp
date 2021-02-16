@@ -27,7 +27,9 @@ BotPlayer::BotPlayer(Chess::FigureColor color,
     m_sui.hStdError = m_pipe_out_w;
     m_sui.dwFlags |= STARTF_USESTDHANDLES;
 
-    CreateProcess(nullptr, path.data(), nullptr, nullptr, true, 0, nullptr, nullptr, &m_sui, &m_pinfo);
+    if (!CreateProcess(nullptr, path.data(), nullptr, nullptr, true, 0, nullptr, nullptr, &m_sui, &m_pinfo)) {
+        throw std::runtime_error("can not open stockfish");
+    }
 }
 
 BotPlayer::~BotPlayer() {
