@@ -63,22 +63,14 @@ bool Logic::is_check(FigureColor color) const {
 }
 
 bool Logic::is_check(FigureColor color, const Move &move) {
-    std::optional<Figure> save;
-
-    if (Figure *dest = m_board.get_figure(move.to()); dest != nullptr) {
-        save = std::move(*dest);
-    }
-
+    std::unique_ptr<Figure> figure = m_board.extract_figure(move.to());
     m_board.move_figure(move);
+
     update_check_state();
-
     bool result = is_check(color);
-    m_board.move_figure({move.to(), move.from()});
 
-    if (save.has_value()) {
-        m_board.add_figure({{}, {}, {}}, move.to());
-        *m_board.get_figure(move.to()) = std::move(*save);
-    }
+    m_board.move_figure({move.to(), move.from()});
+    m_board.add_figure(std::move(figure), move.to());
 
     update_check_state();
     return result;
