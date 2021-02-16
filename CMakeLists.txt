@@ -7,6 +7,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED YES)
 
 set(resources_dir res/)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR})
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE ${CMAKE_SOURCE_DIR})
 
 if(${CMAKE_SYSTEM_NAME} STREQUAL "Windows")
     # add_compile_definitions(
@@ -42,7 +43,7 @@ else()
 endif()
 
 if(NOT EXISTS "${CMAKE_SOURCE_DIR}/${resources_dir}")
-    file(COPY graphics/${resources_dir} DESTINATION ${CMAKE_SOURCE_DIR})
+    file(COPY graphics/${resources_dir} DESTINATION ${CMAKE_SOURCE_DIR}/${resources_dir})
 endif()
 
 set(BUILD_SHARED_LIBS FALSE)
