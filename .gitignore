@@ -83,8 +83,8 @@ Testing
 !stockfish.exe
 !CMakeLists.txt
 
-resources
-!graphics/resources/
+res/
+!graphics/res/
 
 [Bb]uild
 [Dd]ebug

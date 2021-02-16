@@ -5,7 +5,7 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_CXX_STANDARD_REQUIRED YES)
 
-set(resources_dir resources)
+set(resources_dir res/)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR})
 
 if(${CMAKE_SYSTEM_NAME} STREQUAL "Windows")
@@ -41,7 +41,7 @@ else()
     endif()
 endif()
 
-if(NOT EXISTS "${CMAKE_SOURCE_DIR}/${resources_dir}/")
+if(NOT EXISTS "${CMAKE_SOURCE_DIR}/${resources_dir}")
     file(COPY graphics/${resources_dir} DESTINATION ${CMAKE_SOURCE_DIR})
 endif()
 
