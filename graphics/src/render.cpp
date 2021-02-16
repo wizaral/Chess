@@ -21,7 +21,7 @@ void Game::print_castling() {
             }
         }
 
-        m_dragg_pos += delta;
+        m_dragg_pos += delta; // m_dragg_pos = dest;
         reprint();
         print_state();
         m_window.display();

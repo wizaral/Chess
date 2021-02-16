@@ -142,7 +142,7 @@ Chess::Move GraphicsBotPlayer::get_next_move() {
         m_save.reset();
     } else {
         auto delta = (dest - Game::transform(m_save->from())) / 25.f;
-        m_dragg_pos += delta;
+        m_dragg_pos += delta; // m_dragg_pos = dest;
     }
     return {{-1, -1}, {-1, -1}}; // I love OOP & OOD
 }
