@@ -32,7 +32,8 @@ public:
     bool get_move_state(const Position &pos, FigureColor color) const;
     const Field<bool> &get_move_state(FigureColor color) const;
 
-    void add_figure(Figure figure, const Position &pos);
+    void add_figure(std::unique_ptr<Figure> figure, const Position &pos);
+    std::unique_ptr<Figure> extract_figure(const Position &pos);
     void move_figure(const Move &move);
 
     void remove_figure(const Position &pos);

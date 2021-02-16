@@ -33,8 +33,12 @@ const Board::Field<bool> &Board::get_check_state(FigureColor color) const {
     return m_check_state[static_cast<int>(color)];
 }
 
-void Board::add_figure(Figure figure, const Position &pos) {
-    m_figures[pos.row()][pos.col()] = std::make_unique<Figure>(std::move(figure));
+void Board::add_figure(std::unique_ptr<Figure> figure, const Position &pos) {
+    m_figures[pos.row()][pos.col()] = std::move(figure);
+}
+
+std::unique_ptr<Figure> Board::extract_figure(const Position &pos) {
+    return std::move(m_figures[pos.row()][pos.col()]);
 }
 
 void Board::move_figure(const Move &move) {
