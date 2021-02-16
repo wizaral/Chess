@@ -20,7 +20,9 @@ class Board {
 public:
     Board() = default;
 
-    Figure *get_figure(const Position &pos) const;
+    const Figure *get_figure(const Position &pos) const;
+    Figure *get_figure(const Position &pos);
+
     Position get_position(FigureType type, FigureColor color) const;
     const Field<std::unique_ptr<Figure>> &figures() const;
 

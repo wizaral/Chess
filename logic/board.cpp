@@ -1,9 +1,12 @@
 #include "board.hpp"
-#include "strategy.hpp"
 
 namespace Chess {
 
-Figure *Board::get_figure(const Position &pos) const {
+const Figure *Board::get_figure(const Position &pos) const {
+    return m_figures[pos.row()][pos.col()].get();
+}
+
+Figure *Board::get_figure(const Position &pos) {
     return m_figures[pos.row()][pos.col()].get();
 }
 
