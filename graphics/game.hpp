@@ -11,8 +11,8 @@
 
 #define GAME_RESOURCES_DIR "resources/"
 
-constexpr inline int window_width = 800;
-constexpr inline int window_height = 900;
+inline static constexpr int window_width = 800;
+inline static constexpr int window_height = 900;
 
 class Game {
     using Sprite = std::pair<sf::Sprite, sf::Texture>;

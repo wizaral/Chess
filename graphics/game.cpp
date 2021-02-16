@@ -68,7 +68,7 @@ void Game::loop() {
                 log();
             }
 
-            if (m_state == Chess::GameState::KingCastling || m_state == Chess::GameState::QueenCastling) {
+            if (is_castling(m_state)) {
                 castling();
             }
 
