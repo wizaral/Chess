@@ -1,21 +1,21 @@
 #include "figure.hpp"
-#include "strategy.hpp"
 
 namespace Chess {
 
 FigureColor operator!(FigureColor color) {
-    return static_cast<FigureColor>(static_cast<int8_t>(color) ^ FigureColorMask);
+    return static_cast<FigureColor>(static_cast<uint8_t>(color) ^ 1);
 }
 
 Figure::Figure(FigureType type, FigureColor color)
-: m_color_type(static_cast<int8_t>(type) | static_cast<int8_t>(color)) {}
+: m_type(type)
+, m_color(color) {}
 
 FigureType Figure::type() const {
-    return static_cast<FigureType>(m_color_type & FigureTypeMask);
+    return m_type;
 }
 
 FigureColor Figure::color() const {
-    return static_cast<FigureColor>(m_color_type & FigureColorMask);
+    return m_color;
 }
 
 } // namespace Chess

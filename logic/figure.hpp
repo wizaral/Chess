@@ -27,7 +27,8 @@ class Board;
 
 class Figure {
 protected:
-    uint8_t m_color_type;
+    FigureType m_type;
+    FigureColor m_color;
 
 public:
     Figure(FigureType type, FigureColor color);
