@@ -33,6 +33,7 @@ enum class GameState {
 };
 
 bool is_move(GameState state);
+bool is_castling(GameState state);
 bool is_endgame(GameState state);
 bool is_error(GameState state);
 

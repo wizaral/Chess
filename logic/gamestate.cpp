@@ -3,21 +3,19 @@
 namespace Chess {
 
 bool is_move(GameState state) {
-    return state == GameState::NormalMove
-        || state == GameState::EnPassant
-        || state == GameState::KingCastling
-        || state == GameState::QueenCastling
-        || state == GameState::PawnPromotion;
+    return static_cast<int>(state) < 5;
+}
+
+bool is_castling(GameState state) {
+    return state == GameState::KingCastling || state == GameState::QueenCastling;
 }
 
 bool is_endgame(GameState state) {
-    return state == GameState::CheckMate
-        || state == GameState::StaleMate
-        || state == GameState::Draw;
+    return static_cast<int>(state) > 4 && static_cast<int>(state) < 8;
 }
 
 bool is_error(GameState state) {
-    return !is_move(state) && !is_endgame(state);
+    return static_cast<int>(state) > 7;
 }
 
 } // namespace Chess
