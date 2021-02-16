@@ -2,7 +2,6 @@
 #include <string>
 
 #include "figure.hpp"
-#include "move.hpp"
 
 namespace Chess {
 

@@ -3,7 +3,6 @@
 #include <array>
 #include <functional>
 #include <memory>
-#include <optional>
 
 #include "factory.hpp"
 #include "gamestate.hpp"

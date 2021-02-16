@@ -5,7 +5,6 @@
 
 #include "definitions.hpp"
 #include "figure.hpp"
-#include "move.hpp"
 
 namespace Chess {
 
