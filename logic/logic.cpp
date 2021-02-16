@@ -311,4 +311,30 @@ GameState Logic::promote_pawn(FigureType type) {
     return m_state;
 }
 
+std::vector<Position> Logic::possible_moves(const Position &pos) {
+    std::vector<Position> moves;
+
+    if (auto figure = m_board.get_figure(pos); figure != nullptr) {
+        figure->update_movement(m_board, pos, moves);
+
+        moves.erase(std::remove_if(moves.begin(), moves.end(), [this, figure, pos](const auto &move) {
+            return is_error(figure->validate_move(m_board, {pos, move}));
+        }), moves.end());
+    }
+    return moves;
+}
+
+std::vector<Position> Logic::possible_moves(const Position &pos, FigureColor color) {
+    std::vector<Position> moves;
+
+    if (auto figure = m_board.get_figure(pos); figure != nullptr) {
+        figure->update_movement(m_board, pos, moves);
+
+        moves.erase(std::remove_if(moves.begin(), moves.end(), [this, figure, pos, color](const auto &move) {
+            return is_check(color, {pos, move}) || is_error(figure->validate_move(m_board, {pos, move})) || figure->color() != color;
+        }), moves.end());
+    }
+    return moves;
+}
+
 } // namespace Chess

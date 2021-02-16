@@ -5,8 +5,6 @@
 #include <memory>
 
 #include "factory.hpp"
-#include "gamestate.hpp"
-#include "observer.hpp"
 
 namespace Chess {
 
@@ -25,8 +23,12 @@ public:
     const Board &board() const;
 
     void init_game(std::unique_ptr<FigureFactory> factory);
+
     GameState logic(const Move &move);
     GameState promote_pawn(FigureType type);
+
+    std::vector<Position> possible_moves(const Position &pos);
+    std::vector<Position> possible_moves(const Position &pos, FigureColor color);
 
 private:
     void validate_players() const;
