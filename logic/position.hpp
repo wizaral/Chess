@@ -4,7 +4,7 @@
 namespace Chess {
 
 class Position {
-    int m_row, m_col;
+    int8_t m_row, m_col;
 
 public:
     Position(int row, int col);
