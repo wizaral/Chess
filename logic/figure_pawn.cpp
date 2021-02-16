@@ -1,16 +1,19 @@
+#include "board.hpp"
 #include "figure_pawn.hpp"
 
 namespace Chess {
 
-Pawn::Pawn(Publisher *publisher, FigureColor color)
-: Subscriber(publisher) {
-    m_direction = color == FigureColor::White ? white_step_direction : black_step_direction;
+Pawn::Pawn(FigureType type, FigureColor color, Publisher *publisher)
+: Figure(type, color)
+, Subscriber(publisher) {
+    m_direction = step_direction[static_cast<int>(color)];
 }
 
-Pawn::Pawn(Publisher *publisher, FigureColor color, MoveState state)
-: Subscriber(publisher)
+Pawn::Pawn(FigureType type, FigureColor color, Publisher *publisher, MoveState state)
+: Figure(type, color)
+, Subscriber(publisher)
 , m_state(state) {
-    m_direction = color == FigureColor::White ? white_step_direction : black_step_direction;
+    m_direction = step_direction[static_cast<int>(color)];
 }
 
 Pawn::MoveState Pawn::state() const {
@@ -27,7 +30,7 @@ bool Pawn::update(MessageType type) {
             return false;
         }
         return true;
-    } else /* if (type MessageType::Destroy ) */ {
+    } else /* if (type == MessageType::Destroy) */ {
         m_publisher = nullptr;
     }
     return false;
@@ -42,8 +45,8 @@ GameState Pawn::validate_move(const Board &board, const Move &move) const {
         return GameState::WrongFigureMove;
     }
 
-    Figure *other = board.get_figure(to);
-    FigureColor other_color = !color();
+    auto other = board.get_figure(to);
+    auto other_color = !color();
 
     if (from.row() + m_direction == to.row() && check_diagonal(move)) {
         if (other != nullptr) {
@@ -113,9 +116,9 @@ void Pawn::move_update(const Move &move) {
     m_state = move.rows() > 1 ? MoveState::DoubleMove : MoveState::NormalMove;
 }
 
-GameState Pawn::check_pawn(Figure *figure, FigureColor color) const {
+GameState Pawn::check_pawn(const Figure *figure, FigureColor color) const {
     if (figure != nullptr && figure->color() == color && figure->type() == FigureType::Pawn) {
-        if (static_cast<Pawn *>(figure)->state() == Pawn::MoveState::EnPassant) {
+        if (static_cast<const Pawn *>(figure)->state() == Pawn::MoveState::EnPassant) {
             return GameState::EnPassant;
         }
         return GameState::FailEnPassant;

@@ -1,9 +1,15 @@
+#include "board.hpp"
 #include "figure_king.hpp"
+#include "figure_rook.hpp"
 
 namespace Chess {
 
+King::King(FigureType type, FigureColor color, MoveState state)
+: Figure(type, color)
+, m_state(state) {}
+
 GameState King::validate_move(const Board &board, const Move &move) const {
-    Figure *other = board.get_figure(move.to());
+    auto other = board.get_figure(move.to());
     int rows = move.rows();
     int cols = move.cols();
 
@@ -22,12 +28,12 @@ GameState King::validate_move(const Board &board, const Move &move) const {
     return GameState::WrongFigureMove;
 }
 
-GameState King::check_castling(const Board &board, const Move &move, Figure *other) const {
-    FigureColor other_color = !color();
+GameState King::check_castling(const Board &board, const Move &move, const Figure *other) const {
+    auto other_color = !color();
 
     // check first figure move
-    if (m_state == MoveState::NoMove && static_cast<Rook *>(other)->state() == Rook::MoveState::NoMove) {
-        const std::array<std::array<bool, board_rows>, board_cols> &state = board.get_check_state(other_color);
+    if (m_state == MoveState::NoMove && static_cast<const Rook *>(other)->state() == Rook::MoveState::NoMove) {
+        const auto &state = board.get_check_state(other_color);
         int row = move.from().row();
 
         if (state[row][4] == true) {

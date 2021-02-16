@@ -1,13 +1,17 @@
-#include "strategy.hpp"
+#include "figure.hpp"
 
 namespace Chess {
 
-class Rook final : public Figure, public Strategy {
+class Rook final : public Figure {
 public:
-    enum class MoveState {
+    enum class MoveState : uint8_t {
         NoMove,
         NormalMove,
     };
+
+    using Figure::Figure;
+
+    Rook(FigureType type, FigureColor color, MoveState state);
     MoveState state() const;
 
     GameState validate_move(const Board &board, const Move &move) const override;

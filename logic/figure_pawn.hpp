@@ -1,18 +1,19 @@
-#include "strategy.hpp"
+#include "figure.hpp"
 
 namespace Chess {
 
-class Pawn final : public Figure, public Strategy, public Subscriber {
+class Pawn final : public Figure, public Subscriber {
 public:
-    enum class MoveState {
+    enum class MoveState : uint8_t {
         NoMove,
         DoubleMove,
         EnPassant,
         NormalMove,
     };
 
-    Pawn(Publisher *publisher, FigureColor color);
-    Pawn(Publisher *publisher, FigureColor color, MoveState state);
+    Pawn(FigureType type, FigureColor color, Publisher *publisher);
+    Pawn(FigureType type, FigureColor color, Publisher *publisher, MoveState state);
+
     MoveState state() const;
     bool update(MessageType type) override;
 
@@ -24,9 +25,9 @@ public:
 
 private:
     MoveState m_state = MoveState::NoMove;
-    int m_direction = 0;
+    int8_t m_direction = 0;
 
-    GameState check_pawn(Figure *figure, FigureColor color) const;
+    GameState check_pawn(const Figure *figure, FigureColor color) const;
     bool check_diagonal(const Move &move) const;
 };
 

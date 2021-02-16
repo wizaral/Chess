@@ -1,13 +1,18 @@
-#include "strategy.hpp"
+#include "figure.hpp"
 
 namespace Chess {
 
-class King final : public Figure, public Strategy {
+class King final : public Figure {
 public:
-    enum class MoveState {
+    enum class MoveState : uint8_t {
         NoMove,
         NormalMove,
     };
+
+    using Figure::Figure;
+
+    King(FigureType type, FigureColor color, MoveState state);
+    MoveState state() const;
 
     GameState validate_move(const Board &board, const Move &move) const override;
     void move_update(const Move &move) override;
@@ -17,7 +22,8 @@ public:
 
 private:
     MoveState m_state = MoveState::NoMove;
-    GameState check_castling(const Board &board, const Move &move, Figure *other) const;
+
+    GameState check_castling(const Board &board, const Move &move, const Figure *other) const;
 };
 
 } // namespace Chess
