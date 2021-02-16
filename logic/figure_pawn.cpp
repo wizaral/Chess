@@ -101,12 +101,12 @@ void Pawn::update_movement(const Board &board, const Position &pos, std::vector<
         Position{row + m_direction, col},
     };
 
-    for (auto i : positions) {
-        if (Position::validation(i)) {
-            auto valid = validate_move(board, {pos, i});
+    for (auto p : positions) {
+        if (Position::validation(p)) {
+            auto state = validate_move(board, {pos, p});
 
-            if (valid == GameState::NormalMove || valid == GameState::EnPassant) {
-                coords.push_back(i);
+            if (is_move(state)) {
+                coords.push_back(p);
             }
         }
     }
