@@ -6,20 +6,20 @@ Game::Game(sf::RenderWindow &window)
 }
 
 void Game::load() {
-    load(m_rect, GAME_RESOURCES_DIR"rect.png");
-    load(m_board, GAME_RESOURCES_DIR"board.png");
-    load(m_background, GAME_RESOURCES_DIR"bg.jpg");
+    load(m_rect, RES"rect.png");
+    load(m_board, RES"board.png");
+    load(m_background, RES"bg.jpg");
 
-    load(m_promotions[0], GAME_RESOURCES_DIR"wPp.png");
-    load(m_promotions[1], GAME_RESOURCES_DIR"bPp.png");
+    load(m_promotions[0], RES"wPp.png");
+    load(m_promotions[1], RES"bPp.png");
 
-    load(m_buttons[0], GAME_RESOURCES_DIR"pcb.png");
-    load(m_buttons[1], GAME_RESOURCES_DIR"psb.png");
-    load(m_buttons[2], GAME_RESOURCES_DIR"pcw.png");
-    load(m_buttons[3], GAME_RESOURCES_DIR"psw.png");
-    load(m_buttons[4], GAME_RESOURCES_DIR"play.png");
+    load(m_buttons[0], RES"pcb.png");
+    load(m_buttons[1], RES"psb.png");
+    load(m_buttons[2], RES"pcw.png");
+    load(m_buttons[3], RES"psw.png");
+    load(m_buttons[4], RES"play.png");
 
-    std::string path{GAME_RESOURCES_DIR"__.png"};
+    std::string path{RES"__.png"};
     const std::array<char, 6> figures{'P', 'N', 'B', 'R', 'Q', 'K'};
     const std::array<char, 2> colors{'w', 'b'};
 
@@ -33,7 +33,7 @@ void Game::load() {
             load(m_figures[i][j], path);
         }
     }
-    m_font.loadFromFile(GAME_RESOURCES_DIR"sansation.ttf");
+    m_font.loadFromFile(RES"sansation.ttf");
 
     m_board.first.setPosition(0, 0);
     m_background.first.setPosition(0, 0);
