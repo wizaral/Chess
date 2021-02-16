@@ -7,9 +7,9 @@ BotPlayer::BotPlayer(Chess::FigureColor color,
                      std::optional<Chess::Move> &move,
                      std::ostringstream &log,
                      std::string &path)
-    : Chess::Player(color, name)
-    , m_move(move)
-    , m_log(log) {
+: Chess::Player(color, name)
+, m_move(move)
+, m_log(log) {
     m_sui.dwFlags = STARTF_USESHOWWINDOW | STARTF_USESTDHANDLES;
     m_sui.wShowWindow = SW_HIDE;
 
@@ -82,7 +82,6 @@ Chess::Move BotPlayer::get_next_move() {
     } else {
         throw std::runtime_error("stockfish error");
     }
-
     return {{-1, -1}, {-1, -1}}; // I love OOP & OOD
 }
 
@@ -145,7 +144,6 @@ Chess::Move GraphicsBotPlayer::get_next_move() {
         auto delta = (dest - Game::transform(m_save->from())) / 25.f;
         m_dragg_pos += delta;
     }
-
     return {{-1, -1}, {-1, -1}}; // I love OOP & OOD
 }
 

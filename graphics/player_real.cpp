@@ -7,12 +7,12 @@ RealPlayer::RealPlayer(Chess::FigureColor color,
                        sf::RenderWindow& window,
                        sf::Vector2f& dragg_pos,
                        Chess::Position& dragging)
-    : Chess::Player(color, name)
-    , m_move(move)
-    , m_half_tile(tile_size / 2)
-    , m_window(window)
-    , m_dragg_pos(dragg_pos)
-    , m_dragging(dragging) {}
+: Chess::Player(color, name)
+, m_move(move)
+, m_half_tile(tile_size / 2)
+, m_window(window)
+, m_dragg_pos(dragg_pos)
+, m_dragging(dragging) {}
 
 Chess::Move RealPlayer::get_next_move() {
     sf::Event event;
