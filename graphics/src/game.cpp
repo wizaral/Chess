@@ -20,8 +20,8 @@ void Game::load() {
     load(m_buttons[4], RES"play.png");
 
     std::string path{RES"__.png"};
-    const std::array<char, 6> figures{'P', 'N', 'B', 'R', 'Q', 'K'};
-    const std::array<char, 2> colors{'w', 'b'};
+    const std::array<char, Chess::figure_types_amount> figures{'P', 'N', 'B', 'R', 'Q', 'K'};
+    const std::array<char, Chess::players_amount> colors{'w', 'b'};
 
     auto color_index = path.find_first_of('_');
     auto type_index = path.find_last_of('_');

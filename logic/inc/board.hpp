@@ -14,8 +14,8 @@ class Board {
 
     Field<std::unique_ptr<Figure>> m_figures;
 
-    std::array<Field<bool>, 2> m_check_state;
-    std::array<Field<bool>, 2> m_move_state;
+    std::array<Field<bool>, players_amount> m_check_state;
+    std::array<Field<bool>, players_amount> m_move_state;
 
 public:
     Board() = default;

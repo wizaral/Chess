@@ -6,17 +6,20 @@ namespace Chess {
 inline static constexpr int board_rows = 8;
 inline static constexpr int board_cols = 8;
 
-inline static constexpr std::array<int, 2> pawns_row{
+inline static constexpr int players_amount = 2;
+inline static constexpr int figure_types_amount = 6;
+
+inline static constexpr std::array<int, players_amount> pawns_row{
     1,
     6,
 };
 
-inline static constexpr std::array<int, 2> figures_row{
+inline static constexpr std::array<int, players_amount> figures_row{
     0,
     7,
 };
 
-inline static constexpr std::array<int, 2> step_direction{
+inline static constexpr std::array<int, players_amount> step_direction{
     1,
     -1,
 };

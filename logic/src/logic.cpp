@@ -2,7 +2,7 @@
 
 namespace Chess {
 
-Logic::Logic(std::array<std::unique_ptr<Player>, 2> arr)
+Logic::Logic(std::array<std::unique_ptr<Player>, players_amount> arr)
 : m_players(std::move(arr)) {
     validate_players();
 }
@@ -283,7 +283,7 @@ void Logic::after_move_logic() {
 GameState Logic::promote_pawn(FigureType type) {
     if (m_pawn_pos != Position{-1, -1}) {
         FigureColor color = player()->color();
-        Pawn *pawn = static_cast<Pawn *>(m_board.get_figure(m_pawn_pos));
+        auto pawn = static_cast<Pawn *>(m_board.get_figure(m_pawn_pos));
         pawn->update(Subscriber::MessageType::Notify);
         pawn->update(Subscriber::MessageType::Notify);
 

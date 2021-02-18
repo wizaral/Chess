@@ -10,14 +10,14 @@ namespace Chess {
 
 class Logic : public Publisher {
     Board m_board;
-    std::array<std::unique_ptr<Player>, 2> m_players;
+    std::array<std::unique_ptr<Player>, players_amount> m_players;
 
     int m_player_index = 0;
     Position m_pawn_pos{-1, -1};
     GameState m_state = GameState::NormalMove;
 
 public:
-    Logic(std::array<std::unique_ptr<Player>, 2> arr);
+    Logic(std::array<std::unique_ptr<Player>, players_amount> arr);
 
     Player *player();
     const Board &board() const;

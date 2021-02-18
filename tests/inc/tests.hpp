@@ -8,7 +8,7 @@ public:
     template<class T>
     using Field = std::array<std::array<T, 8>, 8>;
 
-    TestGame(std::array<std::unique_ptr<Chess::Player>, 2> arr,
+    TestGame(std::array<std::unique_ptr<Chess::Player>, players_amount> arr,
         std::unique_ptr<Chess::FigureFactory> factory,
         std::unique_ptr<Chess::Render> render,
         std::unique_ptr<Chess::DataInput> input)

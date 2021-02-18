@@ -26,8 +26,8 @@ class Game {
     Sprite m_board, m_background, m_rect;
 
     std::array<Sprite, 5> m_buttons;
-    std::array<Sprite, 2> m_promotions;
-    std::array<std::array<Sprite, 6>, 2> m_figures;
+    std::array<Sprite, Chess::players_amount> m_promotions;
+    std::array<std::array<Sprite, Chess::figure_types_amount>, Chess::players_amount> m_figures;
     Chess::Position m_dragging{-1, -1}, m_promoting{-1, -1};
     sf::Vector2f m_dragg_pos;
 
