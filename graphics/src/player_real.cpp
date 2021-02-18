@@ -20,14 +20,14 @@ Chess::Move RealPlayer::get_next_move() {
     while (m_window.isOpen() && m_window.pollEvent(event)) {
         if (Game::is_exit(event)) {
             m_window.close();
-        } else if (event.type == sf::Event::MouseButtonPressed && event.key.code == sf::Mouse::Left) {
+        } else if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left) {
             sf::Vector2i mpos = sf::Mouse::getPosition(m_window);
             m_dragging = Game::transform(mpos);
 
             if (Chess::Position::validation(m_dragging) == false) {
                 m_dragging = Chess::Position{-1, -1};
             }
-        } else if (event.type == sf::Event::MouseButtonReleased && event.key.code == sf::Mouse::Left) {
+        } else if (event.type == sf::Event::MouseButtonReleased && event.mouseButton.button == sf::Mouse::Left) {
             sf::Vector2i mpos = sf::Mouse::getPosition(m_window);
             m_move.emplace(m_dragging, Game::transform(mpos));
             m_dragging = Chess::Position{-1, -1};
@@ -46,7 +46,7 @@ Chess::FigureType RealPlayer::promote_figure(const Chess::Position &pos) {
     while (m_window.isOpen() && m_window.waitEvent(event) && type == Chess::FigureType::Pawn) {
         if (Game::is_exit(event)) {
             m_window.close();
-        } else if (event.type == sf::Event::MouseButtonReleased && event.key.code == sf::Mouse::Left) {
+        } else if (event.type == sf::Event::MouseButtonReleased && event.mouseButton.button == sf::Mouse::Left) {
             sf::Vector2i mpos = sf::Mouse::getPosition(m_window);
 
             if (auto ppos = Game::transform(mpos); ppos == pos) {

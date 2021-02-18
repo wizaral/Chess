@@ -11,7 +11,7 @@ void Game::print_menu(std::array<int, 4> &positions) {
                 m_window.close();
             }
 
-            if (e.type == sf::Event::MouseButtonReleased && e.key.code == sf::Mouse::Left) {
+            if (e.type == sf::Event::MouseButtonReleased && e.mouseButton.button == sf::Mouse::Left) {
                 auto pos = sf::Mouse::getPosition(m_window);
 
                 if (m_buttons[0].first.getGlobalBounds().contains(pos.x, pos.y)) {
