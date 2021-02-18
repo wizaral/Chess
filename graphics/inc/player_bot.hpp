@@ -6,9 +6,13 @@
 
 #if defined(_WIN64) || defined(_WIN32)
 #include <windows.h>
-#include "chess.hpp"
+#endif
 
-class BotPlayer : public Chess::Player {
+#include "player_base.hpp"
+
+#if defined(_WIN64) || defined(_WIN32)
+
+class BotPlayer : public PlayerBase {
     STARTUPINFO m_sui;
     SECURITY_ATTRIBUTES m_sattr = {sizeof(SECURITY_ATTRIBUTES), nullptr, true};
     PROCESS_INFORMATION m_pinfo;
@@ -40,9 +44,8 @@ protected:
 
 #elif defined(__APPLE__) || defined(__linux__)
 // #include unix headers
-#include "chess.hpp"
 
-class BotPlayer : public Chess::Player {
+class BotPlayer : public PlayerBase {
     // TODO bot for UNIX systems
 };
 

@@ -81,7 +81,7 @@ void Game::print_board() {
 
 void Game::print_next_step() {
     std::ostringstream oss;
-    oss << m_logic->player()->name() << "'s turn";
+    oss << static_cast<PlayerBase *>(m_logic->player())->name() << "'s turn";
 
     sf::Text text(oss.str(), m_font);
     text.setFillColor(sf::Color(255, 255, 255));
@@ -107,7 +107,7 @@ void Game::print_endgame() {
     oss << "Game over: ";
 
     if (m_state == Chess::GameState::CheckMate) {
-        oss << "Player " << m_logic->player()->name() << " won!";
+        oss << "Player " << static_cast<PlayerBase *>(m_logic->player())->name() << " won!";
     } else {
         oss << s_states[static_cast<int>(m_state)];
     }

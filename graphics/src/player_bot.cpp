@@ -7,7 +7,7 @@ BotPlayer::BotPlayer(Chess::FigureColor color,
                      std::optional<Chess::Move> &move,
                      std::ostringstream &log,
                      std::string &path)
-: Chess::Player(color, name)
+: PlayerBase(color, name)
 , m_move(move)
 , m_log(log) {
     m_sui.dwFlags = STARTF_USESHOWWINDOW | STARTF_USESTDHANDLES;

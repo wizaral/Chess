@@ -7,7 +7,7 @@ RealPlayer::RealPlayer(Chess::FigureColor color,
                        sf::RenderWindow& window,
                        sf::Vector2f& dragg_pos,
                        Chess::Position& dragging)
-: Chess::Player(color, name)
+: PlayerBase(color, name)
 , m_move(move)
 , m_half_tile(tile_size / 2)
 , m_window(window)

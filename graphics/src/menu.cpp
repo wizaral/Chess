@@ -59,8 +59,8 @@ void Game::menu() {
 #error unsupported OS
 #endif
 
-    std::array<int, 4> positions{1, 0, 0, 1};
-    std::array<std::unique_ptr<Chess::Player>, 2> players;
+    std::array<int, 4> positions{1, 0, 1, 0};
+    std::array<std::unique_ptr<Chess::Player>, Chess::players_amount> players;
 
     print_menu(positions);
 

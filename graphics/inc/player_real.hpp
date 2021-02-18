@@ -1,10 +1,9 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include <optional>
-#include <string>
-#include "chess.hpp"
+#include "player_base.hpp"
 
-class RealPlayer : public Chess::Player {
+class RealPlayer : public PlayerBase {
     std::optional<Chess::Move> &m_move;
 
     const float m_half_tile;
