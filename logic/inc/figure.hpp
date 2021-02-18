@@ -3,7 +3,6 @@
 
 #include "gamestate.hpp"
 #include "move.hpp"
-#include "observer.hpp"
 
 namespace Chess {
 

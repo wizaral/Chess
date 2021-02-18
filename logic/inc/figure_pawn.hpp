@@ -1,3 +1,4 @@
+#include "observer.hpp"
 #include "figure.hpp"
 
 namespace Chess {
