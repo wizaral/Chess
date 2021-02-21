@@ -102,47 +102,37 @@ void Logic::en_passant(FigureColor color, const Move &move) {
 }
 
 void Logic::update_check_state() {
-    std::vector<Position> state_white, state_black;
+    std::array<std::vector<Position>, players_amount> state;
 
     for (int i = 0; i < board_rows; ++i) {
         for (int j = 0; j < board_cols; ++j) {
             if (auto figure = m_board.get_figure({i, j}); figure != nullptr) {
-                if (figure->color() == FigureColor::White) {
-                    figure->update_occupation(m_board, {i, j}, state_white);
-                } else {
-                    figure->update_occupation(m_board, {i, j}, state_black);
-                }
+                figure->update_occupation(m_board, {i, j}, state[static_cast<int>(figure->color())]);
             }
         }
     }
 
-    m_board.reset_check_state(FigureColor::White);
-    m_board.update_check_state(FigureColor::White, state_white);
-
-    m_board.reset_check_state(FigureColor::Black);
-    m_board.update_check_state(FigureColor::Black, state_black);
+    for (auto c : {FigureColor::White, FigureColor::Black}) {
+        m_board.reset_check_state(c);
+        m_board.update_check_state(c, state[static_cast<int>(c)]);
+    }
 }
 
 void Logic::update_move_state() {
-    std::vector<Position> state_white, state_black;
+    std::array<std::vector<Position>, players_amount> state;
 
     for (int i = 0; i < board_rows; ++i) {
         for (int j = 0; j < board_cols; ++j) {
             if (auto figure = m_board.get_figure({i, j}); figure != nullptr) {
-                if (figure->color() == FigureColor::White) {
-                    figure->update_movement(m_board, {i, j}, state_white);
-                } else {
-                    figure->update_movement(m_board, {i, j}, state_black);
-                }
+                figure->update_movement(m_board, {i, j}, state[static_cast<int>(figure->color())]);
             }
         }
     }
 
-    m_board.reset_move_state(FigureColor::White);
-    m_board.update_move_state(FigureColor::White, state_white);
-
-    m_board.reset_move_state(FigureColor::Black);
-    m_board.update_move_state(FigureColor::Black, state_black);
+    for (auto c : {FigureColor::White, FigureColor::Black}) {
+        m_board.reset_move_state(c);
+        m_board.update_move_state(c, state[static_cast<int>(c)]);
+    }
 }
 
 bool Logic::try_promote_pawn(const Figure *figure, Position pos) {
@@ -191,31 +181,32 @@ bool Logic::is_stalemate(FigureColor color) {
 }
 
 bool Logic::is_draw() const {
-    std::vector<std::pair<FigureType, FigureColor>> figures;
+    std::vector<Figure *> figures;
+    figures.reserve(2);
 
     for (const auto &i : m_board.figures()) {
         for (const auto &j : i) {
             if (auto ptr = j.get(); ptr != nullptr) {
-                figures.push_back({ptr->type(), ptr->color()});
+                figures.push_back(ptr);
             }
         }
     }
 
     if (std::any_of(figures.begin(), figures.end(), [](auto figure) {
-        return figure.first == FigureType::Queen
-            || figure.first == FigureType::Rook
-            || figure.first == FigureType::Pawn;
+        return figure->type() == FigureType::Queen
+            || figure->type() == FigureType::Rook
+            || figure->type() == FigureType::Pawn;
     })) {
         return false;
     }
 
     figures.erase(std::remove_if(figures.begin(), figures.end(), [](auto figure) {
-        return figure.first == FigureType::King;
+        return figure->type() == FigureType::King;
     }), figures.end());
 
-    if (size_t size = figures.size(); size < 2) {
+    if (auto size = figures.size(); size < 2) {
         return true;
-    } else if (size == 2 && figures[0].second != figures[1].second) /* diff colors */ {
+    } else if (size == 2 && figures[0]->color() != figures[1]->color()) /* diff colors */ {
         return true;
     }
     return false;
@@ -242,21 +233,16 @@ GameState Logic::logic(const Move &move) {
     if (is_error(m_state)) {
         return m_state;
     }
-    if (m_state == GameState::NormalMove) {
-        if (is_check(color, move)) {
-            return check ? GameState::KingInCheck : GameState::KingWillBeInCheck;
-        } else {
-            figure->move_update(move);
-            m_board.move_figure(move);
-        }
-    } else if (m_state == GameState::EnPassant) {
-        if (is_check(color, move)) {
-            return check ? GameState::KingInCheck : GameState::KingWillBeInCheck;
-        } else {
-            en_passant(color, move);
-        }
-    } else /* if (m_state == GameState::[Any]Castling) */ {
+
+    if (is_castling(m_state)) {
         castling(color, move);
+    } else if (is_check(color, move)) {
+        return check ? GameState::KingInCheck : GameState::KingWillBeInCheck;
+    } else if (m_state == GameState::NormalMove) {
+        figure->move_update(move);
+        m_board.move_figure(move);
+    } else /* if (m_state == GameState::EnPassant) */ {
+        en_passant(color, move);
     }
 
     if (try_promote_pawn(figure, move.to())) {
