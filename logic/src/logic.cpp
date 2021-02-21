@@ -76,7 +76,7 @@ bool Logic::is_check(FigureColor color, const Move &move) {
     return result;
 }
 
-void Logic::castling(FigureColor color, const Move &move) {
+void Logic::castling(const Move &move) {
     int row = move.from().row();
 
     if (int distance = move.from().col() - move.to().col(); distance < 0) {
@@ -96,7 +96,7 @@ void Logic::castling(FigureColor color, const Move &move) {
     }
 }
 
-void Logic::en_passant(FigureColor color, const Move &move) {
+void Logic::en_passant(const Move &move) {
     m_board.move_figure(move);
     m_board.remove_figure({move.from().row(), move.to().col()});
 }
@@ -235,14 +235,14 @@ GameState Logic::logic(const Move &move) {
     }
 
     if (is_castling(m_state)) {
-        castling(color, move);
+        castling(move);
     } else if (is_check(color, move)) {
         return check ? GameState::KingInCheck : GameState::KingWillBeInCheck;
     } else if (m_state == GameState::NormalMove) {
         figure->move_update(move);
         m_board.move_figure(move);
     } else /* if (m_state == GameState::EnPassant) */ {
-        en_passant(color, move);
+        en_passant(move);
     }
 
     if (try_promote_pawn(figure, move.to())) {

@@ -38,8 +38,8 @@ private:
     bool is_check(FigureColor color) const;
     bool is_check(FigureColor color, const Move &move);
 
-    void castling(FigureColor color, const Move &move);
-    void en_passant(FigureColor color, const Move &move);
+    void castling(const Move &move);
+    void en_passant(const Move &move);
 
     void update_check_state();
     void update_move_state();
