@@ -58,12 +58,12 @@ GameState Logic::validate_move(const Move &move, FigureColor color) const {
 }
 
 bool Logic::is_check(FigureColor color) const {
-    Position pos = m_board.get_position(FigureType::King, color);
+    auto pos = m_board.get_position(FigureType::King, color);
     return m_board.get_check_state(!color)[pos.row()][pos.col()];
 }
 
 bool Logic::is_check(FigureColor color, const Move &move) {
-    std::unique_ptr<Figure> figure = m_board.extract_figure(move.to());
+    auto figure = m_board.extract_figure(move.to());
     m_board.move_figure(move);
 
     update_check_state();
@@ -145,10 +145,10 @@ void Logic::update_move_state() {
     m_board.update_move_state(FigureColor::Black, state_black);
 }
 
-bool Logic::try_promote_pawn(const Figure &figure, const Position &pos) {
-    if (figure.type() == FigureType::Pawn) {
-        if ((pos.row() == figures_row[static_cast<int>(FigureColor::Black)] && figure.color() == FigureColor::White)
-            || (pos.row() == figures_row[static_cast<int>(FigureColor::White)] && figure.color() == FigureColor::Black)) {
+bool Logic::try_promote_pawn(const Figure *figure, Position pos) {
+    if (figure->type() == FigureType::Pawn) {
+        if ((pos.row() == figures_row[static_cast<int>(FigureColor::Black)] && figure->color() == FigureColor::White)
+            || (pos.row() == figures_row[static_cast<int>(FigureColor::White)] && figure->color() == FigureColor::Black)) {
             m_state = GameState::PawnPromotion;
             m_pawn_pos = pos;
             return true;
@@ -158,10 +158,9 @@ bool Logic::try_promote_pawn(const Figure &figure, const Position &pos) {
 }
 
 GameState Logic::is_mate() {
-    FigureColor color = !player()->color();
-    bool state = is_stalemate(color);
+    auto color = !player()->color();
 
-    if (state) {
+    if (is_stalemate(color)) {
         return is_check(color) ? GameState::CheckMate : GameState::StaleMate;
     }
     return GameState::NormalMove;
@@ -227,7 +226,7 @@ GameState Logic::logic(const Move &move) {
         return GameState::PawnPromotion;
     }
 
-    FigureColor color = player()->color();
+    auto color = player()->color();
     m_state = validate_move(move, color);
 
     if (is_error(m_state)) {
@@ -237,7 +236,7 @@ GameState Logic::logic(const Move &move) {
     update_check_state();
     bool check = is_check(color);
 
-    Figure *figure = m_board.get_figure(move.from());
+    auto figure = m_board.get_figure(move.from());
     m_state = figure->validate_move(m_board, move);
 
     if (is_error(m_state)) {
@@ -260,7 +259,7 @@ GameState Logic::logic(const Move &move) {
         castling(color, move);
     }
 
-    if (try_promote_pawn(*figure, move.to())) {
+    if (try_promote_pawn(figure, move.to())) {
         return m_state;
     }
 
@@ -311,7 +310,7 @@ GameState Logic::promote_pawn(FigureType type) {
     return m_state;
 }
 
-std::vector<Position> Logic::possible_moves(const Position &pos) {
+std::vector<Position> Logic::possible_moves(Position pos) {
     std::vector<Position> moves;
 
     if (auto figure = m_board.get_figure(pos); figure != nullptr) {
@@ -324,7 +323,7 @@ std::vector<Position> Logic::possible_moves(const Position &pos) {
     return moves;
 }
 
-std::vector<Position> Logic::possible_moves(const Position &pos, FigureColor color) {
+std::vector<Position> Logic::possible_moves(Position pos, FigureColor color) {
     std::vector<Position> moves;
 
     if (auto figure = m_board.get_figure(pos); figure != nullptr) {

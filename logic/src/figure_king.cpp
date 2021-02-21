@@ -65,7 +65,7 @@ GameState King::check_castling(const Board &board, const Move &move, const Figur
     return GameState::FiguresAlreadyMoved;
 }
 
-void King::update_occupation(const Board &board, const Position &pos, std::vector<Position> &coords) const {
+void King::update_occupation(const Board &board, Position pos, std::vector<Position> &coords) const {
     int row = pos.row(), col = pos.col();
 
     if (Position::validation({row + 1, col + 1})) {
@@ -95,7 +95,7 @@ void King::update_occupation(const Board &board, const Position &pos, std::vecto
     }
 }
 
-void King::update_movement(const Board &board, const Position &pos, std::vector<Position> &coords) const {
+void King::update_movement(const Board &board, Position pos, std::vector<Position> &coords) const {
     update_occupation(board, pos, coords);
 }
 

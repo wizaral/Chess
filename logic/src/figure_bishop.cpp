@@ -36,7 +36,7 @@ GameState Bishop::validate_move(const Board &board, const Move &move) const {
     }
 }
 
-void Bishop::update_occupation(const Board &board, const Position &pos, std::vector<Position> &coords) const {
+void Bishop::update_occupation(const Board &board, Position pos, std::vector<Position> &coords) const {
     int row = pos.row(), col = pos.col();
 
     for (int r = row + 1, c = col + 1; r < board_rows && c < board_cols; ++r, ++c) {
@@ -68,7 +68,7 @@ void Bishop::update_occupation(const Board &board, const Position &pos, std::vec
     }
 }
 
-void Bishop::update_movement(const Board &board, const Position &pos, std::vector<Position> &coords) const {
+void Bishop::update_movement(const Board &board, Position pos, std::vector<Position> &coords) const {
     update_occupation(board, pos, coords);
 }
 

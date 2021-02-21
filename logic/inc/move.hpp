@@ -9,7 +9,7 @@ class Move {
     Position m_from, m_to;
 
 public:
-    Move(const Position &from, const Position &to);
+    Move(Position from, Position to);
 
     Position from() const;
     Position to() const;

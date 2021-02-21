@@ -4,6 +4,7 @@
 namespace Chess {
 
 class Player {
+protected:
     FigureColor m_color;
 
 public:
@@ -13,7 +14,7 @@ public:
     FigureColor color() const;
 
     virtual Move get_next_move() = 0;
-    virtual FigureType promote_figure(const Position &pos) = 0;
+    virtual FigureType promote_figure(Position pos) = 0;
 };
 
 } // namespace Chess

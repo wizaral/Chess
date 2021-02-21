@@ -5,6 +5,7 @@
 #include <sstream>
 #include <stdexcept>
 #include <string>
+
 #include "chess.hpp"
 #include "player_bot.hpp"
 #include "player_real.hpp"
@@ -17,8 +18,9 @@ inline static constexpr int window_height = 900;
 class Game {
     using Sprite = std::pair<sf::Sprite, sf::Texture>;
 
+    inline static constexpr float s_tile_size = 100.f;
+
     sf::RenderWindow &m_window;
-    inline constexpr static float s_tile_size = 100.0f;
     Chess::GameState m_state = Chess::GameState::NormalMove;
     std::ostringstream m_log;
 
@@ -41,7 +43,7 @@ public:
     void menu();
 
     static Chess::Position transform(const sf::Vector2i &pos);
-    static sf::Vector2f transform(const Chess::Position &pos);
+    static sf::Vector2f transform(Chess::Position pos);
 
     static bool is_exit(const sf::Event &e);
 
@@ -64,7 +66,7 @@ private:
     void after_game();
     void log();
 
-    inline const static std::array<std::string, static_cast<int>(Chess::GameState::SIZE)> s_states{
+    inline static const std::array<std::string, static_cast<int>(Chess::GameState::SIZE)> s_states{
         "Good move",
         "En passant",
         "King castling",

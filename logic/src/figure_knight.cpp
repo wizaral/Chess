@@ -19,7 +19,7 @@ GameState Knight::validate_move(const Board &board, const Move &move) const {
     return GameState::WrongFigureMove;
 }
 
-void Knight::update_occupation(const Board &board, const Position &pos, std::vector<Position> &coords) const {
+void Knight::update_occupation(const Board &board, Position pos, std::vector<Position> &coords) const {
     int row = pos.row(), col = pos.col();
 
     if (Position::validation({row + 2, col + 1})) {
@@ -48,7 +48,7 @@ void Knight::update_occupation(const Board &board, const Position &pos, std::vec
     }
 }
 
-void Knight::update_movement(const Board &board, const Position &pos, std::vector<Position> &coords) const {
+void Knight::update_movement(const Board &board, Position pos, std::vector<Position> &coords) const {
     update_occupation(board, pos, coords);
 }
 

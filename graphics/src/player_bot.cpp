@@ -85,7 +85,7 @@ Chess::Move BotPlayer::get_next_move() {
     return {{-1, -1}, {-1, -1}}; // I love OOP & OOD
 }
 
-Chess::FigureType BotPlayer::promote_figure(const Chess::Position &pos) {
+Chess::FigureType BotPlayer::promote_figure(Chess::Position pos) {
     switch (m_promote_figure) {
     case 'B':
     case 'b':

@@ -39,7 +39,7 @@ Chess::Move RealPlayer::get_next_move() {
     return {{-1, -1}, {-1, -1}}; // I love OOP & OOD
 }
 
-Chess::FigureType RealPlayer::promote_figure(const Chess::Position &pos) {
+Chess::FigureType RealPlayer::promote_figure(Chess::Position pos) {
     Chess::FigureType type = Chess::FigureType::Pawn;
     sf::Event event;
 

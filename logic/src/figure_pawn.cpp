@@ -79,7 +79,7 @@ GameState Pawn::validate_move(const Board &board, const Move &move) const {
     return GameState::WrongFigureMove;
 }
 
-void Pawn::update_occupation(const Board &board, const Position &pos, std::vector<Position> &coords) const {
+void Pawn::update_occupation(const Board &board, Position pos, std::vector<Position> &coords) const {
     int dest = pos.row() + m_direction;
     int col = pos.col();
 
@@ -91,7 +91,7 @@ void Pawn::update_occupation(const Board &board, const Position &pos, std::vecto
     }
 }
 
-void Pawn::update_movement(const Board &board, const Position &pos, std::vector<Position> &coords) const {
+void Pawn::update_movement(const Board &board, Position pos, std::vector<Position> &coords) const {
     int row = pos.row(), col = pos.col();
 
     std::array<Position, 4> positions{

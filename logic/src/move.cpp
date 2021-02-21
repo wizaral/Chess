@@ -2,7 +2,7 @@
 
 namespace Chess {
 
-Move::Move(const Position &from, const Position &to)
+Move::Move(Position from, Position to)
 : m_from(from)
 , m_to(to) {}
 
@@ -15,11 +15,11 @@ Position Move::to() const {
 }
 
 int Move::rows() const {
-    return abs(m_from.row() - m_to.row());
+    return std::abs(m_from.row() - m_to.row());
 }
 
 int Move::cols() const {
-    return abs(m_from.col() - m_to.col());
+    return std::abs(m_from.col() - m_to.col());
 }
 
 } // namespace Chess

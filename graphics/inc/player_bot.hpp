@@ -36,7 +36,7 @@ public:
     ~BotPlayer();
 
     Chess::Move get_next_move() override;
-    Chess::FigureType promote_figure(const Chess::Position &pos) override;
+    Chess::FigureType promote_figure(Chess::Position pos) override;
 
 protected:
     static Chess::Position transform(char col, char row);

@@ -44,7 +44,7 @@ Rook::MoveState Rook::state() const {
     return m_state;
 }
 
-void Rook::update_occupation(const Board &board, const Position &pos, std::vector<Position> &coords) const {
+void Rook::update_occupation(const Board &board, Position pos, std::vector<Position> &coords) const {
     int row = pos.row(), col = pos.col();
 
     for (int r = row + 1; r < board_rows; ++r) {
@@ -76,7 +76,7 @@ void Rook::update_occupation(const Board &board, const Position &pos, std::vecto
     }
 }
 
-void Rook::update_movement(const Board &board, const Position &pos, std::vector<Position> &coords) const {
+void Rook::update_movement(const Board &board, Position pos, std::vector<Position> &coords) const {
     update_occupation(board, pos, coords);
 }
 

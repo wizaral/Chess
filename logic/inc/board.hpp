@@ -20,23 +20,23 @@ class Board {
 public:
     Board() = default;
 
-    const Figure *get_figure(const Position &pos) const;
-    Figure *get_figure(const Position &pos);
+    const Figure *get_figure(Position pos) const;
+    Figure *get_figure(Position pos);
 
     Position get_position(FigureType type, FigureColor color) const;
     const Field<std::unique_ptr<Figure>> &figures() const;
 
-    bool get_check_state(const Position &pos, FigureColor color) const;
+    bool get_check_state(Position pos, FigureColor color) const;
     const Field<bool> &get_check_state(FigureColor color) const;
 
-    bool get_move_state(const Position &pos, FigureColor color) const;
+    bool get_move_state(Position pos, FigureColor color) const;
     const Field<bool> &get_move_state(FigureColor color) const;
 
-    void add_figure(std::unique_ptr<Figure> figure, const Position &pos);
-    std::unique_ptr<Figure> extract_figure(const Position &pos);
+    void add_figure(std::unique_ptr<Figure> figure, Position pos);
+    std::unique_ptr<Figure> extract_figure(Position pos);
     void move_figure(const Move &move);
 
-    void remove_figure(const Position &pos);
+    void remove_figure(Position pos);
     void clear_figures();
 
     void reset_check_state(FigureColor color);

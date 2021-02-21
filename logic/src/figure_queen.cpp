@@ -48,18 +48,18 @@ GameState Queen::validate(const Board &board, const Move &move, int row_inc, int
     }
 }
 
-void Queen::update_occupation(const Board &board, const Position &pos, std::vector<Position> &coords) const {
+void Queen::update_occupation(const Board &board, Position pos, std::vector<Position> &coords) const {
     bishop_occupation(board, pos, coords);
     rook_occupation(board, pos, coords);
 }
 
-void Queen::update_movement(const Board &board, const Position &pos, std::vector<Position> &coords) const {
+void Queen::update_movement(const Board &board, Position pos, std::vector<Position> &coords) const {
     update_occupation(board, pos, coords);
 }
 
 void Queen::move_update(const Move &move) {}
 
-void Queen::bishop_occupation(const Board &board, const Position &pos, std::vector<Position> &coords) const {
+void Queen::bishop_occupation(const Board &board, Position pos, std::vector<Position> &coords) const {
     int row = pos.row(), col = pos.col();
 
     for (int r = row + 1, c = col + 1; r < board_rows && c < board_cols; ++r, ++c) {
@@ -91,7 +91,7 @@ void Queen::bishop_occupation(const Board &board, const Position &pos, std::vect
     }
 }
 
-void Queen::rook_occupation(const Board &board, const Position &pos, std::vector<Position> &coords) const {
+void Queen::rook_occupation(const Board &board, Position pos, std::vector<Position> &coords) const {
     int row = pos.row(), col = pos.col();
 
     for (int r = row + 1, c = col; r < board_rows; ++r) {

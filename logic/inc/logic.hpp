@@ -3,6 +3,7 @@
 #include <array>
 #include <functional>
 #include <memory>
+#include <stdexcept>
 
 #include "factory.hpp"
 
@@ -27,8 +28,8 @@ public:
     GameState logic(const Move &move);
     GameState promote_pawn(FigureType type);
 
-    std::vector<Position> possible_moves(const Position &pos);
-    std::vector<Position> possible_moves(const Position &pos, FigureColor color);
+    std::vector<Position> possible_moves(Position pos);
+    std::vector<Position> possible_moves(Position pos, FigureColor color);
 
 private:
     void validate_players() const;
@@ -43,7 +44,7 @@ private:
     void update_check_state();
     void update_move_state();
 
-    bool try_promote_pawn(const Figure &figure, const Position &pos);
+    bool try_promote_pawn(const Figure *figure, Position pos);
     void after_move_logic();
 
     GameState is_mate();

@@ -1,5 +1,5 @@
 #pragma once
-#include <stdexcept>
+#include <cstdint>
 
 namespace Chess {
 
@@ -12,10 +12,10 @@ public:
     int row() const;
     int col() const;
 
-    [[nodiscard]] static bool validation(const Position &pos);
+    static bool validation(Position pos);
 
-    friend bool operator==(const Position &lhs, const Position &rhs);
-    friend bool operator!=(const Position &lhs, const Position &rhs);
+    friend bool operator==(Position lhs, Position rhs);
+    friend bool operator!=(Position lhs, Position rhs);
 };
 
 } // namespace Chess

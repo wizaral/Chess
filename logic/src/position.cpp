@@ -15,7 +15,7 @@ int Position::col() const {
     return m_col;
 }
 
-[[nodiscard]] bool Position::validation(const Position &pos) {
+bool Position::validation(Position pos) {
     if (int row = pos.row(); row < 0 || row >= board_rows) {
         return false;
     }
@@ -25,12 +25,12 @@ int Position::col() const {
     return true;
 }
 
-bool operator==(const Position &lhs, const Position &rhs) {
+bool operator==(Position lhs, Position rhs) {
     return lhs.m_row == rhs.m_row && lhs.m_col == rhs.m_col;
 }
 
-bool operator!=(const Position &lhs, const Position &rhs) {
-    return !(lhs == rhs);
+bool operator!=(Position lhs, Position rhs) {
+    return !operator==(lhs, rhs);
 }
 
 } // namespace Chess

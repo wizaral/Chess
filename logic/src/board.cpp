@@ -2,11 +2,11 @@
 
 namespace Chess {
 
-const Figure *Board::get_figure(const Position &pos) const {
+const Figure *Board::get_figure(Position pos) const {
     return m_figures[pos.row()][pos.col()].get();
 }
 
-Figure *Board::get_figure(const Position &pos) {
+Figure *Board::get_figure(Position pos) {
     return m_figures[pos.row()][pos.col()].get();
 }
 
@@ -25,7 +25,7 @@ const Board::Field<std::unique_ptr<Figure>> &Board::figures() const {
     return m_figures;
 }
 
-bool Board::get_check_state(const Position &pos, FigureColor color) const {
+bool Board::get_check_state(Position pos, FigureColor color) const {
     return m_check_state[static_cast<int>(color)][pos.row()][pos.col()];
 }
 
@@ -33,11 +33,11 @@ const Board::Field<bool> &Board::get_check_state(FigureColor color) const {
     return m_check_state[static_cast<int>(color)];
 }
 
-void Board::add_figure(std::unique_ptr<Figure> figure, const Position &pos) {
+void Board::add_figure(std::unique_ptr<Figure> figure, Position pos) {
     m_figures[pos.row()][pos.col()] = std::move(figure);
 }
 
-std::unique_ptr<Figure> Board::extract_figure(const Position &pos) {
+std::unique_ptr<Figure> Board::extract_figure(Position pos) {
     return std::move(m_figures[pos.row()][pos.col()]);
 }
 
@@ -45,7 +45,7 @@ void Board::move_figure(const Move &move) {
     m_figures[move.to().row()][move.to().col()] = std::move(m_figures[move.from().row()][move.from().col()]);
 }
 
-void Board::remove_figure(const Position &pos) {
+void Board::remove_figure(Position pos) {
     m_figures[pos.row()][pos.col()].reset();
 }
 

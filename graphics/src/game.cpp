@@ -137,6 +137,6 @@ Chess::Position Game::transform(const sf::Vector2i &pos) {
     return {7 - pos.y / off, pos.x / off};
 }
 
-sf::Vector2f Game::transform(const Chess::Position &pos) {
+sf::Vector2f Game::transform(Chess::Position pos) {
     return {pos.col() * s_tile_size, (7 - pos.row()) * s_tile_size};
 }
