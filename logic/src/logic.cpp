@@ -280,8 +280,8 @@ void Logic::after_move_logic() {
 }
 
 GameState Logic::promote_pawn(FigureType type) {
-    if (m_pawn_pos != Position{-1, -1}) {
-        FigureColor color = player()->color();
+    if (m_pawn_pos != Position::invalid) {
+        auto color = player()->color();
         auto pawn = static_cast<Pawn *>(m_board.get_figure(m_pawn_pos));
         pawn->update(Subscriber::MessageType::Notify);
         pawn->update(Subscriber::MessageType::Notify);
@@ -303,7 +303,7 @@ GameState Logic::promote_pawn(FigureType type) {
             break;
         }
 
-        m_pawn_pos = {-1, -1};
+        m_pawn_pos = Position::invalid;
         m_state = GameState::NormalMove;
         after_move_logic();
     }

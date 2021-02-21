@@ -82,7 +82,7 @@ Chess::Move BotPlayer::get_next_move() {
     } else {
         throw std::runtime_error("stockfish error");
     }
-    return {{-1, -1}, {-1, -1}}; // I love OOP & OOD
+    return {Chess::Position::invalid, Chess::Position::invalid}; // I love OOP & OOD
 }
 
 Chess::FigureType BotPlayer::promote_figure(Chess::Position pos) {
@@ -137,14 +137,14 @@ Chess::Move GraphicsBotPlayer::get_next_move() {
         m_dragging = m_save->from();
         m_dragg_pos = Game::transform(m_dragging);
     } else if (sf::Vector2f dest{Game::transform(m_save->to())}; m_dragg_pos == dest) {
-        m_dragging = Chess::Position{-1, -1};
+        m_dragging = Chess::Position::invalid;
         m_move = m_save;
         m_save.reset();
     } else {
         auto delta = (dest - Game::transform(m_save->from())) / 25.f;
         m_dragg_pos += delta; // m_dragg_pos = dest;
     }
-    return {{-1, -1}, {-1, -1}}; // I love OOP & OOD
+    return {Chess::Position::invalid, Chess::Position::invalid}; // I love OOP & OOD
 }
 
 #elif defined(__APPLE__) || defined(__linux__)

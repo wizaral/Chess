@@ -7,6 +7,8 @@ class Position {
     int8_t m_row, m_col;
 
 public:
+    static const Position invalid;
+
     Position(int row, int col);
 
     int row() const;
@@ -17,5 +19,7 @@ public:
     friend bool operator==(Position lhs, Position rhs);
     friend bool operator!=(Position lhs, Position rhs);
 };
+
+inline const Position Position::invalid{-1, -1};
 
 } // namespace Chess

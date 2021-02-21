@@ -25,18 +25,18 @@ Chess::Move RealPlayer::get_next_move() {
             m_dragging = Game::transform(mpos);
 
             if (Chess::Position::validation(m_dragging) == false) {
-                m_dragging = Chess::Position{-1, -1};
+                m_dragging = Chess::Position::invalid;
             }
         } else if (event.type == sf::Event::MouseButtonReleased && event.mouseButton.button == sf::Mouse::Left) {
             sf::Vector2i mpos = sf::Mouse::getPosition(m_window);
             m_move.emplace(m_dragging, Game::transform(mpos));
-            m_dragging = Chess::Position{-1, -1};
+            m_dragging = Chess::Position::invalid;
         }
-        if (!(m_dragging == Chess::Position{-1, -1})) {
+        if (m_dragging != Chess::Position::invalid) {
             m_dragg_pos = sf::Vector2f{sf::Mouse::getPosition(m_window)} - sf::Vector2f{m_half_tile, m_half_tile};
         }
     }
-    return {{-1, -1}, {-1, -1}}; // I love OOP & OOD
+    return {Chess::Position::invalid, Chess::Position::invalid}; // I love OOP & OOD
 }
 
 Chess::FigureType RealPlayer::promote_figure(Chess::Position pos) {

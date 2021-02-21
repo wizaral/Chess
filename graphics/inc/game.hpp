@@ -30,7 +30,8 @@ class Game {
     std::array<Sprite, 5> m_buttons;
     std::array<Sprite, Chess::players_amount> m_promotions;
     std::array<std::array<Sprite, Chess::figure_types_amount>, Chess::players_amount> m_figures;
-    Chess::Position m_dragging{-1, -1}, m_promoting{-1, -1};
+    Chess::Position m_dragging = Chess::Position::invalid;
+    Chess::Position m_promoting = Chess::Position::invalid;
     sf::Vector2f m_dragg_pos;
 
     std::optional<Chess::Move> m_move;

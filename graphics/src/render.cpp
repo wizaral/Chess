@@ -26,7 +26,7 @@ void Game::print_castling() {
         print_state();
         m_window.display();
     }
-    m_dragging = Chess::Position{-1, -1};
+    m_dragging = Chess::Position::invalid;
 }
 
 void Game::after_game() {
@@ -70,7 +70,7 @@ void Game::print_board() {
         }
     }
 
-    if (m_dragging != Chess::Position{-1, -1}) {
+    if (m_dragging != Chess::Position::invalid) {
         if (auto f = m_logic->board().get_figure(m_dragging); f != nullptr) {
             auto &figure = m_figures[static_cast<int>(f->color())][static_cast<int>(f->type())].first;
             figure.setPosition(m_dragg_pos);

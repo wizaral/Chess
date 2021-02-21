@@ -107,7 +107,7 @@ void Game::pawn_promotion() {
         }
 
         m_log << ftype;
-        m_promoting = Chess::Position{-1, -1};
+        m_promoting = Chess::Position::invalid;
     }
 }
 

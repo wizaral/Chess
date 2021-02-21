@@ -14,7 +14,7 @@ class Logic : public Publisher {
     std::array<std::unique_ptr<Player>, players_amount> m_players;
 
     int m_player_index = 0;
-    Position m_pawn_pos{-1, -1};
+    Position m_pawn_pos = Position::invalid;
     GameState m_state = GameState::NormalMove;
 
 public:

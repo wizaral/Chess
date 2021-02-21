@@ -18,7 +18,7 @@ Position Board::get_position(FigureType type, FigureColor color) const {
             }
         }
     }
-    return {-1, -1};
+    return Position::invalid;
 }
 
 const Board::Field<std::unique_ptr<Figure>> &Board::figures() const {
