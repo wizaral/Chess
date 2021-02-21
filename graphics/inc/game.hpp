@@ -10,7 +10,9 @@
 #include "player_bot.hpp"
 #include "player_real.hpp"
 
+#if !defined(RES)
 #define RES "res/"
+#endif
 
 inline static constexpr int window_width = 800;
 inline static constexpr int window_height = 900;
