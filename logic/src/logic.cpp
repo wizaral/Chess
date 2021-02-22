@@ -43,7 +43,7 @@ void Logic::notify() {
     }
 }
 
-GameState Logic::validate_move(const Move &move, FigureColor color) const {
+GameState Logic::validate_move(Move move, FigureColor color) const {
     if (Position::validation(move.from()) == false || Position::validation(move.to()) == false) {
         return GameState::OutOfBounds;
     }
@@ -62,7 +62,7 @@ bool Logic::is_check(FigureColor color) const {
     return m_board.get_check_state(!color)[pos.row()][pos.col()];
 }
 
-bool Logic::is_check(FigureColor color, const Move &move) {
+bool Logic::is_check(FigureColor color, Move move) {
     auto figure = m_board.extract_figure(move.to());
     m_board.move_figure(move);
 
@@ -76,7 +76,7 @@ bool Logic::is_check(FigureColor color, const Move &move) {
     return result;
 }
 
-void Logic::castling(const Move &move) {
+void Logic::castling(Move move) {
     int row = move.from().row();
 
     if (int distance = move.from().col() - move.to().col(); distance < 0) {
@@ -96,7 +96,7 @@ void Logic::castling(const Move &move) {
     }
 }
 
-void Logic::en_passant(const Move &move) {
+void Logic::en_passant(Move move) {
     m_board.move_figure(move);
     m_board.remove_figure({move.from().row(), move.to().col()});
 }
@@ -212,7 +212,7 @@ bool Logic::is_draw() const {
     return false;
 }
 
-GameState Logic::logic(const Move &move) {
+GameState Logic::logic(Move move) {
     if (m_state == GameState::PawnPromotion) {
         return GameState::PawnPromotion;
     }

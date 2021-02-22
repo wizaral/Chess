@@ -17,7 +17,7 @@ public:
         , std::move(render)
         , std::move(input)) {}
 
-    Chess::GameState logic(const Chess::Move &move) {
+    Chess::GameState logic(Chess::Move move) {
         return Chess::Logic::logic(move);
     }
 

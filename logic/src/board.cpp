@@ -41,7 +41,7 @@ std::unique_ptr<Figure> Board::extract_figure(Position pos) {
     return std::move(m_figures[pos.row()][pos.col()]);
 }
 
-void Board::move_figure(const Move &move) {
+void Board::move_figure(Move move) {
     m_figures[move.to().row()][move.to().col()] = std::move(m_figures[move.from().row()][move.from().col()]);
 }
 

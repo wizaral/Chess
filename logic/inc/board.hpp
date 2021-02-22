@@ -34,7 +34,7 @@ public:
 
     void add_figure(std::unique_ptr<Figure> figure, Position pos);
     std::unique_ptr<Figure> extract_figure(Position pos);
-    void move_figure(const Move &move);
+    void move_figure(Move move);
 
     void remove_figure(Position pos);
     void clear_figures();

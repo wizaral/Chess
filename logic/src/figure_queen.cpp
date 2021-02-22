@@ -3,7 +3,7 @@
 
 namespace Chess {
 
-GameState Queen::validate_move(const Board &board, const Move &move) const {
+GameState Queen::validate_move(const Board &board, Move move) const {
     int rows = move.rows();
     int cols = move.cols();
 
@@ -25,7 +25,7 @@ GameState Queen::validate_move(const Board &board, const Move &move) const {
     return GameState::WrongFigureMove;
 }
 
-GameState Queen::validate(const Board &board, const Move &move, int row_inc, int col_inc) const {
+GameState Queen::validate(const Board &board, Move move, int row_inc, int col_inc) const {
     int pos_row = move.from().row();
     int pos_col = move.from().col();
 
@@ -57,7 +57,7 @@ void Queen::update_movement(const Board &board, Position pos, std::vector<Positi
     update_occupation(board, pos, coords);
 }
 
-void Queen::move_update(const Move &move) {}
+void Queen::move_update(Move move) {}
 
 void Queen::bishop_occupation(const Board &board, Position pos, std::vector<Position> &coords) const {
     int row = pos.row(), col = pos.col();

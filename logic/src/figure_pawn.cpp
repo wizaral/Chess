@@ -36,7 +36,7 @@ bool Pawn::update(MessageType type) {
     return false;
 }
 
-GameState Pawn::validate_move(const Board &board, const Move &move) const {
+GameState Pawn::validate_move(const Board &board, Move move) const {
     Position from = move.from(), to = move.to();
 
     if ((m_direction > 0 && to.row() < from.row()) || (m_direction < 0 && to.row() > from.row())) {
@@ -112,7 +112,7 @@ void Pawn::update_movement(const Board &board, Position pos, std::vector<Positio
     }
 }
 
-void Pawn::move_update(const Move &move) {
+void Pawn::move_update(Move move) {
     m_state = move.rows() > 1 ? MoveState::DoubleMove : MoveState::NormalMove;
 }
 
@@ -126,7 +126,7 @@ GameState Pawn::check_pawn(const Figure *figure, FigureColor color) const {
     return GameState::WrongFigureMove;
 }
 
-bool Pawn::check_diagonal(const Move &move) const {
+bool Pawn::check_diagonal(Move move) const {
     return move.from().col() + 1 == move.to().col() || move.from().col() - 1 == move.to().col();
 }
 

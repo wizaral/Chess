@@ -36,8 +36,8 @@ public:
     FigureType type() const;
     FigureColor color() const;
 
-    virtual GameState validate_move(const Board &board, const Move &move) const = 0;
-    virtual void move_update(const Move &move) = 0;
+    virtual GameState validate_move(const Board &board, Move move) const = 0;
+    virtual void move_update(Move move) = 0;
 
     virtual void update_occupation(const Board &board, Position pos, std::vector<Position> &coords) const = 0;
     virtual void update_movement(const Board &board, Position pos, std::vector<Position> &coords) const = 0;

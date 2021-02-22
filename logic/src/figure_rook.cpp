@@ -7,7 +7,7 @@ Rook::Rook(FigureType type, FigureColor color, MoveState state)
 : Figure(type, color)
 , m_state(state) {}
 
-GameState Rook::validate_move(const Board &board, const Move &move) const {
+GameState Rook::validate_move(const Board &board, Move move) const {
     int rows = move.rows();
     int cols = move.cols();
 
@@ -80,7 +80,7 @@ void Rook::update_movement(const Board &board, Position pos, std::vector<Positio
     update_occupation(board, pos, coords);
 }
 
-void Rook::move_update(const Move &move) {
+void Rook::move_update(Move move) {
     m_state = MoveState::NormalMove;
 }
 

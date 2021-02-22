@@ -25,7 +25,7 @@ public:
 
     void init_game(std::unique_ptr<FigureFactory> factory);
 
-    GameState logic(const Move &move);
+    GameState logic(Move move);
     GameState promote_pawn(FigureType type);
 
     std::vector<Position> possible_moves(Position pos);
@@ -33,13 +33,13 @@ public:
 
 private:
     void validate_players() const;
-    GameState validate_move(const Move &move, FigureColor color) const;
+    GameState validate_move(Move move, FigureColor color) const;
 
     bool is_check(FigureColor color) const;
-    bool is_check(FigureColor color, const Move &move);
+    bool is_check(FigureColor color, Move move);
 
-    void castling(const Move &move);
-    void en_passant(const Move &move);
+    void castling(Move move);
+    void en_passant(Move move);
 
     void update_check_state();
     void update_move_state();

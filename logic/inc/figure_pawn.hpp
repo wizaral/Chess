@@ -18,8 +18,8 @@ public:
     MoveState state() const;
     bool update(MessageType type) override;
 
-    GameState validate_move(const Board &board, const Move &move) const override;
-    void move_update(const Move &move) override;
+    GameState validate_move(const Board &board, Move move) const override;
+    void move_update(Move move) override;
 
     void update_occupation(const Board &board, Position pos, std::vector<Position> &coords) const override;
     void update_movement(const Board &board, Position pos, std::vector<Position> &coords) const override;
@@ -29,7 +29,7 @@ private:
     int8_t m_direction = 0;
 
     GameState check_pawn(const Figure *figure, FigureColor color) const;
-    bool check_diagonal(const Move &move) const;
+    bool check_diagonal(Move move) const;
 };
 
 } // namespace Chess

@@ -8,7 +8,7 @@ King::King(FigureType type, FigureColor color, MoveState state)
 : Figure(type, color)
 , m_state(state) {}
 
-GameState King::validate_move(const Board &board, const Move &move) const {
+GameState King::validate_move(const Board &board, Move move) const {
     auto other = board.get_figure(move.to());
     int rows = move.rows();
     int cols = move.cols();
@@ -28,7 +28,7 @@ GameState King::validate_move(const Board &board, const Move &move) const {
     return GameState::WrongFigureMove;
 }
 
-GameState King::check_castling(const Board &board, const Move &move, const Figure *other) const {
+GameState King::check_castling(const Board &board, Move move, const Figure *other) const {
     auto other_color = !color();
 
     // check first figure move
@@ -99,7 +99,7 @@ void King::update_movement(const Board &board, Position pos, std::vector<Positio
     update_occupation(board, pos, coords);
 }
 
-void King::move_update(const Move &move) {
+void King::move_update(Move move) {
     m_state = MoveState::NormalMove;
 }
 

@@ -3,7 +3,7 @@
 
 namespace Chess {
 
-GameState Knight::validate_move(const Board &board, const Move &move) const {
+GameState Knight::validate_move(const Board &board, Move move) const {
     int rows = move.rows();
     int cols = move.cols();
 
@@ -52,6 +52,6 @@ void Knight::update_movement(const Board &board, Position pos, std::vector<Posit
     update_occupation(board, pos, coords);
 }
 
-void Knight::move_update(const Move &move) {}
+void Knight::move_update(Move move) {}
 
 } // namespace Chess

@@ -3,7 +3,7 @@
 
 namespace Chess {
 
-GameState Bishop::validate_move(const Board &board, const Move &move) const {
+GameState Bishop::validate_move(const Board &board, Move move) const {
     int rows = move.rows();
     int cols = move.cols();
 
@@ -72,6 +72,6 @@ void Bishop::update_movement(const Board &board, Position pos, std::vector<Posit
     update_occupation(board, pos, coords);
 }
 
-void Bishop::move_update(const Move &move) {}
+void Bishop::move_update(Move move) {}
 
 } // namespace Chess
