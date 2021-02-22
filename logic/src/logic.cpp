@@ -8,7 +8,11 @@ Logic::Logic(std::array<std::unique_ptr<Player>, players_amount> arr)
 }
 
 Player *Logic::player() {
-    return m_players[m_player_index &= 1].get();
+    return m_players[m_player_index].get();
+}
+
+const Player *Logic::player() const {
+    return m_players[m_player_index].get();
 }
 
 const Board &Logic::board() const {
@@ -261,7 +265,7 @@ void Logic::after_move_logic() {
     } else if (is_draw()) {
         m_state = GameState::Draw;
     } else {
-        ++m_player_index;
+        m_player_index ^= 1;
     }
 }
 

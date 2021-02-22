@@ -21,6 +21,7 @@ public:
     Logic(std::array<std::unique_ptr<Player>, players_amount> arr);
 
     Player *player();
+    const Player *player() const;
     const Board &board() const;
 
     void init_game(std::unique_ptr<FigureFactory> factory);
