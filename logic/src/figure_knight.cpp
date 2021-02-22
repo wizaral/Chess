@@ -22,29 +22,21 @@ GameState Knight::validate_move(const Board &board, Move move) const {
 void Knight::update_occupation(const Board &board, Position pos, std::vector<Position> &coords) const {
     int row = pos.row(), col = pos.col();
 
-    if (Position::validation({row + 2, col + 1})) {
-        coords.emplace_back(row + 2, col + 1);
-    }
-    if (Position::validation({row + 2, col - 1})) {
-        coords.emplace_back(row + 2, col - 1);
-    }
-    if (Position::validation({row + 1, col + 2})) {
-        coords.emplace_back(row + 1, col + 2);
-    }
-    if (Position::validation({row - 1, col + 2})) {
-        coords.emplace_back(row - 1, col + 2);
-    }
-    if (Position::validation({row - 2, col + 1})) {
-        coords.emplace_back(row - 2, col + 1);
-    }
-    if (Position::validation({row - 2, col - 1})) {
-        coords.emplace_back(row - 2, col - 1);
-    }
-    if (Position::validation({row + 1, col - 2})) {
-        coords.emplace_back(row + 1, col - 2);
-    }
-    if (Position::validation({row - 1, col - 2})) {
-        coords.emplace_back(row - 1, col - 2);
+    std::array<Position, 8> positions{
+        Position{row + 2, col + 1},
+        Position{row + 2, col - 1},
+        Position{row + 1, col + 2},
+        Position{row - 1, col + 2},
+        Position{row - 2, col + 1},
+        Position{row - 2, col - 1},
+        Position{row + 1, col - 2},
+        Position{row - 1, col - 2},
+    };
+
+    for (auto p : positions) {
+        if (Position::validation(p)) {
+            coords.push_back(p);
+        }
     }
 }
 

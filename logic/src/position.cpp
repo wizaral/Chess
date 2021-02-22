@@ -16,13 +16,8 @@ int Position::col() const {
 }
 
 bool Position::validation(Position pos) {
-    if (int row = pos.row(); row < 0 || row >= board_rows) {
-        return false;
-    }
-    if (int col = pos.col(); col < 0 || col >= board_cols) {
-        return false;
-    }
-    return true;
+    int row = pos.row(), col = pos.col();
+    return row > -1 && row < board_rows && col > -1 && col < board_cols;
 }
 
 bool operator==(Position lhs, Position rhs) {

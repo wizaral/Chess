@@ -68,30 +68,21 @@ GameState King::check_castling(const Board &board, Move move, const Figure *othe
 void King::update_occupation(const Board &board, Position pos, std::vector<Position> &coords) const {
     int row = pos.row(), col = pos.col();
 
-    if (Position::validation({row + 1, col + 1})) {
-        coords.emplace_back(row + 1, col + 1);
-    }
-    if (Position::validation({row + 1, col - 1})) {
-        coords.emplace_back(row + 1, col - 1);
-    }
-    if (Position::validation({row - 1, col + 1})) {
-        coords.emplace_back(row - 1, col + 1);
-    }
-    if (Position::validation({row - 1, col - 1})) {
-        coords.emplace_back(row - 1, col - 1);
-    }
+    std::array<Position, 8> positions{
+        Position{row + 1, col + 1},
+        Position{row + 1, col - 1},
+        Position{row - 1, col + 1},
+        Position{row - 1, col - 1},
+        Position{row + 1, col + 0},
+        Position{row - 1, col - 0},
+        Position{row + 0, col + 1},
+        Position{row - 0, col - 1},
+    };
 
-    if (Position::validation({row + 1, col})) {
-        coords.emplace_back(row + 1, col);
-    }
-    if (Position::validation({row - 1, col})) {
-        coords.emplace_back(row - 1, col);
-    }
-    if (Position::validation({row, col + 1})) {
-        coords.emplace_back(row, col + 1);
-    }
-    if (Position::validation({row, col - 1})) {
-        coords.emplace_back(row, col - 1);
+    for (auto p : positions) {
+        if (Position::validation(p)) {
+            coords.push_back(p);
+        }
     }
 }
 
