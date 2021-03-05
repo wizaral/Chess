@@ -1,56 +1,72 @@
-cmake_minimum_required(VERSION 3.18)
-project(chess LANGUAGES CXX)
+cmake_minimum_required(VERSION 3.18 FATAL_ERROR)
+
+if(NOT CMAKE_BUILD_TYPE)
+    set(CMAKE_BUILD_TYPE "Release" CACHE STRING "Choose the type of build, options are: None Debug Release." FORCE)
+endif()
+
+if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
+    set(CMAKE_INSTALL_PREFIX "${CMAKE_SOURCE_DIR}/build" CACHE STRING "The install location." FORCE)
+endif()
+
+project(chess VERSION 1.0.1 LANGUAGES CXX DESCRIPTION "Chess game with GUI.")
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_CXX_STANDARD_REQUIRED YES)
 
-set(resources_dir res/)
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR})
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE ${CMAKE_SOURCE_DIR})
+aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/src SOURCE_EXE)
+add_executable(${PROJECT_NAME} ${SOURCE_EXE})
 
-if(${CMAKE_SYSTEM_NAME} STREQUAL "Windows")
-    # add_compile_definitions(
-    #     /D GAME_RESOURCES_DIR="${resources_dir}"
-    # )
-else()
+set_target_properties(${PROJECT_NAME} PROPERTIES
+    CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}
+    RESOURCES_DIR res/
+)
+
+target_link_libraries(${PROJECT_NAME} PRIVATE sfml-graphics sfml-window sfml-system logic)
+target_include_directories(${PROJECT_NAME} PRIVATE inc SFML/include)
+
+target_compile_definitions(${PROJECT_NAME} PRIVATE
+    -DRES=\"${RESOURCES_DIR}\"
+)
+
+add_compile_options(
+    -pipe
+    -Wall
+    -Wextra
+    -Wpedantic
+)
+
+if(${CMAKE_BUILD_TYPE} STREQUAL "Release")
     add_compile_options(
-        -pipe
-        -Wall
-        -Wextra
-        -Wpedantic
-        # -D GAME_RESOURCES_DIR "${resources_dir}"
+        -Ofast
+        -march=native
+        -fomit-frame-pointer
     )
-    # fix this for anouther systems
-    if(${CMAKE_BUILD_TYPE} STREQUAL "Release")
+    add_link_options(
+        -flto
+    )
+elseif(${CMAKE_BUILD_TYPE} STREQUAL "Debug")
+    add_compile_options(
+        -O0
+        -g3
+        -fno-omit-frame-pointer
+    )
+    if(NOT ${CMAKE_SYSTEM_NAME} STREQUAL "Windows")
         add_compile_options(
-            -Ofast
-            -march=native
-            -fomit-frame-pointer
-            -flto
-        )
-    else()
-        add_compile_options(
-            -O0
-            -g3
-            -fno-omit-frame-pointer
             -fsanitize=address,undefined
         )
         add_link_options(
             -fsanitize=address,undefined
         )
     endif()
+else()
+    message("Unsupported build type: '" ${CMAKE_BUILD_TYPE}')
+    return()
 endif()
 
-if(NOT EXISTS "${CMAKE_SOURCE_DIR}/${resources_dir}")
-    file(COPY graphics/${resources_dir} DESTINATION ${CMAKE_SOURCE_DIR}/${resources_dir})
-endif()
+add_subdirectory(logic)
 
 set(BUILD_SHARED_LIBS FALSE)
 set(SFML_USE_STATIC_STD_LIBS TRUE)
 
 add_subdirectory(SFML)
-add_subdirectory(logic)
-add_subdirectory(graphics)
-
-# cmake . -Bbuild -Thost=[x86|x64] -Wdev -Werror=dev && cmake --build ./build --config [Debug|Release]
