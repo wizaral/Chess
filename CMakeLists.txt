@@ -9,6 +9,7 @@ if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
 endif()
 
 project(chess VERSION 1.0.1 LANGUAGES CXX DESCRIPTION "Chess game with GUI.")
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR})
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_EXTENSIONS OFF)
@@ -17,16 +18,11 @@ set(CMAKE_CXX_STANDARD_REQUIRED YES)
 aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/src SOURCE_EXE)
 add_executable(${PROJECT_NAME} ${SOURCE_EXE})
 
-set_target_properties(${PROJECT_NAME} PROPERTIES
-    CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}
-    RESOURCES_DIR res/
-)
-
 target_link_libraries(${PROJECT_NAME} PRIVATE sfml-graphics sfml-window sfml-system logic)
-target_include_directories(${PROJECT_NAME} PRIVATE inc SFML/include)
+target_include_directories(${PROJECT_NAME} PRIVATE logic/inc inc SFML/include)
 
 target_compile_definitions(${PROJECT_NAME} PRIVATE
-    -DRES=\"${RESOURCES_DIR}\"
+    -DRES=\"res/\"
 )
 
 add_compile_options(
