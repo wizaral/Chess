@@ -19,7 +19,7 @@ aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/src SOURCE_EXE)
 add_executable(${PROJECT_NAME} ${SOURCE_EXE})
 
 target_link_libraries(${PROJECT_NAME} PRIVATE sfml-graphics sfml-window sfml-system logic)
-target_include_directories(${PROJECT_NAME} PRIVATE logic/inc inc SFML/include)
+target_include_directories(${PROJECT_NAME} PRIVATE include logic/include SFML/include)
 
 target_compile_definitions(${PROJECT_NAME} PRIVATE
     -DRES=\"res/\"
