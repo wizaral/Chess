@@ -66,6 +66,7 @@ GameState King::check_castling(const Board &board, Move move, const Figure *othe
 }
 
 void King::update_occupation(const Board &board, Position pos, std::vector<Position> &coords) const {
+    static_cast<void>(board);
     int row = pos.row(), col = pos.col();
 
     std::array<Position, 8> positions{
@@ -91,6 +92,7 @@ void King::update_movement(const Board &board, Position pos, std::vector<Positio
 }
 
 void King::move_update(Move move) {
+    static_cast<void>(move);
     m_state = MoveState::NormalMove;
 }
 

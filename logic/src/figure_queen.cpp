@@ -57,7 +57,9 @@ void Queen::update_movement(const Board &board, Position pos, std::vector<Positi
     update_occupation(board, pos, coords);
 }
 
-void Queen::move_update(Move move) {}
+void Queen::move_update(Move move) {
+    static_cast<void>(move);
+}
 
 void Queen::bishop_occupation(const Board &board, Position pos, std::vector<Position> &coords) const {
     int row = pos.row(), col = pos.col();

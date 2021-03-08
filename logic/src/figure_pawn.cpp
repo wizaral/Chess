@@ -80,6 +80,7 @@ GameState Pawn::validate_move(const Board &board, Move move) const {
 }
 
 void Pawn::update_occupation(const Board &board, Position pos, std::vector<Position> &coords) const {
+    static_cast<void>(board);
     int dest = pos.row() + m_direction;
     int col = pos.col();
 

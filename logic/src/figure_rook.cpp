@@ -81,6 +81,7 @@ void Rook::update_movement(const Board &board, Position pos, std::vector<Positio
 }
 
 void Rook::move_update(Move move) {
+    static_cast<void>(move);
     m_state = MoveState::NormalMove;
 }
 

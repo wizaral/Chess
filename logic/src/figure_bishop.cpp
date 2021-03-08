@@ -72,6 +72,8 @@ void Bishop::update_movement(const Board &board, Position pos, std::vector<Posit
     update_occupation(board, pos, coords);
 }
 
-void Bishop::move_update(Move move) {}
+void Bishop::move_update(Move move) {
+    static_cast<void>(move);
+}
 
 } // namespace Chess
