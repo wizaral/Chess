@@ -1,3 +1,6 @@
 [submodule "SFML"]
 	path = SFML
 	url = https://github.com/SFML/SFML
+[submodule "tests/dev_shugar"]
+	path = tests/dev_shugar
+	url = https://github.com/wizaral/dev_shugar
