@@ -1,11 +1,9 @@
 #pragma once
 #include <list>
 
-class Publisher;
-
 class Subscriber {
 protected:
-    Publisher *m_publisher;
+    class Publisher *m_publisher;
 
 public:
     enum class MessageType {
